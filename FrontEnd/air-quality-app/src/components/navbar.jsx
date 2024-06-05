@@ -11,9 +11,10 @@ const Navbar = ()=>{
                 <nav>
                     <div className='flex flex-row items-center mx-10 justify-between gap-10 px-2 py-2'>
                         <Link to="/">Home</Link>
-                        <h3>Map</h3>
-                        <h3>Settings</h3>
+                        <Link to="/map">Map</Link>
+                        <Link to="/settings">Settings</Link>
                         <h3 className='text-center sm:text-left'>Login/Register</h3>
+                    
                     </div>
                 </nav>
             </div>

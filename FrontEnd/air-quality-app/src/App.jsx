@@ -4,6 +4,8 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Home from './pages/Home';
+import Map from './pages/Map'
+import Settings from './pages/Settings'
 
 
 function App() {
@@ -12,7 +14,9 @@ function App() {
       <Navbar />
       <div className="pages">
         <Routes>
-          <Route exact path="/" component={Home} />
+          <Route path="/" element={<Home />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
       <Footer/>
