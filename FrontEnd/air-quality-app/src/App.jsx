@@ -12,8 +12,8 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <div className="pages">
-        <Routes>
+      <div className="pages" >
+        <Routes style={{margin: "0"}}>
           <Route path="/" element={<Home />} />
           <Route path="/map" element={<Map />} />
           <Route path="/settings" element={<Settings />} />

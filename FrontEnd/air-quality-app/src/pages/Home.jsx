@@ -22,31 +22,48 @@ const Home = () => {
             backgroundImage: `url(${banner})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            minHeight: "400px", // Adjust as needed
+            minHeight: "40vh",
+            display: "flex",
+            alignItems: "center"
         }}>
-        <Container sx={{
-            margin: "2rem",
-            bgcolor: "blue",
+        <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            marginLeft: "2rem"
+
             }}>
           <Typography variant="h1" component="h1" sx={{ fontSize: "4rem" }}>
             Introduction to Fair
           </Typography>
-          <Typography variant="p" component="a">
+          <Typography variant="body1" component="p">
             3-4 lines about our app 
           </Typography>
-        </Container>
+        </Box>
         </div>
+        
       </section>
 
       {/* Info-card Section */}
       <section>
         <Container>
+        <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              mb: 4,
+              mt: 4
+            }}
+          >
+          
           <Typography variant="h2" component="h2">
             Air Pollution & You
           </Typography>
-          <Typography component="p">
+          <Typography variant="body1" component="p">
             What does the science say about air pollution?
           </Typography>
+          </Box>
 
           <div className="grid md:grid-cols-3 m-4">
             <Infocard

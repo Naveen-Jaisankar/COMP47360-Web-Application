@@ -14,7 +14,7 @@ const Infocard = ({image, alt, heading, text})=>{
                 />
             )}
             <CardContent>
-                <Typography variant="h4" component="h4">
+                <Typography variant="h3" component="h3">
                     {heading} 
                 </Typography>
                 <Typography variant="body2" component="p">
