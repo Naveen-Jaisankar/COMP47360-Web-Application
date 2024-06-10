@@ -1,10 +1,10 @@
-package com.summerproject.group12;
+package com.compsci.webapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Group12ApplicationTests {
+class WebappApplicationTests {
 
 	@Test
 	void contextLoads() {
