@@ -3,69 +3,81 @@ import { Helmet } from "react-helmet";
 import Infocard from "../components/infocard";
 
 const image1 =
-"https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fd5%2Fbb%2F51%2Fd5bb51f166808467c89b63aedcc86c41.png&sp=1717854747Tc2dbc12b7ed3ccdd2ece853c9c01241f12f787840bb869b9241379113de8c1a0";
-const banner = "../src/static/01-03_City_map2v_generated.jpg"
+  "../src/static/proxy-image.png";
+const banner = "../src/static/01-03_City_map2v_generated.jpg";
 
 const Home = () => {
   return (
     <>
       <Helmet>
-        <title>
-          air-quality-app name - Manhattan air tracking application
-        </title>
-        <meta content="This is the Home page of air-quality-app name, here you can find information about the application, facts about air pollution and how to use the website" />
+        <title>air-quality-app name - Manhattan air tracking application</title>
+        <meta
+          content="This is the Home page of air-quality-app name, here you can find information about the application, facts about air pollution and how to use the website"
+        />
       </Helmet>
 
       {/* Introduction Section */}
       <section>
-        <div style= {{
+        <Box
+          sx={{
             backgroundImage: `url(${banner})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            minHeight: "40vh",
+            height: { xs: 400, md: 600 },
             display: "flex",
             alignItems: "center"
-        }}>
-        <Box sx={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: "2rem"
-
-            }}>
-          <Typography variant="h1" component="h1" sx={{ fontSize: "4rem" }}>
-            Introduction to Fair
-          </Typography>
-          <Typography variant="body1" component="p">
-            3-4 lines about our app 
-          </Typography>
+          }}
+        >
+          <Box
+            sx={{
+              bgcolor: "white",
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "4rem"
+            }}
+          >
+            <Typography variant="h1" component="h1" sx={{ fontSize: "4rem" }}>
+              "Air Quality today"
+            </Typography>
+            <Typography variant="body1" component="p">
+              Air quality is the problem of the decade, facing thousands of people. Get started with us 
+            </Typography>
+          </Box>
         </Box>
-        </div>
-        
       </section>
+
+      {/* Tutorial section */}
+      <section></section>
 
       {/* Info-card Section */}
       <section>
-        <Container>
-        <Box
+        <Container sx={{ marginTop: 4,
+          marginBottom: 4,
+          maxWidth: 'lg' }}>
+          <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               textAlign: "center",
-              mb: 4,
-              mt: 4
+              mb: 4
             }}
           >
-          
-          <Typography variant="h2" component="h2">
-            Air Pollution & You
-          </Typography>
-          <Typography variant="body1" component="p">
-            What does the science say about air pollution?
-          </Typography>
+            <Typography variant="h2" component="h2">
+              Air Pollution & You
+            </Typography>
+            <Typography variant="body1" component="p">
+              What does the science say about air pollution?
+            </Typography>
           </Box>
 
-          <div className="grid md:grid-cols-3 m-4">
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { md: "repeat(3, 1fr)" },
+              gap: 4
+            }}
+          >
             <Infocard
               image={image1}
               alt="Image Alt Text"
@@ -84,12 +96,11 @@ const Home = () => {
               heading="Funky fact"
               text="More info"
             />
-          </div>
+          </Box>
         </Container>
       </section>
 
-      {/* Tutorial section */}
-      <section></section>
+      
     </>
   );
 };

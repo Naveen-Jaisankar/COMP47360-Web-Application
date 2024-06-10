@@ -6,6 +6,8 @@ import {ThemeProvider, createTheme} from '@mui/material'
 
 // The normal theme + dark theme could be specified here
 // https://mui.com/material-ui/customization/palette/
+// https://mui.com/material-ui/customization/default-theme/
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
