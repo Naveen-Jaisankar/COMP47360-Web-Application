@@ -1,13 +1,15 @@
-package com.summerproject.group12;
+package com.compsci.webapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.compsci.webapp.exception.CustomLogger;
+
 @SpringBootApplication
-public class Group12Application {
+public class WebappApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Group12Application.class, args);
+		SpringApplication.run(WebappApplication.class, args);
 	}
 
 }

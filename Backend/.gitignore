@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+
+# Ignore application.properties in the resources directory
+resources/application.properties
+application.properties
+
+# Ignore DatabaseConnectionTest.java in the exception directory
+exception/DatabaseConnectionTest.java
+DatabaseConnectionTest.java
+

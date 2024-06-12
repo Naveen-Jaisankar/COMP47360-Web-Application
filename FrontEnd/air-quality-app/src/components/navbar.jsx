@@ -13,6 +13,8 @@ const Navbar = ()=>{
                         <Link to="/">Home</Link>
                         <Link to="/map">Map</Link>
                         <Link to="/settings">Settings</Link>
+                        <Link to="/form">form</Link>
+                        
                         <h3 className='text-center sm:text-left'>Login/Register</h3>
                     
                     </div>
