@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Button Quiz</title>
+    <style>
+        /* Basic styles for the pop-up */
+        #quiz-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #quiz-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .question {
+            display: none;
+        }
+        .question.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <button id="start-quiz">Start Quiz</button>
+
+    <div id="quiz-overlay"></div>
+    <div id="quiz-popup">
+        <h2>Quiz</h2>
+        <form id="quiz-form">
+            <div id="question0" class="question">
+                <p>Please select one box to show how you describe your current health:</p>
+                <label><input type="radio" name="question0" value="Very good" data-score="0.0"> Very good</label><br>
+                <label><input type="radio" name="question0" value="Good" data-score="0.0"> Good</label><br>
+                <label><input type="radio" name="question0" value="Fair" data-score="0.0"> Fair</label><br>
+                <label><input type="radio" name="question0" value="Poor" data-score="0.0"> Poor</label><br>
+                <label><input type="radio" name="question0" value="Very poor" data-score="0.0"> Very poor</label><br>
+                <button type="button" onclick="nextQuestion('question0', 'question1')">Next</button>
+            </div>
+            <div id="question1" class="question">
+                <p>Part 1, Question 1: Over the past 3 months, I have coughed:</p>
+                <label><input type="radio" name="question1" value="Most days of a week" data-score="80.6"> Most days of a week</label><br>
+                <label><input type="radio" name="question1" value="Several days of a week" data-score="63.2"> Several days of a week</label><br>
+                <label><input type="radio" name="question1" value="A few days a month" data-score="29.3"> A few days a month</label><br>
+                <label><input type="radio" name="question1" value="Only with chest infections" data-score="28.1"> Only with chest infections</label><br>
+                <label><input type="radio" name="question1" value="Not at all" data-score="0.0"> Not at all</label><br>
+                <button type="button" onclick="nextQuestion('question1', 'question2')">Next</button>
+            </div>
+            <div id="question2" class="question">
+                <p>Part 1, Question 2: Over the past 3 months, I have brought up phlegm (sputum):</p>
+                <label><input type="radio" name="question2" value="Most days of a week" data-score="76.8"> Most days of a week</label><br>
+                <label><input type="radio" name="question2" value="Several days of a week" data-score="60.0"> Several days of a week</label><br>
+                <label><input type="radio" name="question2" value="A few days a month" data-score="34.0"> A few days a month</label><br>
+                <label><input type="radio" name="question2" value="Only with chest infections" data-score="30.2"> Only with chest infections</label><br>
+                <label><input type="radio" name="question2" value="Not at all" data-score="0.0"> Not at all</label><br>
+                <button type="button" onclick="nextQuestion('question2', 'question3')">Next</button>
+            </div>
+            <div id="question3" class="question">
+                <p>Part 1, Question 3: Over the past 3 months, I have had shortness of breath:</p>
+                <label><input type="radio" name="question3" value="Most days of a week" data-score="87.2"> Most days of a week</label><br>
+                <label><input type="radio" name="question3" value="Several days of a week" data-score="71.4"> Several days of a week</label><br>
+                <label><input type="radio" name="question3" value="A few days a month" data-score="43.7"> A few days a month</label><br>
+                <label><input type="radio" name="question3" value="Only with chest infections" data-score="35.7"> Only with chest infections</label><br>
+                <label><input type="radio" name="question3" value="Not at all" data-score="0.0"> Not at all</label><br>
+                <button type="button" onclick="nextQuestion('question3', 'question4')">Next</button>
+            </div>
+            <div id="question4" class="question">
+                <p>Part 1, Question 4: Over the past 3 months, I have had attacks of wheezing:</p>
+                <label><input type="radio" name="question4" value="Most days of a week" data-score="86.2"> Most days of a week</label><br>
+                <label><input type="radio" name="question4" value="Several days of a week" data-score="71.0"> Several days of a week</label><br>
+                <label><input type="radio" name="question4" value="A few days a month" data-score="45.6"> A few days a month</label><br>
+                <label><input type="radio" name="question4" value="Only with chest infections" data-score="36.4"> Only with chest infections</label><br>
+                <label><input type="radio" name="question4" value="Not at all" data-score="0.0"> Not at all</label><br>
+                <button type="button" onclick="nextQuestion('question4', 'question5')">Next</button>
+            </div>
+            <div id="question5" class="question">
+                <p>Part 1, Question 5: During the past 3 months how many severe or very unpleasant attacks of chest trouble have you had?</p>
+                <label><input type="radio" name="question5" value="More than 3 attacks" data-score="86.7"> More than 3 attacks</label><br>
+                <label><input type="radio" name="question5" value="3 attacks" data-score="73.5"> 3 attacks</label><br>
+                <label><input type="radio" name="question5" value="2 attacks" data-score="60.3"> 2 attacks</label><br>
+                <label><input type="radio" name="question5" value="1 attack" data-score="44.2"> 1 attack</label><br>
+                <label><input type="radio" name="question5" value="No attacks" data-score="0.0"> No attacks</label><br>
+                <button type="button" onclick="nextQuestion('question5', 'question6')">Next</button>
+            </div>
+            <div id="question6" class="question">
+                <p>Part 1, Question 6: How long did the worst attack of chest trouble last?</p>
+                <label><input type="radio" name="question6" value="A week or more" data-score="89.7"> A week or more</label><br>
+                <label><input type="radio" name="question6" value="3 or more days" data-score="73.5"> 3 or more days</label><br>
+                <label><input type="radio" name="question6" value="1 or 2 days" data-score="58.8"> 1 or 2 days</label><br>
+                <label><input type="radio" name="question6" value="Less than a day" data-score="41.9"> Less than a day</label><br>
+                <button type="button" onclick="nextQuestion('question6', 'question7')">Next</button>
+            </div>
+            <div id="question7" class="question">
+                <p>Part 1, Question 7: Over the past 3 months, in an average week, how many good days (with little chest trouble) have you had?</p>
+                <label><input type="radio" name="question7" value="No good days" data-score="93.3"> No good days</label><br>
+                <label><input type="radio" name="question7" value="1 or 2 good days" data-score="76.6"> 1 or 2 good days</label><br>
+                <label><input type="radio" name="question7" value="3 or 4 good days" data-score="61.5"> 3 or 4 good days</label><br>
+                <label><input type="radio" name="question7" value="Nearly every day is good" data-score="15.4"> Nearly every day is good</label><br>
+                <label><input type="radio" name="question7" value="Every day is good" data-score="0.0"> Every day is good</label><br>
+                <button type="button" onclick="nextQuestion('question7', 'question8')">Next</button>
+            </div>
+            <div id="question8" class="question">
+                <p>Part 1, Question 8: If you have a wheeze, is it worse in the morning?</p>
+                <label><input type="radio" name="question8" value="No" data-score="0.0"> No</label><br>
+                <label><input type="radio" name="question8" value="Yes" data-score="62.0"> Yes</label><br>
+                <label><input type="radio" name="question8" value="I don't have a wheeze" data-score="0.0"> I don't have a wheeze</label><br>
+                <button type="button" onclick="nextQuestion('question8', 'question9')">Next</button>
+            </div>
+            <div id="question9" class="question">
+                <p>Part 2, Question 1: How would you describe your chest condition?</p>
+                <label><input type="radio" name="question9" value="The most important problem I have" data-score="83.2"> The most important problem I have</label><br>
+                <label><input type="radio" name="question9" value="Causes me quite a lot of problems" data-score="82.5"> Causes me quite a lot of problems</label><br>
+                <label><input type="radio" name="question9" value="Causes me a few problems" data-score="34.6"> Causes me a few problems</label><br>
+                <label><input type="radio" name="question9" value="Causes no problem" data-score="0.0"> Causes no problem</label><br>
+                <button type="button" onclick="nextQuestion('question9', 'question10')">Next</button>
+            </div>
+            <div id="question10" class="question">
+                <p>Part 2, Question 2: If you have ever had paid employment:</p>
+                <label><input type="radio" name="question10" value="My chest trouble made me stop work altogether" data-score="88.9"> My chest trouble made me stop work altogether</label><br>
+                <label><input type="radio" name="question10" value="My chest trouble interferes with my work or made me change my work" data-score="77.6"> My chest trouble interferes with my work or made me change my work</label><br>
+                <label><input type="radio" name="question10" value="My chest trouble does not affect my work" data-score="0.0"> My chest trouble does not affect my work</label><br>
+                <label><input type="radio" name="question10" value="I have never had paid employment" data-score="0.0"> I have never had paid employment</label><br>
+                <button type="button" onclick="nextQuestion('question10', 'question11')">Next</button>
+            </div>
+            <div id="question11" class="question">
+                <p>Part 2, Question 3: Select all the activities that usually make you feel breathless <b>THESE DAYS</b>:</p>
+                <label><input type="checkbox" name="question11" value="Sitting or lying still" data-score="90.6"> Sitting or lying still</label><br>
+                <label><input type="checkbox" name="question11" value="Getting washed or dressed" data-score="82.8"> Getting washed or dressed</label><br>
+                <label><input type="checkbox" name="question11" value="Walking around the home" data-score="80.2"> Walking around the home</label><br>
+                <label><input type="checkbox" name="question11" value="Walking outside on non-sloped level ground" data-score="81.4"> Walking outside on non-sloped level ground</label><br>
+                <label><input type="checkbox" name="question11" value="Walking up a flight of stairs" data-score="76.1"> Walking up a flight of stairs</label><br>
+                <label><input type="checkbox" name="question11" value="Walking up hills" data-score="75.1"> Walking up hills</label><br>
+                <label><input type="checkbox" name="question11" value="Playing sports or games" data-score="72.1"> Playing sports or games</label><br>
+                <label><input type="checkbox" name="question11" value="None of these activities make me feel breathless" data-score="0.0"> None of these activities make me feel breathless</label><br>
+                <button type="button" onclick="nextQuestion('question11', 'question12')">Next</button>
+            </div>
+            <div id="question12" class="question">
+                <p>Part 2, Question 4: Select all the statements that apply in relation to your cough and breathlessness <b>THESE DAYS</b>:</p>
+                <label><input type="checkbox" name="question12" value="My cough hurts" data-score="81.1"> My cough hurts</label><br>
+                <label><input type="checkbox" name="question12" value="My cough makes me tired" data-score="79.1"> My cough makes me tired</label><br>
+                <label><input type="checkbox" name="question12" value="I am breathless when I talk" data-score="84.5"> I am breathless when I talk</label><br>
+                <label><input type="checkbox" name="question12" value="I am breathless when I bend over" data-score="76.8"> I am breathless when I bend over</label><br>
+                <label><input type="checkbox" name="question12" value="My cough or breathing disturbs my sleep" data-score="87.9"> My cough or breathing disturbs my sleep</label><br>
+                <label><input type="checkbox" name="question12" value="I get exhausted easily" data-score="84.0"> I get exhausted easily</label><br>
+                <label><input type="checkbox" name="question12" value="None of these statements apply to me" data-score="0.0"> None of these statements apply to me</label><br>
+                <button type="button" onclick="nextQuestion('question12', 'question13')">Next</button>
+            </div>
+            <div id="question13" class="question">
+                <p>Part 2, Question 5: Select all the statements that apply in relation to other effects your chest trouble may have on you <b>THESE DAYS</b>:</p>
+                <label><input type="checkbox" name="question13" value="My cough or breathing is embarrassing in public" data-score="74.1"> My cough or breathing is embarrassing in public</label><br>
+                <label><input type="checkbox" name="question13" value="My chest trouble is a nuisance to my family, friends, or neighbours" data-score="79.1"> My chest trouble is a nuisance to my family, friends, or neighbours</label><br>
+                <label><input type="checkbox" name="question13" value="I get afraid or panic when I cannot get my breath" data-score="87.7"> I get afraid or panic when I cannot get my breath</label><br>
+                <label><input type="checkbox" name="question13" value="I feel that I am not in control of my chest problem" data-score="90.1"> I feel that I am not in control of my chest problem</label><br>
+                <label><input type="checkbox" name="question13" value="I do not expect my chest to get any better" data-score="82.3"> I do not expect my chest to get any better</label><br>
+                <label><input type="checkbox" name="question13" value="I have become frail or an invalid because of my chest" data-score="89.9"> I have become frail or an invalid because of my chest</label><br>
+                <label><input type="checkbox" name="question13" value="Exercise is not safe for me" data-score="75.7"> Exercise is not safe for me</label><br>
+                <label><input type="checkbox" name="question13" value="Everything seems too much of an effort" data-score="84.5"> Everything seems too much of an effort</label><br>
+                <label><input type="checkbox" name="question13" value="None of these statements apply to me" data-score="0.0"> None of these statements apply to me</label><br>
+                <button type="button" onclick="nextQuestion('question13', 'question14.1')">Next</button>
+            </div>
+            <div id="question14.1" class="question">
+                <p>Part 2, Question 6.1: Are you taking any respiratory system-related medication?</p>
+                <label><input type="radio" name="question14.1" value="Yes" data-score="0.0"> Yes</label><br>
+                <label><input type="radio" name="question14.1" value="No" data-score="0.0"> No</label><br>
+                <button type="button" onclick="nextQuestion('question14.1', 'question14.2')">Next</button>
+            </div>
+            <div id="question14.2" class="question">
+                <p>Part 2, Question 6.2: Select all the statements that apply in relation to any respiratory system-related medication you are taking:</p>
+                <label><input type="checkbox" name="question14.2" value="My medication does not help me very much" data-score="88.2"> My medication does not help me very much</label><br>
+                <label><input type="checkbox" name="question14.2" value="I get embarrassed using my medication in public" data-score="53.9"> I get embarrassed using my medication in public</label><br>
+                <label><input type="checkbox" name="question14.2" value="I have unpleasant side effects from my medication" data-score="81.1"> I have unpleasant side effects from my medication</label><br>
+                <label><input type="checkbox" name="question14.2" value="My medication interferes with my life a lot" data-score="70.3"> My medication interferes with my life a lot</label><br>
+                <label><input type="checkbox" name="question14.2" value="None of these statements apply to me" data-score="0.0"> None of these statements apply to me</label><br>
+                <button type="button" onclick="nextQuestion('question14.2', 'question15')">Next</button>
+            </div>
+            <div id="question15" class="question">
+                <p>Part 2, Question 7: Select all the statements that apply in relation to how your activities might be affected by your breathing:</p>
+                <label><input type="checkbox" name="question15" value="I take a long time to get washed or dressed" data-score="74.2"> I take a long time to get washed or dressed</label><br>
+                <label><input type="checkbox" name="question15" value="I cannot take a bath or shower, or I take a long time" data-score="81.0"> I cannot take a bath or shower, or I take a long time</label><br>
+                <label><input type="checkbox" name="question15" value="I walk slower than other people, or I stop for rests" data-score="71.7"> I walk slower than other people, or I stop for rests</label><br>
+                <label><input type="checkbox" name="question15" value="Jobs such as housework take a long time, or I have to stop for rests" data-score="70.6"> Jobs such as housework take a long time, or I have to stop for rests</label><br>
+                <label><input type="checkbox" name="question15" value="If I walk up one flight of stairs, I have to go slowly or stop" data-score="71.6"> If I walk up one flight of stairs, I have to go slowly or stop</label><br>
+                <label><input type="checkbox" name="question15" value="If I hurry or walk fast, I have to stop or slow down " data-score="72.3"> If I hurry or walk fast, I have to stop or slow down </label><br>
+                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as walk up hills, carrying things up stairs, light gardening such as weeding, dance, play bowls or play golf " data-score="74.5"> My breathing makes it difficult to do things such as walk up hills, carrying things up stairs, light gardening such as weeding, dance, play bowls or play golf </label><br>
+                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk at 5 miles per hour, play tennis or swim " data-score="71.4"> My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk at 5 miles per hour, play tennis or swim </label><br>
+                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as very heavy manual work, run, cycle, swim fast or play competitive sports " data-score="63.5"> My breathing makes it difficult to do things such as very heavy manual work, run, cycle, swim fast or play competitive sports </label><br>
+                <label><input type="checkbox" name="question15" value="None of these statements apply to me" data-score="0.0"> None of these statements apply to me</label><br>
+                <button type="button" onclick="nextQuestion('question15', 'question16')">Next</button>
+            </div>
+            <div id="question16" class="question">
+                <p>Part 2, Question 8: Select all the statements that apply in relation to how your chest <b>USUALLY</b> affects your daily life:</p>
+                <label><input type="checkbox" name="question16" value="I cannot play sports or games" data-score="64.8"> I cannot play sports or games</label><br>
+                <label><input type="checkbox" name="question16" value="I cannot go out for entertainment or recreation" data-score="79.8"> I cannot go out for entertainment or recreation</label><br>
+                <label><input type="checkbox" name="question16" value="I cannot go out of the house to do the shopping" data-score="81.0"> I cannot go out of the house to do the shopping</label><br>
+                <label><input type="checkbox" name="question16" value="I cannot do housework" data-score="79.1"> I cannot do housework</label><br>
+                <label><input type="checkbox" name="question16" value="I cannot move far from my bed or chair" data-score="94.0"> I cannot move far from my bed or chair</label><br>
+                <label><input type="checkbox" name="question16" value="None of these statements apply to me" data-score="0.0"> None of these statements apply to me</label><br>
+                <button type="button" onclick="nextQuestion('question16', 'question17')">Next</button>
+            </div>
+            <div id="question17" class="question">
+                <p>Part 3, Question 1: Please select the statement that most accurately describes how your chest affects you:</p>
+                <label><input type="radio" name="question17" value="It does not stop me doing anything I would like to do" data-score="0.0"> It does not stop me doing anything I would like to do</label><br>
+                <label><input type="radio" name="question17" value="It stops me doing one or two things I would like to do" data-score="42.0"> It stops me doing one or two things I would like to do</label><br>
+                <label><input type="radio" name="question17" value="It stops me doing most of the things I would like to do" data-score="84.2"> It stops me doing most of the things I would like to do</label><br>
+                <label><input type="radio" name="question17" value="It stops me doing everything I would like to do" data-score="96.7"> It stops me doing everything I would like to do</label><br>
+                <button type="button" onclick="submitQuiz()">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('start-quiz').addEventListener('click', function() {
+            document.getElementById('quiz-overlay').style.display = 'block';
+            document.getElementById('quiz-popup').style.display = 'block';
+            showQuestion('question0');
+        });
+    
+        function showQuestion(questionId) {
+            const allQuestions = document.querySelectorAll('.question');
+            allQuestions.forEach(q => q.classList.remove('active'));
+            document.getElementById(questionId).classList.add('active');
+        }
+    
+        function nextQuestion(currentQuestionId, nextQuestionId) {
+            const currentQuestion = document.getElementById(currentQuestionId);
+            const inputs = currentQuestion.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+            let answered = false;
+            let questionAnswers;
+    
+            inputs.forEach(input => {
+                if (input.checked) {
+                    answered = true;
+                    questionAnswers = input.value;
+                }
+            });
+    
+            if (!answered) {
+                alert('Please select an answer before proceeding.');
+                return;
+            }
+    
+            // Check if the current question is question 5 and the answer is "No attacks".
+            if (currentQuestionId === 'question5' && questionAnswers === 'No attacks') {
+                nextQuestionId = 'question7'; // Skip to question 7.
+            }
+    
+            // Check if the current question is question 14.1 and the answer is "No".
+            if (currentQuestionId === 'question14.1' && questionAnswers === 'No') {
+                nextQuestionId = 'question14.2'; // Skip to question 14.2.
+            }
+    
+            showQuestion(nextQuestionId);
+        }
+    
+        function calculateSymptomsComponent() {
+            let totalSelectedScores = 0;
+            let totalPossibleScores = 0;
+            
+            // Loop through questions 1 to 8 (ignoring question0)
+            for (let i = 1; i <= 8; i++) {
+                const questionId = 'question' + i;
+                const question = document.getElementById(questionId);
+                const inputs = question.querySelectorAll('input[type="radio"]');
+                
+                inputs.forEach(input => {
+                    const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
+                    totalPossibleScores += score;  // Sum all possible scores
+                    
+                    if (input.checked) {
+                        totalSelectedScores += score;  // Sum selected scores
+                    }
+                });
+            }
+    
+            if (totalPossibleScores === 0) {
+                console.error('Total possible scores cannot be zero.');
+                return;
+            }
+            
+            const symptomsComponent = (totalSelectedScores * 100) / totalPossibleScores;
+            return symptomsComponent;
+        }
+    
+        function calculateActivityComponent() {
+            let totalSelectedScores = 0;
+            let totalPossibleScores = 0;
+            
+            // Questions 11 and 15
+            const activityQuestions = [11, 15];
+            
+            activityQuestions.forEach(i => {
+                const questionId = 'question' + i;
+                const question = document.getElementById(questionId);
+                const inputs = question.querySelectorAll('input[type="checkbox"]');
+                
+                inputs.forEach(input => {
+                    const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
+                    totalPossibleScores += score;  // Sum all possible scores
+                    
+                    if (input.checked) {
+                        totalSelectedScores += score;  // Sum selected scores
+                    }
+                });
+            });
+    
+            if (totalPossibleScores === 0) {
+                console.error('Total possible scores cannot be zero.');
+                return;
+            }
+            
+            const activityComponent = (totalSelectedScores * 100) / totalPossibleScores;
+            return activityComponent;
+        }
+    
+        function calculateImpactsComponent() {
+            let totalSelectedScores = 0;
+            let totalPossibleScores = 0;
+            
+            // Questions 9, 10, 12, 13, 14.2, 16, 17
+            const impactsQuestions = [9, 10, 12, 13, '14.2', 16, 17];
+            
+            impactsQuestions.forEach(i => {
+                const questionId = 'question' + i;
+                const question = document.getElementById(questionId);
+                let inputs;
+    
+                if (i === 12, 13, '14.2', 16) {
+                    inputs = question.querySelectorAll('input[type="checkbox"]');
+                } else {
+                    inputs = question.querySelectorAll('input[type="radio"]');
+                }
+    
+                inputs.forEach(input => {
+                    const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
+                    totalPossibleScores += score;  // Sum all possible scores
+                    
+                    if (input.checked) {
+                        totalSelectedScores += score;  // Sum selected scores
+                    }
+                });
+            });
+    
+            if (totalPossibleScores === 0) {
+                console.error('Total possible scores cannot be zero.');
+                return;
+            }
+            
+            const impactsComponent = (totalSelectedScores * 100) / totalPossibleScores;
+            return impactsComponent;
+        }
+    
+        function submitQuiz() {
+            const allQuestions = document.querySelectorAll('.question');
+            let totalScore = 0;
+            let totalPossibleScores = 0;
+    
+            allQuestions.forEach(question => {
+                const inputs = question.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                inputs.forEach(input => {
+                    totalScore += parseFloat(input.getAttribute('data-score'));
+                    totalPossibleScores += parseFloat(input.getAttribute('data-score')); // Sum all possible scores
+                });
+            });
+    
+            if (totalPossibleScores === 0) {
+                console.error('Total possible scores cannot be zero.');
+                return;
+            }
+    
+            console.log('Total Raw Score: ' + totalScore);
+    
+            const totalComponent = (totalScore * 100) / totalPossibleScores;
+            console.log('Total Score:', totalComponent);
+    
+            document.getElementById('quiz-overlay').style.display = 'none';
+            document.getElementById('quiz-popup').style.display = 'none';
+    
+            const symptomsComponent = calculateSymptomsComponent();
+            console.log('Symptoms Component:', symptomsComponent);
+    
+            const activityComponent = calculateActivityComponent();
+            console.log('Activity Component:', activityComponent);
+    
+            const impactsComponent = calculateImpactsComponent();
+            console.log('Impacts Component:', impactsComponent);
+        }
+    </script>
+</body>
+</html>
