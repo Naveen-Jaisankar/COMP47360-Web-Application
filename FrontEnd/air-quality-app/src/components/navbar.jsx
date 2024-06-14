@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
 import AirIcon from '@mui/icons-material/Air';
+import NavbarButton from "./navbarbutton";
 
 const Navbar = () => {
   return (
@@ -17,15 +18,20 @@ const Navbar = () => {
         <Toolbar sx= {{display: 'flex'}}>
             <IconButton edge="start" color='inherit' aria-label="logo" 
             sx=
-            {{ display: 'flex',
+            {{ 
                 alignItems: 'center',
             }}>
                 <AirIcon/>
             </IconButton>
-            <Typography variant='h3' component='div'>Fair</Typography>
+            <Typography variant='h3' component='div' 
+            sx=
+            {{flexGrow: 1,
+               display: {xs:'none',md: 'flex'}  
+            }}>Fair</Typography>
             <Box>
+                <NavbarButton to="/map">Map</NavbarButton>
                 <Link to="/">Home</Link>
-                <Link to="/map">Map</Link>
+                {/* <Link to="/map">Map</Link> */}
                 <Link to="/settings">Settings</Link>
                 <Link to="/form">form</Link>
             </Box>
