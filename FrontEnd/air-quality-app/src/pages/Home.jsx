@@ -19,11 +19,9 @@ const Home = () => {
 
       {/* Introduction Section */}
       <section>
+        <header>
         <Box
           sx={{
-            // backgroundImage: `url(${banner})`,
-            // backgroundSize: "cover",
-            // backgroundPosition: "center",
             backgroundColor: '#2E6095',
             height: { xs: 400, md: 600, lg: 800},
             display: "flex",
@@ -54,6 +52,7 @@ const Home = () => {
             </Typography>
           </Box>
         </Box>
+        </header>
       </section>
 
       {/* Tutorial section */}
@@ -61,7 +60,8 @@ const Home = () => {
         <Box>
           <Grid container spacing= {2} sx= {{
             marginLeft: 20, 
-            marginRight: 20}}>
+            marginRight: 20}}
+            >
             <Grid item xs={12} sm={12} md={7}>
               <Box>
               <Typography> 1 </Typography>
