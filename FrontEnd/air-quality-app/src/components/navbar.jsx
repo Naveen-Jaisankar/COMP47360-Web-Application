@@ -29,11 +29,10 @@ const Navbar = () => {
                display: {xs:'none',md: 'flex'}  
             }}>Fair</Typography>
             <Box>
+                <NavbarButton to="/">Home</NavbarButton>
                 <NavbarButton to="/map">Map</NavbarButton>
-                <Link to="/">Home</Link>
-                {/* <Link to="/map">Map</Link> */}
-                <Link to="/settings">Settings</Link>
-                <Link to="/form">form</Link>
+                <NavbarButton to="/settings">Settings</NavbarButton>
+                <NavbarButton to="/form">Form</NavbarButton>
             </Box>
 
         </Toolbar>

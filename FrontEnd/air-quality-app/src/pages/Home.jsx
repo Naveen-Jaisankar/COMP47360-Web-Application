@@ -42,7 +42,7 @@ const Home = () => {
               fontWeight: 700,
               color: 'white'
               }}>
-              "Some cool slogan"
+              "Quote that captures app spirit"
             </Typography>
             <Typography variant="h4" component="p" sx={{
               color: 'white',
