@@ -1,6 +1,7 @@
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box, Grid } from "@mui/material";
 import { Helmet } from "react-helmet";
 import Infocard from "../components/infocard";
+
 
 const image1 =
   "../src/static/proxy-image.png";
@@ -20,26 +21,35 @@ const Home = () => {
       <section>
         <Box
           sx={{
-            backgroundImage: `url(${banner})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            height: { xs: 400, md: 600 },
+            // backgroundImage: `url(${banner})`,
+            // backgroundSize: "cover",
+            // backgroundPosition: "center",
+            backgroundColor: '#2E6095',
+            height: { xs: 400, md: 600, lg: 800},
             display: "flex",
             alignItems: "center"
           }}
         >
           <Box
             sx={{
-              bgcolor: "white",
               display: "flex",
               flexDirection: "column",
               marginLeft: "4rem"
             }}
           >
-            <Typography variant="h1" component="h1" sx={{ fontSize: "4rem" }}>
-              "Air Quality today"
+            <Typography variant="h1" component="h1" 
+            sx={{
+              fontFamily:'Roboto flex, Roboto, sans-serif',
+              fontSize: "4rem",
+              fontWeight: 700,
+              color: 'white'
+              }}>
+              "Some cool slogan"
             </Typography>
-            <Typography variant="body1" component="p">
+            <Typography variant="h4" component="p" sx={{
+              color: 'white',
+              marginTop: 3
+            }}>
               Air quality is the problem of the decade, facing thousands of people. Get started with us 
             </Typography>
           </Box>
@@ -47,7 +57,26 @@ const Home = () => {
       </section>
 
       {/* Tutorial section */}
-      <section></section>
+      <section>
+        <Box>
+          <Grid container spacing= {2} sx= {{
+            marginLeft: 20, 
+            marginRight: 20}}>
+            <Grid item xs={12} sm={12} md={7}>
+              <Box>
+              <Typography> 1 </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={12} md={5}>
+            <Box>
+              <Typography> 2 </Typography>
+            </Box>
+            </Grid>
+            
+          </Grid>
+        </Box>
+
+      </section>
 
       {/* Info-card Section */}
       <section>
