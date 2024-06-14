@@ -6,9 +6,18 @@ export default function NavbarButton ({to, children, ...props}) {
     return (
         <Button component={Link} to={to} sx={{
             margin: 2,
-            display: "relative",
-            '&:hover': {
+            position: "relative",
+            '&:after': {
+                content: '""',
+                position: "absolute",
+                left: 0,
+                bottom: 0,
+                width: "100%",
+                height: "2px",
+                background: "currentColor",
+
                 backgroundColor: "white",
+                transform: 'scaleX(0.5)'
             },
 
             
