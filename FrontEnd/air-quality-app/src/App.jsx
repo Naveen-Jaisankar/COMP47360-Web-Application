@@ -21,7 +21,7 @@ function App() {
           <Route path="/form" element={<Form />} />
         </Routes>
       </div>
-      <Footer/>
+      {/* <Footer/> */}
     </BrowserRouter>
   );
 }

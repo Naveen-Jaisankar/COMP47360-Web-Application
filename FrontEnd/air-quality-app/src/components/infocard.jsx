@@ -4,13 +4,13 @@ import {Typography, Card, CardContent, CardMedia} from '@mui/material';
 const Infocard = ({image, alt, heading, text})=>{
     return (
         <>
-        <Card style={{maxWidth:'100rem', textAlign: 'center'}}>
+        <Card style={{maxWidth:'30rem', textAlign: 'center'}}>
             {image && (
                 <CardMedia
                 component="img"
                 image={image}
                 alt={alt}
-                style={{ maxWidth: '50rem', margin: "auto", paddingTop: "1rem"}}
+                style={{ maxWidth: '10rem', margin: "auto", paddingTop: "1rem"}}
                 />
             )}
             <CardContent>

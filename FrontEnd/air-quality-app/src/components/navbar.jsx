@@ -33,6 +33,7 @@ const Navbar = () => {
                 <NavbarButton to="/map">Map</NavbarButton>
                 <NavbarButton to="/settings">Settings</NavbarButton>
                 <NavbarButton to="/form">Form</NavbarButton>
+                <NavbarButton to="/loginregister">Login/Register</NavbarButton>
             </Box>
 
         </Toolbar>

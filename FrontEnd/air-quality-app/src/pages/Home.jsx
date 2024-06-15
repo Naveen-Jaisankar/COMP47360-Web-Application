@@ -23,7 +23,7 @@ const Home = () => {
         <Box
           sx={{
             backgroundColor: '#2E6095',
-            height: { xs: 400, md: 600, lg: 800},
+            height: { xs: 500, md: 700, lg: 900},
             display: "flex",
             alignItems: "center"
           }}
@@ -54,28 +54,53 @@ const Home = () => {
         </Box>
         </header>
       </section>
-
+    
+    <Box sx={{
+      backgroundColor: "#F7F7F2",
+      height: '150vh'
+    }}>
       {/* Tutorial section */}
       <section>
         <Box>
-          <Grid container spacing= {2} sx= {{
-            marginLeft: 20, 
-            marginRight: 20}}
+          <Grid container spacing= {1} sx= {{
+            paddingLeft: 10,
+           }}
             >
-            <Grid item xs={12} sm={12} md={7}>
+            <Grid item xs={12} sm={12} md={8}>
               <Box>
-              <Typography> 1 </Typography>
+                <Box sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  height: "80vh",
+                  width: "90%",
+                  backgroundColor: 'white',
+                  marginTop: -8,
+                  borderRadius: 5,
+                  border: "2px solid black",
+                }}>
+                  <Typography variant="h3" component="h2" sx={{
+                    margin: 2,
+                    display: "flex"
+                  }}>How to Get Started</Typography>
+                </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={12} md={5}>
+            <Grid item xs={12} sm={12} md={4}>
             <Box>
-              <Typography> 2 </Typography>
+            <Box sx={{
+                  marginLeft: -5,
+                  marginTop: 3,
+                  height: "70vh",
+                  width: "90%",
+                  backgroundColor: 'blue',
+                }}></Box>
             </Box>
             </Grid>
             
           </Grid>
         </Box>
-
+      
+      
       </section>
 
       {/* Info-card Section */}
@@ -128,7 +153,7 @@ const Home = () => {
           </Box>
         </Container>
       </section>
-
+      </Box>
       
     </>
   );
