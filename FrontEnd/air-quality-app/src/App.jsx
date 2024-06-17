@@ -9,7 +9,9 @@ import Map from './pages/Map'
 import Form from './pages/Form'
 import Settings from './pages/Settings'
 import { SettingsContext } from './context/SettingsContext';
-
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Starting from './pages/GettingStarted';
 
 function App() {
 
@@ -25,6 +27,9 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/form" element={<Form />} />
+          <Route path="/login" element = {<Login/>}></Route>
+          <Route path="/register" element={ <Register/>}></Route>
+          <Route path="/gettingstarted" element={<Starting />}></Route>
         </Routes>
       </div>
       {/* <Footer/> */}
