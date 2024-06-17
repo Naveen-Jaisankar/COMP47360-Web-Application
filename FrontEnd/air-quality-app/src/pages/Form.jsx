@@ -221,21 +221,33 @@ const questions = [
 function Question({ question, currentQuestion, onChange, onNext }) {
     const { id, text, options } = question;
 
+    const handleOptionChange = (e, score) => {
+        onChange(id, e.target.value, score);
+    };
+
+    let maxScore = 0;
+
     return (
         <div className={`question ${currentQuestion === id ? 'active' : ''}`}>
             <p>{text}</p>
-            {options.map((option, index) => (
-                <label key={index}>
-                    <input
-                        type="radio"
-                        name={id}
-                        value={option.value}
-                        data-score={option.score}
-                        onChange={(e) => onChange(id, e.target.value, option.score)}
-                    />
-                    {option.value}
-                </label>
-            ))}
+            {options.map((option, index) => {
+                const score = parseFloat(option.score);
+                if (!isNaN(score) && option.type === 'radio') {
+                    maxScore = Math.max(maxScore, score);
+                }
+                return (
+                    <label key={index}>
+                        <input
+                            type={option.type}
+                            name={id}
+                            value={option.value}
+                            data-score={option.score}
+                            onChange={(e) => handleOptionChange(e, option.score)}
+                        />
+                        {option.value}
+                    </label>
+                );
+            })}
             <br />
             <button type="button" onClick={onNext}>
                 Next
@@ -245,7 +257,7 @@ function Question({ question, currentQuestion, onChange, onNext }) {
 }
 
 function Quiz() {
-    const [currentQuestion, setCurrentQuestion] = useState('question0');
+    const [currentQuestion, setCurrentQuestion] = useState(0); // Use index instead of string for currentQuestion
     const [answers, setAnswers] = useState({});
     const [showQuiz, setShowQuiz] = useState(false);
 
@@ -257,10 +269,20 @@ function Quiz() {
     };
 
     const handleNextQuestion = () => {
-        const currentIndex = questions.findIndex((q) => q.id === currentQuestion);
-        const nextIndex = currentIndex + 1;
+        const currentQuestionObj = questions[currentQuestion];
+        const answer = answers[currentQuestionObj.id];
+        let nextIndex = currentQuestion + 1;
+
+        if (currentQuestionObj.id === 'question5' && answer.answer === 'No attacks') {
+            nextIndex = questions.findIndex(q => q.id === 'question7');
+        }
+
+        if (currentQuestionObj.id === 'question14.1' && answer.answer === 'No') {
+            nextIndex = questions.findIndex(q => q.id === 'question15');
+        }
+
         if (nextIndex < questions.length) {
-            setCurrentQuestion(questions[nextIndex].id);
+            setCurrentQuestion(nextIndex);
         } else {
             handleSubmit();
         }
@@ -299,14 +321,13 @@ function Quiz() {
         let totalPossibleScores = 0;
         let totalSelectedScores = 0;
 
-        for (let i = 1; i <= 8; i++) {
-            const questionId = 'question' + i;
-            const answer = answers[questionId];
+        questions.slice(0, 8).forEach((question) => {
+            const answer = answers[question.id];
             if (answer) {
                 totalPossibleScores += parseFloat(answer.score);
                 totalSelectedScores += parseFloat(answer.score);
             }
-        }
+        });
 
         return (totalSelectedScores * 100) / totalPossibleScores;
     };
@@ -315,9 +336,8 @@ function Quiz() {
         let totalPossibleScores = 0;
         let totalSelectedScores = 0;
 
-        [11, 15].forEach((i) => {
-            const questionId = 'question' + i;
-            const answer = answers[questionId];
+        [11, 15].forEach((questionId) => {
+            const answer = answers[`question${questionId}`];
             if (answer) {
                 totalPossibleScores += parseFloat(answer.score);
                 totalSelectedScores += parseFloat(answer.score);
@@ -331,9 +351,8 @@ function Quiz() {
         let totalPossibleScores = 0;
         let totalSelectedScores = 0;
 
-        [9, 10, 12, 13, '14.2', 16, 17].forEach((i) => {
-            const questionId = 'question' + i;
-            const answer = answers[questionId];
+        [9, 10, 12, 13, '14.2', 16, 17].forEach((questionId) => {
+            const answer = answers[`question${questionId}`];
             if (answer) {
                 totalPossibleScores += parseFloat(answer.score);
                 totalSelectedScores += parseFloat(answer.score);
@@ -352,9 +371,9 @@ function Quiz() {
                     <div id="quiz-popup">
                         <h2>Quiz</h2>
                         <form id="quiz-form">
-                            {questions.map((question) => (
+                            {questions.map((question, index) => (
                                 <Question
-                                    key={question.id}
+                                    key={index}
                                     question={question}
                                     currentQuestion={currentQuestion}
                                     onChange={handleAnswerChange}
