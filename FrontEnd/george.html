@@ -194,10 +194,10 @@
                 <label><input type="checkbox" name="question15" value="I walk slower than other people, or I stop for rests" data-score="71.7"> I walk slower than other people, or I stop for rests</label><br>
                 <label><input type="checkbox" name="question15" value="Jobs such as housework take a long time, or I have to stop for rests" data-score="70.6"> Jobs such as housework take a long time, or I have to stop for rests</label><br>
                 <label><input type="checkbox" name="question15" value="If I walk up one flight of stairs, I have to go slowly or stop" data-score="71.6"> If I walk up one flight of stairs, I have to go slowly or stop</label><br>
-                <label><input type="checkbox" name="question15" value="If I hurry or walk fast, I have to stop or slow down " data-score="72.3"> If I hurry or walk fast, I have to stop or slow down </label><br>
-                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as walk up hills, carrying things up stairs, light gardening such as weeding, dance, play bowls or play golf " data-score="74.5"> My breathing makes it difficult to do things such as walk up hills, carrying things up stairs, light gardening such as weeding, dance, play bowls or play golf </label><br>
-                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk at 5 miles per hour, play tennis or swim " data-score="71.4"> My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk at 5 miles per hour, play tennis or swim </label><br>
-                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as very heavy manual work, run, cycle, swim fast or play competitive sports " data-score="63.5"> My breathing makes it difficult to do things such as very heavy manual work, run, cycle, swim fast or play competitive sports </label><br>
+                <label><input type="checkbox" name="question15" value="If I hurry or walk fast, I have to stop or slow down" data-score="72.3"> If I hurry or walk fast, I have to stop or slow down </label><br>
+                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as walk up hills, carrying things up stairs, light gardening such as weeding, dance, play bowls or play golf" data-score="74.5"> My breathing makes it difficult to do things such as walk up hills, carrying things up stairs, light gardening such as weeding, dance, play bowls or play golf </label><br>
+                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk at 5 miles per hour, play tennis or swim" data-score="71.4"> My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk at 5 miles per hour, play tennis or swim </label><br>
+                <label><input type="checkbox" name="question15" value="My breathing makes it difficult to do things such as very heavy manual work, run, cycle, swim fast or play competitive sports" data-score="63.5"> My breathing makes it difficult to do things such as very heavy manual work, run, cycle, swim fast or play competitive sports </label><br>
                 <label><input type="checkbox" name="question15" value="None of these statements apply to me" data-score="0.0"> None of these statements apply to me</label><br>
                 <button type="button" onclick="nextQuestion('question15', 'question16')">Next</button>
             </div>
@@ -264,6 +264,66 @@
             }
     
             showQuestion(nextQuestionId);
+        }
+
+        function calculateTotalWeightedComponent() {
+            let totalPossibleScores = 0;
+            let totalSelectedScores = 0;
+            
+            // Loop through questions 1 to 17 (ignoring question0)
+            for (let i = 1; i <= 17; i++) {
+                let questionId;
+                if (i === 14) {
+                    // Handle sub-questions for question 14
+                    questionId = 'question14'; // Assuming 'question14' is the parent ID
+                    const subQuestionIds = ['question14.1', 'question14.2']; // IDs of sub-questions
+                    subQuestionIds.forEach(subId => {
+                        const question = document.getElementById(subId);
+                        if (!question) {
+                            console.warn(`Element with ID ${subId} not found.`);
+                            return; // Skip this sub-question if element is not found
+                        }
+
+                        const inputs = question.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                        inputs.forEach(input => {
+                            const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
+                            if (!isNaN(score)) {
+                                totalPossibleScores += score;  // Sum all possible scores
+                                if (input.checked) {
+                                    totalSelectedScores += score;  // Sum selected scores
+                                }
+                            }
+                        });
+                    });
+                } else {
+                    // Handle normal questions 1 to 13 and 15 to 17
+                    questionId = 'question' + i;
+                    const question = document.getElementById(questionId);
+                    if (!question) {
+                        console.warn(`Element with ID ${questionId} not found.`);
+                        continue; // Skip to the next iteration if the element is not found
+                    }
+
+                    const inputs = question.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                    inputs.forEach(input => {
+                        const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
+                        if (!isNaN(score)) {
+                            totalPossibleScores += score;  // Sum all possible scores
+                            if (input.checked) {
+                                totalSelectedScores += score;  // Sum selected scores
+                            }
+                        }
+                    });
+                }
+            }
+
+            if (totalPossibleScores === 0) {
+                console.error('Total possible scores cannot be zero.');
+                return;
+            }
+            
+            const totalWeightedComponent = (totalSelectedScores * 100) / totalPossibleScores;
+            return totalWeightedComponent;
         }
     
         function calculateSymptomsComponent() {
@@ -382,9 +442,9 @@
             }
     
             console.log('Total Raw Score: ' + totalScore);
-    
-            const totalComponent = (totalScore * 100) / totalPossibleScores;
-            console.log('Total Score:', totalComponent);
+
+            const totalWeightedComponent = calculateTotalWeightedComponent();
+            console.log('Total Weighted Score:', totalWeightedComponent);
     
             document.getElementById('quiz-overlay').style.display = 'none';
             document.getElementById('quiz-popup').style.display = 'none';
@@ -399,5 +459,5 @@
             console.log('Impacts Component:', impactsComponent);
         }
     </script>
-</body>
-</html>
+    </body>
+    </html>
