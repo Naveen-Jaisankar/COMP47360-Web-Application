@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Component } from 'react';
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css'; 
 import GeneralHealthSection from './GeneralHealth';
 import UserAge from './UserAge';
 
@@ -17,24 +19,19 @@ const Starting = () => {
   };
 
   const next = () => {
-    sliderRef.slickNext();
-  };
-  const previous = () => {
-    sliderRef.slickPrev();
+    sliderRef.current.slickNext();
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
-      <Slider {...settings}>
-          <div>
-            <UserAge nextStep = {next}/>
-          </div>
-          <div>
-            <GeneralHealthSection nextStep={next} />
-          </div>
-        </Slider>
-      </div>
+    <div className="slider-container">
+      <Slider ref={sliderRef} {...settings}>
+        <div>
+          <UserAge nextStep={next} /> 
+        </div>
+        <div>
+          <GeneralHealthSection nextStep={next} />
+        </div>
+      </Slider>
     </div>
   );
 };
