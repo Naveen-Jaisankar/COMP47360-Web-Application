@@ -260,7 +260,7 @@
     
             // Check if the current question is question 14.1 and the answer is "No".
             if (currentQuestionId === 'question14.1' && questionAnswers === 'No') {
-                nextQuestionId = 'question14.2'; // Skip to question 14.2.
+                nextQuestionId = 'question15'; // Skip to question 15.
             }
     
             showQuestion(nextQuestionId);
@@ -270,52 +270,43 @@
             let totalPossibleScores = 0;
             let totalSelectedScores = 0;
             
-            // Loop through questions 1 to 17 (ignoring question0)
-            for (let i = 1; i <= 17; i++) {
-                let questionId;
-                if (i === 14) {
-                    // Handle sub-questions for question 14
-                    questionId = 'question14'; // Assuming 'question14' is the parent ID
-                    const subQuestionIds = ['question14.1', 'question14.2']; // IDs of sub-questions
-                    subQuestionIds.forEach(subId => {
-                        const question = document.getElementById(subId);
-                        if (!question) {
-                            console.warn(`Element with ID ${subId} not found.`);
-                            return; // Skip this sub-question if element is not found
-                        }
+            // List of question IDs
+            const questionIds = [
+                'question1', 'question2', 'question3', 'question4', 'question5', 
+                'question6', 'question7', 'question8', 'question9', 'question10', 
+                'question11', 'question12', 'question13', 'question14.1', 'question14.2',
+                'question15', 'question16', 'question17'
+            ];
 
-                        const inputs = question.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-                        inputs.forEach(input => {
-                            const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
-                            if (!isNaN(score)) {
-                                totalPossibleScores += score;  // Sum all possible scores
-                                if (input.checked) {
-                                    totalSelectedScores += score;  // Sum selected scores
-                                }
-                            }
-                        });
-                    });
-                } else {
-                    // Handle normal questions 1 to 13 and 15 to 17
-                    questionId = 'question' + i;
-                    const question = document.getElementById(questionId);
-                    if (!question) {
-                        console.warn(`Element with ID ${questionId} not found.`);
-                        continue; // Skip to the next iteration if the element is not found
+            questionIds.forEach(questionId => {
+                const question = document.getElementById(questionId);
+                if (!question) {
+                    console.warn(`Element with ID ${questionId} not found.`);
+                    return; // Skip this question if element is not found
+                }
+
+                const inputs = question.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+                let maxScore = 0;
+
+                inputs.forEach(input => {
+                    const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
+                    if (isNaN(score)) return; // Skip if score is not a number
+
+                    if (input.type === 'radio') {
+                        maxScore = Math.max(maxScore, score); // Track the maximum score for radio buttons
+                    } else {
+                        totalPossibleScores += score;  // Sum all possible scores for checkboxes
                     }
 
-                    const inputs = question.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-                    inputs.forEach(input => {
-                        const score = parseFloat(input.getAttribute('data-score')); // Use data-score attribute
-                        if (!isNaN(score)) {
-                            totalPossibleScores += score;  // Sum all possible scores
-                            if (input.checked) {
-                                totalSelectedScores += score;  // Sum selected scores
-                            }
-                        }
-                    });
+                    if (input.checked) {
+                        totalSelectedScores += score;  // Sum selected scores
+                    }
+                });
+
+                if (inputs.length > 0 && inputs[0].type === 'radio') {
+                    totalPossibleScores += maxScore;  // Add the maximum score for radio buttons to the possible scores
                 }
-            }
+            });
 
             if (totalPossibleScores === 0) {
                 console.error('Total possible scores cannot be zero.');
