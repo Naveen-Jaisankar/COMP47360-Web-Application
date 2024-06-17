@@ -5,7 +5,7 @@ import ReactPlayer from "react-player"
 
 const image1 = "../src/static/proxy-image.png";
 const banner = "../src/static/01-03_City_map2v_generated.jpg";
-const videoUrl= "https://www.youtube.com/watch?v=R_FQU4KzN7A"
+const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI"
 const Home = () => {
   return (
     <>
@@ -90,16 +90,6 @@ const Home = () => {
                     borderRadius: 5,
                     border: "2px solid black",
                     padding: 2,
-                    
-                      // display: "flex",
-                      // flexDirection: "column",
-                      // justifyContent: "center",
-                      // height: "80vh",
-                      // width: { xs: "100%", md: "90%" },
-                      // backgroundColor: "white",
-                      // marginTop: { xs: -2, md: -8 },
-                      // borderRadius: 5,
-                      // border: "2px solid black",
                     }}
                   >
                     <Typography
@@ -128,7 +118,7 @@ const Home = () => {
                       marginTop: 3,
                       height: "70vh",
                       width: "90%",
-                      backgroundColor: "blue",
+                      backgroundColor: "black",
                     }}
                   ></Box>
                 </Box>
