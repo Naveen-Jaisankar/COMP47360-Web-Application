@@ -8,8 +8,9 @@ import Map from './pages/Map'
 import Form from './pages/Form'
 import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
+import Privacy from './pages/Privacy'
 import { SettingsContext } from './context/SettingsContext';
-
+import MainContent from './components/maincontent'
 
 function App() {
 
@@ -20,13 +21,16 @@ function App() {
       <Navbar />
       <div className="pages" style={{ fontSize: `${fontSize}px` }}>
       <CssBaseline />
+      <MainContent>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/map" element={<Map />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/form" element={<Form />} />
           <Route path="/user/dailyform" element={< DailyForm/>} />
+          <Route path="/privacy" element={< Privacy/>} />
         </Routes>
+        </MainContent>
       </div>
       {/* <Footer/> */}
     </BrowserRouter>

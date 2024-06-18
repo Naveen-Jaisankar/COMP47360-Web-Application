@@ -10,6 +10,7 @@ const Page = styled('div') ({
 
 const StyledDrawer = styled(Drawer)({
     width: drawerWidth,
+    zIndex: 1,
   });
 
 

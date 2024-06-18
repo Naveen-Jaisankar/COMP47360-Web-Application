@@ -3,17 +3,19 @@ import { Link } from "react-router-dom";
 import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
 import AirIcon from '@mui/icons-material/Air';
 import NavbarButton from "./navbarbutton";
+import navbarHeights from './navbarheights';
 
 const Navbar = () => {
   return (
-    <AppBar position='static' sx={{
+    <AppBar position='fixed' sx={{
         backgroundColor: '#0D1B2A',
         height: {
-            xs:56,
-            sm:64,
-            md:72,
-            lg:80
-        }
+          xs: navbarHeights.xs,
+          sm: navbarHeights.sm,
+          md: navbarHeights.md,
+          lg: navbarHeights.lg
+        },
+        zIndex: (theme) => theme.zIndex.drawer + 1 
     }}>
         <Toolbar sx= {{display: 'flex'}}>
             <IconButton edge="start" color='inherit' aria-label="logo" 
@@ -44,14 +46,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
- {/* <nav>
-      <div className="flex flex-row items-center mx-10 justify-between gap-10 px-2 py-2">
-        <Link to="/">Home</Link>
-        <Link to="/map">Map</Link>
-        <Link to="/settings">Settings</Link>
-        <Link to="/form">form</Link>
-
-        <h3 className="text-center sm:text-left">Login/Register</h3>
-      </div>
-    </nav> */}
