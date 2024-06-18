@@ -1,31 +1,50 @@
 package com.compsci.webapp.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.config.Customizer;
-
 import java.util.Arrays;
 //import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 @Configuration    // configuration class with bean definitions managed by spring
 public class SecurityConfig {
+	
+	@Autowired
+    private JwtAuthenticationFilter authenticationJwtTokenFilter;
+    
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-            .cors(Customizer.withDefaults()) // enables cors with default settings 
-            .authorizeHttpRequests(auth -> auth  // configures authorisation for http request
-                .anyRequest().authenticated() // lambda expression -  any incoming HTTP request must be authenticated
-            )
-            .httpBasic(Customizer.withDefaults()) // enables basic authetication, default settings
-            .build(); // finalises and build default http secuirty
-            // The Customizer interface provides a single method allows you to define default configurations easily
+
+        http
+        .csrf().disable()
+        .authorizeHttpRequests()
+            .requestMatchers("/api/v1/auth/**").permitAll()
+            .requestMatchers("/api/v1/auth/profile/**").permitAll()
+            .requestMatchers("/swagger-ui/**").permitAll()
+            .requestMatchers("/api-docs/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+        .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+        .authenticationProvider(authenticationProvider)
+        .addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
     }
+    
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
