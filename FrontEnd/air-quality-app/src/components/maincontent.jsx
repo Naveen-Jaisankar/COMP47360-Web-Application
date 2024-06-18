@@ -1,6 +1,7 @@
 import {styled} from "@mui/system"
 import  navbarHeights  from "./navbarheights"
 
+
 const MainContent = styled('div')(({theme})=> ({
     background: "#ffffff",
     height: navbarHeights.xs,
@@ -15,5 +16,6 @@ const MainContent = styled('div')(({theme})=> ({
     },
 
 }));
+
 
 export default MainContent;

@@ -1,35 +1,38 @@
-import {styled} from "@mui/system"
-import { Drawer, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles";
+import { Drawer, Typography, Box } from "@mui/material";
+import navbarHeights from "./navbarheights";
 
-const drawerWidth= 220
+export const drawerWidth = 220;
 
-const Page = styled('div') ({
-    background: "#ffffff",
-    width: "100%"
-});
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
+    '& .MuiDrawer-paper': {
+        paddingTop: navbarHeights.xs, // Default padding for XS
+        [theme.breakpoints.up('sm')]: {
+            paddingTop: navbarHeights.sm,
+        },
+        [theme.breakpoints.up('md')]: {
+            paddingTop: navbarHeights.md,
+        },
+        [theme.breakpoints.up('lg')]: {
+            paddingTop: navbarHeights.lg,
+        },
+        width: drawerWidth,
+        zIndex: 0,
+    },
+}));
 
-const StyledDrawer = styled(Drawer)({
-    width: drawerWidth,
-    zIndex: 1,
-  });
-
-
-function UserPlaceholder () {
-
+function UserPlaceholder() {
     return (
-        <>
         <StyledDrawer
-        variant = "permanent"
-        anchor = "left"
+            variant="permanent"
+            anchor="left"
         >
-            <div>
                 <Typography variant="h5">
-                    hello! I'm the user placeholder
+                    First line placeholder
                 </Typography>
-            </div>
+
         </StyledDrawer>
-        </>
-    )
+    );
 }
 
 export default UserPlaceholder;
