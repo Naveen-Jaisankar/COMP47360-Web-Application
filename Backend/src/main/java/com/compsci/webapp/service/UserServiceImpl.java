@@ -150,7 +150,15 @@ public class UserServiceImpl implements UserService {
         emailConfirmationRepository.updateEmailConfirmationConfirmedAt(token, LocalDateTime.now());
 
         userRepository.enableUserEntity(emailConfirmation.getUserId().getUserEmail());
-        return buildAccountConfirmationEmail();
+        String emailcontent="";
+        try {
+        	Template verificationEmailTemplate = freemarkerConfig.getTemplate("confirmation_email.ftl");
+        	Map<String, Object> verificationEmailValueMapper = new HashMap<>();
+        	emailcontent = FreeMarkerTemplateUtils.processTemplateIntoString(verificationEmailTemplate, verificationEmailValueMapper);
+        }catch(Exception e) {
+        	System.out.println("Failed to send verification email");
+        }
+        return emailcontent;
     }
 
 	@Override
@@ -159,6 +167,16 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public String buildAccountConfirmationEmail() {
+		
+		try {
+        	Template verificationEmailTemplate = freemarkerConfig.getTemplate("confirmation_email.ftl");
+        	Map<String, Object> verificationEmailValueMapper = new HashMap<>();
+            emailService.send(
+            		user.getUserEmail(),
+            		FreeMarkerTemplateUtils.processTemplateIntoString(verificationEmailTemplate, verificationEmailValueMapper));
+        }catch(Exception e) {
+        	System.out.println("Failed to send verification email");
+        }
 		return "Confirmed";
 	}
 
