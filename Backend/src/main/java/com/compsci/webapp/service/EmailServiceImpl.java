@@ -12,6 +12,9 @@ package com.compsci.webapp.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+
+import java.io.UnsupportedEncodingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +43,12 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(emailContent, true);
             helper.setTo(emailTo);
             helper.setSubject("Confirm your email");
-            helper.setFrom("nycparkfinderweb@gmail.com");
+            try {
+				helper.setFrom("naveen.jaisankar1999@gmail.com", "Group 12");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             LOGGER.error("failed to send email", e);
