@@ -10,7 +10,9 @@ import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
 import Privacy from './pages/Privacy'
 import { SettingsContext } from './context/SettingsContext';
-import MainContent from './components/maincontent'
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Starting from './pages/GettingStarted';
 
 function App() {
 
@@ -27,8 +29,6 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/form" element={<Form />} />
-          <Route path="/user/dailyform" element={< DailyForm/>} />
-          <Route path="/privacy" element={< Privacy/>} />
         </Routes>
         </MainContent>
       </div>
