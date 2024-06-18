@@ -1,6 +1,8 @@
 package com.compsci.webapp.service;
 
  import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.compsci.webapp.config.JwtService;
 import com.compsci.webapp.entity.EmailConfirmationEntity;
@@ -30,6 +33,9 @@ import com.compsci.webapp.request.UserRegisterRequest;
 import com.compsci.webapp.request.UserSignInRequest;
 import com.compsci.webapp.response.UserRegisterResponse;
 import com.compsci.webapp.response.UserSignInResponse;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -51,6 +57,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	 @Autowired
+	 private Configuration freemarkerConfig;
 
 	@Override
 	public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) {
@@ -79,9 +88,18 @@ public class UserServiceImpl implements UserService {
         emailConfirmationRepository.save(confirmationToken);
         
         String link = "http://localhost:8080/api/v1/auth/confirm?token=" + token;
-        emailService.send(
-        		user.getUserEmail(),
-                buildEmail(user.getUserName(), link));
+        try {
+        	Template verificationEmailTemplate = freemarkerConfig.getTemplate("verification_email.ftl");
+        	Map<String, Object> verificationEmailValueMapper = new HashMap<>();
+            verificationEmailValueMapper.put("name", user.getUsername());
+            verificationEmailValueMapper.put("link", link);
+            emailService.send(
+            		user.getUserEmail(),
+            		FreeMarkerTemplateUtils.processTemplateIntoString(verificationEmailTemplate, verificationEmailValueMapper));
+        }catch(Exception e) {
+        	System.out.println("Failed to send verification email");
+        }
+        
         
         return mapToUserRegisterResponse(user);
 		
@@ -107,10 +125,6 @@ public class UserServiceImpl implements UserService {
 		userSignInResponse.setUserName(user.getUserName());
 		return userSignInResponse;
 	}
-
-	private String buildEmail(String name, String link) {
-        return link;
-    }
 
 	@Override
 	@Transactional
