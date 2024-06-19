@@ -1,21 +1,40 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import React, { useContext } from 'react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import CssBaseline from '@mui/material/CssBaseline';
+import Navbar from './components/navbar';
+import Footer from './components/footer';
+import Home from './pages/Home';
+import Map from './pages/Map'
+import Form from './pages/Form'
+import Settings from './pages/Settings'
+import DailyForm from './pages/DailyForm';
+import Privacy from './pages/Privacy'
+import { SettingsContext } from './context/SettingsContext';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Starting from './pages/GettingStarted';
 
 function App() {
+
+  const {fontSize} = useContext(SettingsContext);
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-4 text-blue-600">
-        Welcome to Your Vite + React App
-      </h1>
-      <p className="mb-4 text-lg text-red-700">
-        This is a simple example of using Tailwind CSS with a Material-UI button.
-      </p>
-      <Button variant="contained" color="primary">
-        Material-UI Button
-      </Button>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <div className="pages" style={{ fontSize: `${fontSize}px` }}>
+      <CssBaseline />
+      <MainContent>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/form" element={<Form />} />
+        </Routes>
+        </MainContent>
+      </div>
+      {/* <Footer/> */}
+    </BrowserRouter>
   );
 }
 
 export default App;
-
