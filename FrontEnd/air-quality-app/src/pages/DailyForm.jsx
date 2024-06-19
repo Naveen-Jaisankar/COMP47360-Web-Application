@@ -1,12 +1,20 @@
 import UserContent from "../components/usercontent"
 import UserPlaceholder from "../components/userplaceholder"
+import { Box, Typography, TextField } from '@mui/material';
+import {SearchIcon} from '@mui/icons-material/Search'
 
 export default function DailyForm () {
     return (
         <>
         <UserPlaceholder />
         <UserContent>
-        <h1>Here is the Daily Form Page!</h1>
+            <Typography>Test!</Typography>
+            <Box sx={{
+                backgroundColor: "black",
+            }}>
+            <Typography>Test!</Typography>
+            </Box>
+        
         </UserContent>
         </>
     )

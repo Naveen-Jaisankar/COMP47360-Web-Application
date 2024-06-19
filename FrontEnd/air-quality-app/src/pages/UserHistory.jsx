@@ -2,6 +2,7 @@ import { Container, Typography, Box, Paper} from "@mui/material"
 import UserContent from "../components/usercontent"
 import UserPlaceholder from "../components/userplaceholder"
 import CustomCalendar from "../components/customcalendar"
+import RiskProfileCard from "../components/riskprofilecard"
 
 export default function UserHistory () {
     return (
@@ -32,7 +33,8 @@ export default function UserHistory () {
             }}>
                 <Typography variant="h3" component='h2' sx={{
                     fontSize: "3rem"
-                }}>Your Risk Profile</Typography>
+                }}>Your Current Risk Profile</Typography>
+                <RiskProfileCard />
 
                
                     

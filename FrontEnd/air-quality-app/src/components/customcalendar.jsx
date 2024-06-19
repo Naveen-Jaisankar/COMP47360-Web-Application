@@ -6,7 +6,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Paper } from '@mui/material';
 
 const CustomCalendar = () => {
-    const [value, setValue] = React.useState(dayjs("2024-06-19"))
 
     return (
         <>

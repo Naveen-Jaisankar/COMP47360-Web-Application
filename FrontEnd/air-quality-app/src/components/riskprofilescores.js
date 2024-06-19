@@ -25,6 +25,13 @@ let riskvalueContentText = {
     "D": "Minimise time spent outside when AQI > 40"
 };
 
+let riskvalueColor = {
+    "A": "#3EACEB",
+    "B": "#AD00FF",
+    "C": "#FF867C",
+    "D": "#FF0000",
+};
+
 function renderGrade(riskvalue) {
     let grade = getGrade(riskvalue);
     let headingText = riskvalueHeadingText[grade];
@@ -36,9 +43,15 @@ function renderGrade(riskvalue) {
     };
 }
 
-export default {
+function renderColor(riskvalue) {
+    let grade = getGrade(riskvalue);
+    return riskvalueColor[grade];
+
+  
+}
+
+export {
     getGrade,
     renderGrade,
-    riskvalueHeadingText,
-    riskvalueContentText
+    renderColor,
 };
