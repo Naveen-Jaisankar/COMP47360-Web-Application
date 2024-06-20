@@ -13,6 +13,7 @@ import { SettingsContext } from './context/SettingsContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Starting from './pages/GettingStarted';
+import MainContent from './components/maincontent';
 
 function App() {
 
