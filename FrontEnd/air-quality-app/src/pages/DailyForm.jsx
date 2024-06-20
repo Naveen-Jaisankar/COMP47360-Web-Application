@@ -4,6 +4,7 @@ import { Box, Container, Typography, TextField } from '@mui/material';
 import {SearchIcon} from '@mui/icons-material/Search'
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
+import { useState } from "react";
 
 export default function DailyForm () {
     return (
@@ -28,11 +29,10 @@ export default function DailyForm () {
             <Typography variant="h4" component='h2' sx={{ marginBottom: "1rem"}}>While indoors, where did you spend most of your time?</Typography>
             <DailySearchbar></DailySearchbar>
 
-            <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
+            <Typography variant="h4" compnent='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
             <CustomNumberInput />
             <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>While outdoors, where did you spend most of your time?</Typography>
             <DailySearchbar></DailySearchbar>
-
 
             <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
             <CustomNumberInput />

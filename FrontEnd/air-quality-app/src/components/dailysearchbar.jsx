@@ -1,9 +1,20 @@
-// https://www.youtube.com/watch?v=jwcJ1CZ1-A4
-// https://www.youtube.com/watch?v=pDPOwmBzBd8&t=108s
-
-import React from "react";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
+import { Box } from "@mui/system";
+import { styled } from "@mui/system";
+
+const StyledInput = styled("input")({
+  width: "100%",
+  padding: "1rem",
+  fontSize: "18px",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+  "&:hover": {
+    borderColor: "#3399FF",
+  },
+});
 
 const DailySearchbar = () => {
   const inputRef = useRef();
@@ -11,7 +22,6 @@ const DailySearchbar = () => {
   let timeoutId;
 
   const handlePlaceChange = () => {
-    
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -25,24 +35,26 @@ const DailySearchbar = () => {
           console.log(place.geometry.location.lng());
         }
       }
-    }, 300); 
+    }, 300);
   };
 
   return (
-    <LoadScript googleMapsApiKey={apikey} libraries={["places"]}>
+    <Box sx={{ margin: "1rem" }}>
+      <LoadScript googleMapsApiKey={apikey} libraries={["places"]}>
       <StandaloneSearchBox
-        onLoad={(ref) => (inputRef.current = ref)}
-        onPlacesChanged={handlePlaceChange}
-      >
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Enter Location"
-          style={{}}
-        />
-      </StandaloneSearchBox>
-    </LoadScript>
+          onLoad={(ref) => (inputRef.current = ref)}
+          onPlacesChanged={handlePlaceChange}
+        >
+          <StyledInput
+            type="text"
+            className="form-control"
+            placeholder="Enter Location"
+          />
+        </StandaloneSearchBox>
+      </LoadScript>
+    </Box>
   );
 };
 
 export default DailySearchbar;
+     
