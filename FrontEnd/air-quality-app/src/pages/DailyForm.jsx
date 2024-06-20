@@ -1,24 +1,48 @@
 import UserContent from "../components/usercontent"
 import UserPlaceholder from "../components/userplaceholder"
-import { Box, Typography, TextField } from '@mui/material';
+import { Box, Container, Typography, TextField } from '@mui/material';
 import {SearchIcon} from '@mui/icons-material/Search'
-import DailySearchbar from "../components/searchbar";
-
+import DailySearchbar from "../components/dailysearchbar";
+import CustomNumberInput from "../components/customnumberinput";
 
 export default function DailyForm () {
     return (
         <>
         <UserPlaceholder />
         <UserContent>
-            <Typography>Test!</Typography>
+
+            <Container sx={{
+                marginTop: "3rem",
+            }}>
+
+            
+            <Typography variant="h1" component='h1'>Your Daily Quiz</Typography>
+
             <Box sx={{
+                backgroundColor: "#F1F3F2",
+                margin: "1rem",
+                padding: "2rem",
+                borderRadius: 5,
             }}>
             
-            <Typography></Typography>
-            
+            <Typography variant="h4" component='h2' sx={{ marginBottom: "1rem"}}>While indoors, where did you spend most of your time?</Typography>
             <DailySearchbar></DailySearchbar>
 
+            <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
+            <CustomNumberInput />
+            <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>While outdoors, where did you spend most of your time?</Typography>
+            <DailySearchbar></DailySearchbar>
+
+
+            <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
+            <CustomNumberInput />
+
+
             </Box>
+
+          
+
+            </Container>
         
         </UserContent>
         </>
