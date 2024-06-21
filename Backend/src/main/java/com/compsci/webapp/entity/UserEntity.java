@@ -6,7 +6,7 @@ package com.compsci.webapp.entity;
  * Author: navee
  *
  * Description:
- * This class handles ...
+ * This class contains the entity class for user_profile table ...
  */
 
 
@@ -34,6 +34,10 @@ import java.util.List;
     })
 public class UserEntity implements UserDetails{
 	 
+	/*
+	 * Please re-generate this UID, if you are making any changes in this class.
+	 * It is used serialization purpose.
+	 */
     private static final long serialVersionUID = 1L;
 
 	@Id

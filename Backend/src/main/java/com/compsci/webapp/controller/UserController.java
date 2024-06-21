@@ -31,6 +31,7 @@ import jakarta.validation.Valid;
          return ResponseEntity.ok(userRegisterResponse);
 
      }
+     
      @GetMapping("/confirm")
      public ResponseEntity<?> confirm(@RequestParam("token") String token) {
          return ResponseEntity.ok(userService.confirmToken(token));

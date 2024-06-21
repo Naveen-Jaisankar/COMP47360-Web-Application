@@ -27,8 +27,10 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    private final static Logger LOGGER = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(EmailServiceImpl.class);
+    private static final String TEAM_EMAIL_ID = "fairquality.nyc@gmail.com";
+    private static final String SENDER_NAME = "F-Air";
 
     @Autowired
     private JavaMailSender mailSender;
@@ -44,9 +46,8 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(emailTo);
             helper.setSubject("Confirm your email");
             try {
-				helper.setFrom("naveen.jaisankar1999@gmail.com", "Group 12");
+				helper.setFrom(TEAM_EMAIL_ID, SENDER_NAME);
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
             mailSender.send(mimeMessage);

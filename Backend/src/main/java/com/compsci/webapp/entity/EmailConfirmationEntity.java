@@ -6,7 +6,7 @@ package com.compsci.webapp.entity;
  * Author: navee
  *
  * Description:
- * This class handles ...
+ * This class holds the entity class for email_confirmation table
  */
 
 

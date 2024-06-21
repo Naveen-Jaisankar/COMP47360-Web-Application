@@ -11,17 +11,19 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
  * Author: navee
  *
  * Description:
- * This class handles ...
+ * This class set up Free Marker as a templating engine and specify where the Freemarkers templates are located
  */
 
 @Configuration
 public class FreeMarkerConfig {
 	
+	private static final String FREE_MARKER_TEMPLATE_DIRECTORY_PATH = "classpath:/templates";
+	
 	@Bean
 	@Primary
     FreeMarkerConfigurationFactoryBean freemarkerConfiguration() {
         FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();
-        bean.setTemplateLoaderPath("classpath:/templates");
+        bean.setTemplateLoaderPath(FREE_MARKER_TEMPLATE_DIRECTORY_PATH);
         return bean;
     }
 }

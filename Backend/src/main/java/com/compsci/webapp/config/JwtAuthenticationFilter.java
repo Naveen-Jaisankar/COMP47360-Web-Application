@@ -6,7 +6,8 @@ package com.compsci.webapp.config;
  * Author: navee
  *
  * Description:
- * This class handles ...
+ * This class is a custom security filter used for JWT Authentication that processes incoming HTTP requests to validate JWT tokens.
+ * This class will validate all incoming HTTP request and ensures that the filter is executed only once.
  */
 
 
@@ -32,6 +33,9 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+	
+	private static final String AUTHORIZATION_HEADER = "Authorization";
+	private static final String BEARER_HEADER = "Bearer ";
 
 	@Autowired
 	private JwtService jwtService;
@@ -39,23 +43,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, 
 			@NonNull HttpServletResponse response, 
 			@NonNull FilterChain filterChain)
 					throws ServletException, IOException {
-		final String authHeader = request.getHeader("Authorization");
+		final String authHeader = request.getHeader(AUTHORIZATION_HEADER);
 		final String jwt;
 		final String userEmail;
 
-		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+		if(authHeader == null || !authHeader.startsWith(BEARER_HEADER)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		jwt = authHeader.substring(7);
+		jwt = authHeader.substring(7);//First Seven Letter will be 'Bearer '
 		userEmail = jwtService.extractUsername(jwt);
 
 		if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() ==null) {
