@@ -30,20 +30,21 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-export default function CustomNumberInput() {
-  const [value, setValue] = React.useState(null);
+export default function CustomNumberInput({value, onChange, ...props}) {
+
+  const numericValue = typeof value === 'string' ? Number(value) : value;
+
   return (
     <NumberInput
       aria-label="Demo number input"
       placeholder="Type a number…"
-      value={value}
-      onChange={(event, val) => setValue(val)}
+      value={numericValue}
+      onChange={onChange}
       min= {0}
       max= {24}
       sx={{
         margin: "1rem",
         height: "3.5rem",
-        fontSize: "18"
       }}
     />
   );
