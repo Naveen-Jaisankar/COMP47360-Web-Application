@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
+import React, { useRef } from "react";
+import { Autocomplete, LoadScript } from "@react-google-maps/api";
 import { Box } from "@mui/system";
 import { styled } from "@mui/system";
 
@@ -19,42 +19,47 @@ const StyledInput = styled("input")({
 const DailySearchbar = () => {
   const inputRef = useRef();
   const apikey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-  let timeoutId;
+  const placeslib = ["places"];
+
+  const nyBounds = {
+    south: 40.477399,
+    west: -74.259090,
+    north: 40.917577,
+    east: -73.700272,
+  };
 
   const handlePlaceChange = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      if (inputRef.current && inputRef.current.getPlaces) {
-        const places = inputRef.current.getPlaces();
-        if (places && places.length > 0) {
-          const place = places[0];
-          console.log(place.formatted_address);
-          console.log(place.geometry.location.lat());
-          console.log(place.geometry.location.lng());
-        }
+    if (inputRef.current && inputRef.current.getPlace) {
+      const place = inputRef.current.getPlace();
+
+      if (place && place.geometry && place.geometry.location) {
+        console.log(place.formatted_address);
+        console.log(place.geometry.location.lat());
+        console.log(place.geometry.location.lng());
       }
-    }, 300);
+    }
   };
 
   return (
     <Box sx={{ margin: "1rem" }}>
-      <LoadScript googleMapsApiKey={apikey} libraries={["places"]}>
-      <StandaloneSearchBox
+      <LoadScript googleMapsApiKey={apikey} libraries={placeslib}>
+        <Autocomplete
           onLoad={(ref) => (inputRef.current = ref)}
-          onPlacesChanged={handlePlaceChange}
+          onPlaceChanged={handlePlaceChange}
+          options={{
+            bounds: nyBounds,
+            strictBounds: true,
+          }}
         >
           <StyledInput
             type="text"
             className="form-control"
             placeholder="Enter Location"
           />
-        </StandaloneSearchBox>
+        </Autocomplete>
       </LoadScript>
     </Box>
   );
 };
 
 export default DailySearchbar;
-     
