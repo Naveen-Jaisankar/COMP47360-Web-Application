@@ -24,7 +24,7 @@ const DashBoard = ({ isSidebarOpen }) => {
       </section>
       <section>
         <Typography variant="h5" className="mb-4">Suggested Actions</Typography>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Array(3).fill().map((_, index) => (
 
             <Infocard
@@ -35,7 +35,7 @@ const DashBoard = ({ isSidebarOpen }) => {
                 />
             
           ))}
-        </div>
+        </div> */}
       </section>
       <section className="mt-8">
         <div className="bg-black text-white p-4 rounded shadow-md">

@@ -36,7 +36,6 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/user/gettingstarted" element={<Starting />}></Route>
           <Route path="/user" element={<UserPanel/>} />
-          <Route path="/register" element={<Register/>} />
           <Route path="/user/dailyform" element={<DailyForm/>} />
           <Route path="/user/history" element={<UserHistory/>} />
           <Route path="/privacy" element={<Privacy/>} />

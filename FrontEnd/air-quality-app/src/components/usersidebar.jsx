@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
               xs: '56px',
               sm: '64px',
               md: '72px',
-              lg: '80px',
+              lg: '76px',
             },
           },
         }}
@@ -72,28 +72,43 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                 {/* Replace with username from database */}
                 <p className="text-lg mt-2">Welcome back, User</p>
                 <p className="text-lg text-center mt-2 mb-2">Take your exposure quiz today</p>
-                <Button variant="contained" className="bg-white text-green-500 mt-1 ">
+                <Button variant="contained" className="bg-white text-green-500 mt-1" component ={Link} to="/user/dailyform">
                   Start
                 </Button>
               </div>
               <div className='mt-4 text-center text-2xl'>
-                <ul  className='mt-1'>
-                  <li>
-                    <Link href="/user" className='block py-2 px-4'>Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link href="#"  className='block py-2 px-4'>History</Link>
-                  </li>
-                  <li>
-                    <Link to="#" className='block py-2 px-4'>Assessment</Link>
-                  </li>
-                  <li>
-                    <Link to="#" className='block py-2 px-4'>Privacy</Link>
-                  </li>
-                  <li>
-                    <Link to="#" className='block py-2 px-4 bg-black rounded'>Edit Profile</Link>
-                  </li>
-                </ul>
+              <ul className='mt-1 '>
+                <li>
+                  <Button className='' component ={Link} to="/user"
+                   sx={{ color: 'white' }}>
+                    DashBoard
+                  </Button>
+                </li>
+                <li>
+                  <Button className='block py-2 px-4 ' component ={Link} to="/user/history"
+                   sx={{ color: 'white' }} >
+                    History
+                  </Button>
+                </li>
+                <li>
+                  <Button className='block py-2 px-4' component ={Link} to="#"
+                   sx={{ color: 'white' }}>
+                    Assessment
+                  </Button>
+                </li>
+                <li>
+                  <Button className='block py-2 px-4' component ={Link} to="/privacy"
+                   sx={{ color: 'white'}}>
+                    Privacy
+                  </Button>
+                </li>
+                <li>
+                  <Button className='block py-2 px-4 bg-black rounded' component ={Link} to="#"
+                   sx={{ color: 'white', bgcolor:'black', '&:hover': {bgcolor:'black'} }}>
+                    Edit Profile
+                  </Button>
+                </li>
+              </ul>
               </div>
             </div>
           </div>
