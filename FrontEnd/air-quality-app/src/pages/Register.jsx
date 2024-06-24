@@ -51,6 +51,7 @@ const Register = () => {
         </p>
 
         {/* //Maybe this can be linked to privacy tab in user dashboard  */}
+        {/* Add message popup tpo onitfy user to check their email for */ }
         <p className="text-center mt-2">
             Learn more about our <Link to="/privacy" className="text-blue-500 underline">privacy</Link> policy here
         </p>

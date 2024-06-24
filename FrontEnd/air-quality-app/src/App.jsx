@@ -13,6 +13,8 @@ import { SettingsContext } from './context/SettingsContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Starting from './pages/GettingStarted';
+import MainContent from './components/maincontent';
+import { UserPanel } from './pages/UserPanel';
 
 function App() {
 
@@ -29,8 +31,12 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/form" element={<Form />} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/user/gettingstarted" element={<Starting />}></Route>
+          <Route path="/user" element={<UserPanel/>} />
         </Routes>
-        </MainContent>
+      </MainContent>
       </div>
       {/* <Footer/> */}
     </BrowserRouter>
