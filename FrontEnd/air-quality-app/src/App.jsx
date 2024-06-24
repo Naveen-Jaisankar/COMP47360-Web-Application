@@ -8,7 +8,8 @@ import Map from './pages/Map'
 import Form from './pages/Form'
 import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
-import Privacy from './pages/Privacy'
+import Privacy from './pages/Privacy';
+import UserHistory from './pages/UserHistory';
 import { SettingsContext } from './context/SettingsContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -35,6 +36,10 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/user/gettingstarted" element={<Starting />}></Route>
           <Route path="/user" element={<UserPanel/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/user/dailyform" element={<DailyForm/>} />
+          <Route path="/user/history" element={<UserHistory/>} />
+          <Route path="/privacy" element={<Privacy/>} />
         </Routes>
       </MainContent>
       </div>
