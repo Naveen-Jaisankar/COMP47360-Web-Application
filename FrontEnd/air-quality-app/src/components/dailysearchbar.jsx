@@ -17,7 +17,7 @@ const StyledInput = styled("input")({
   },
 });
 
-const DailySearchbar = () => {
+const DailySearchbar = ({passPlaceData}) => {
   const inputRef = useRef();
   const apikey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const placeslib = ["places"];
@@ -31,15 +31,48 @@ const DailySearchbar = () => {
 
   const handlePlaceChange = () => {
     if (inputRef.current && inputRef.current.getPlace) {
-      const place = inputRef.current.getPlace();
+      const place = inputRef.current.getPlace()
 
       if (place && place.geometry && place.geometry.location) {
-        console.log(place.formatted_address);
-        console.log(place.geometry.location.lat());
-        console.log(place.geometry.location.lng());
+        const placeData = {
+          address: place.formatted_address,
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        }
+      
+      passPlaceData(placeData)
+      
       }
+
     }
-  };
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //   if (inputRef.current && inputRef.current.getPlace) {
+  //     const place = inputRef.current.getPlace();
+
+  //     if (place && place.geometry && place.geometry.location) {
+  //       const placeData = {
+  //       address: place.formatted_address,
+  //       latitude: place.geometry.location.lat(),
+  //       longitude: place.geometry.location.lat(),
+  //       }
+  //       customFunction(placeData)
+  //     }
+  //   }
+  // };
 
   return (
     <Box sx={{ margin: "1rem" }}>

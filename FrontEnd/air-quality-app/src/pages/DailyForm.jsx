@@ -7,6 +7,8 @@ import CustomNumberInput from "../components/customnumberinput";
 import { useState } from "react";
 
 export default function DailyForm () {
+    const [indoorLocation, setIndoorLocation] = useState('')
+    const [outdoorLocation, setOutdoorLocation] = useState('')
     const [indoorHours, setIndoorHours] = useState('0');
     const [outdoorHours, setOutdoorHours] = useState('0');
 
@@ -14,8 +16,22 @@ export default function DailyForm () {
         e.preventDefault();
         console.log(`Indoor Hours: ${indoorHours}`);
         console.log (`Outdoor Hours: ${outdoorHours}`);
+        console.log(`Indoor Location: ${indoorLocation.address}`);
+        console.log(`Indoor Lat: ${indoorLocation.lat}`);
+        console.log(`Indoor Lng: ${indoorLocation.lng}`);
+        console.log(`Outdoor Location: ${outdoorLocation.address}`);
+        console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
+        console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
     };
 
+    const handleIndoorPlaceChange = (placeData) => {
+        setIndoorLocation(placeData)
+    }
+
+    const handleOutdoorPlaceChange = (placeData) => {
+        setOutdoorLocation(placeData)
+    }
+    
     return (
         <>
         <UserPlaceholder />
@@ -38,24 +54,21 @@ export default function DailyForm () {
             <form onSubmit={submitHandler}>
             
             <Typography variant="h4" component='h2' sx={{ marginBottom: "1rem"}}>While indoors, where did you spend most of your time?</Typography>
-            <DailySearchbar></DailySearchbar>
+            <DailySearchbar passPlaceData={handleIndoorPlaceChange}/>
 
             <Typography variant="h4" compnent='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
             <CustomNumberInput  value={indoorHours} onChange={(event, newValue) => setIndoorHours(newValue)}
                 />
             <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>While outdoors, where did you spend most of your time?</Typography>
-            <DailySearchbar></DailySearchbar>
+            <DailySearchbar passPlaceData={handleOutdoorPlaceChange}/>
 
-            <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
+            <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend outdoors today?</Typography>
             <CustomNumberInput  value={outdoorHours} onChange={(event, newValue) => setOutdoorHours(newValue)} />
 
+            <Button type="submit" >Submit</Button>
             </form>
 
-            <Button type="submit" >Submit</Button>
-
             </Box>
-
-          
 
             </Container>
         
