@@ -4,13 +4,16 @@ import { Box, Container, Typography, TextField, Button } from '@mui/material';
 import {SearchIcon} from '@mui/icons-material/Search'
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DailyForm () {
     const [indoorLocation, setIndoorLocation] = useState('')
     const [outdoorLocation, setOutdoorLocation] = useState('')
-    const [indoorHours, setIndoorHours] = useState('0');
-    const [outdoorHours, setOutdoorHours] = useState('0');
+    const [indoorHours, setIndoorHours] = useState(0);
+    const [outdoorHours, setOutdoorHours] = useState(0);
+    const [maxIndoorHours, setMaxIndoorHours] = useState(24);
+    const [maxOutdoorHours, setMaxOutdoorHours] = useState(24)
+
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -24,6 +27,26 @@ export default function DailyForm () {
         console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
     };
 
+    useEffect(()=> {
+        console.log("Updated maxOutdoorHours:", maxOutdoorHours)
+    }, [maxOutdoorHours])
+
+    useEffect(()=> {
+        console.log("Updated maxIndoorHours:", maxIndoorHours)
+    }, [maxIndoorHours])
+
+    const handleIndoorHoursChange = (event, newValue) => {
+        const indoorValue = newValue;
+        setIndoorHours(indoorValue);
+        setMaxOutdoorHours(24-indoorValue)
+    }
+
+    const handleOutdoorHoursChange = (event, newValue) => {
+        const outdoorValue = newValue;
+        setOutdoorHours(outdoorValue);
+        setMaxIndoorHours(24-outdoorValue); 
+    }
+
     const handleIndoorPlaceChange = (placeData) => {
         setIndoorLocation(placeData)
     }
@@ -31,7 +54,7 @@ export default function DailyForm () {
     const handleOutdoorPlaceChange = (placeData) => {
         setOutdoorLocation(placeData)
     }
-    
+
     return (
         <>
         <UserPlaceholder />
@@ -57,13 +80,13 @@ export default function DailyForm () {
             <DailySearchbar passPlaceData={handleIndoorPlaceChange}/>
 
             <Typography variant="h4" compnent='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend indoors today?</Typography>
-            <CustomNumberInput  value={indoorHours} onChange={(event, newValue) => setIndoorHours(newValue)}
+            <CustomNumberInput  value={indoorHours} onChange={handleIndoorHoursChange} max={maxIndoorHours}
                 />
             <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>While outdoors, where did you spend most of your time?</Typography>
             <DailySearchbar passPlaceData={handleOutdoorPlaceChange}/>
 
             <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend outdoors today?</Typography>
-            <CustomNumberInput  value={outdoorHours} onChange={(event, newValue) => setOutdoorHours(newValue)} />
+            <CustomNumberInput  value={outdoorHours} onChange={handleOutdoorHoursChange} max={maxOutdoorHours} />
 
             <Button type="submit" >Submit</Button>
             </form>

@@ -47,33 +47,6 @@ const DailySearchbar = ({passPlaceData}) => {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //   if (inputRef.current && inputRef.current.getPlace) {
-  //     const place = inputRef.current.getPlace();
-
-  //     if (place && place.geometry && place.geometry.location) {
-  //       const placeData = {
-  //       address: place.formatted_address,
-  //       latitude: place.geometry.location.lat(),
-  //       longitude: place.geometry.location.lat(),
-  //       }
-  //       customFunction(placeData)
-  //     }
-  //   }
-  // };
-
   return (
     <Box sx={{ margin: "1rem" }}>
       <LoadScript googleMapsApiKey={apikey} libraries={placeslib}>
