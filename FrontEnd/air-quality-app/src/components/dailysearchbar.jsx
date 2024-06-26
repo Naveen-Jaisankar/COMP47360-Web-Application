@@ -35,6 +35,7 @@ const DailySearchbar = ({passPlaceData}) => {
 
       if (place && place.geometry && place.geometry.location) {
         const placeData = {
+          components_array: place.address_components,
           address: place.formatted_address,
           lat: place.geometry.location.lat(),
           lng: place.geometry.location.lng(),

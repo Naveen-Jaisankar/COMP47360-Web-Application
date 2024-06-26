@@ -13,18 +13,24 @@ export default function DailyForm () {
     const [outdoorHours, setOutdoorHours] = useState(0);
     const [maxIndoorHours, setMaxIndoorHours] = useState(24);
     const [maxOutdoorHours, setMaxOutdoorHours] = useState(24);
-
+    let isValid = true;
 
     const submitHandler = (e) => {
         e.preventDefault();
-        console.log(`Indoor Hours: ${indoorHours}`);
-        console.log (`Outdoor Hours: ${outdoorHours}`);
-        console.log(`Indoor Location: ${indoorLocation.address}`);
-        console.log(`Indoor Lat: ${indoorLocation.lat}`);
-        console.log(`Indoor Lng: ${indoorLocation.lng}`);
-        console.log(`Outdoor Location: ${outdoorLocation.address}`);
-        console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
-        console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
+
+        indoorLocation.components_array.forEach((component) => {
+            console.log('Address Component:', component.long_name);
+            if (component.long_name === "New Jersey"){
+                console.log("eyyy im in NJ")
+                isValid = false
+            }
+            }
+            )
+            
+            if (isValid === false ){
+                alert("Please choose a location in New York City")
+            }
+
     };
 
     useEffect(()=> {
