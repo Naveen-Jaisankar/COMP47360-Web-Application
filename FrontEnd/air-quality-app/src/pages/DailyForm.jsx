@@ -12,7 +12,7 @@ export default function DailyForm () {
     const [indoorHours, setIndoorHours] = useState(0);
     const [outdoorHours, setOutdoorHours] = useState(0);
     const [maxIndoorHours, setMaxIndoorHours] = useState(24);
-    const [maxOutdoorHours, setMaxOutdoorHours] = useState(24)
+    const [maxOutdoorHours, setMaxOutdoorHours] = useState(24);
 
 
     const submitHandler = (e) => {
@@ -44,7 +44,7 @@ export default function DailyForm () {
     const handleOutdoorHoursChange = (event, newValue) => {
         const outdoorValue = newValue;
         setOutdoorHours(outdoorValue);
-        setMaxIndoorHours(24-outdoorValue); 
+        setMaxIndoorHours(24-outdoorValue);
     }
 
     const handleIndoorPlaceChange = (placeData) => {
@@ -63,7 +63,6 @@ export default function DailyForm () {
             <Container sx={{
                 marginTop: "3rem",
             }}>
-
             
             <Typography variant="h1" component='h1'>Your Daily Quiz</Typography>
 
@@ -83,7 +82,7 @@ export default function DailyForm () {
             <CustomNumberInput  value={indoorHours} onChange={handleIndoorHoursChange} max={maxIndoorHours}
                 />
             <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>While outdoors, where did you spend most of your time?</Typography>
-            <DailySearchbar passPlaceData={handleOutdoorPlaceChange}/>
+            <DailySearchbar passPlaceData={handleOutdoorPlaceChange}/> 
 
             <Typography variant="h4" component='h2'  sx={{ marginBottom: "1rem"}}>How many hours did you spend outdoors today?</Typography>
             <CustomNumberInput  value={outdoorHours} onChange={handleOutdoorHoursChange} max={maxOutdoorHours} />

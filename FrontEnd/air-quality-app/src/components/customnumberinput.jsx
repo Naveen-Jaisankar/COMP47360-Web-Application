@@ -30,7 +30,7 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-export default function CustomNumberInput({value, onChange, ...props}) {
+export default function CustomNumberInput({value, onChange, max, ...props}) {
 
   const numericValue = typeof value === 'string' ? Number(value) : value;
 
@@ -41,7 +41,7 @@ export default function CustomNumberInput({value, onChange, ...props}) {
       value={numericValue}
       onChange={onChange}
       min= {0}
-      max= {24}
+      max= {max}
       sx={{
         margin: "1rem",
         height: "3.5rem",
