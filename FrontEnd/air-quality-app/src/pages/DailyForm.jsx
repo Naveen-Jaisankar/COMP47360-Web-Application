@@ -4,7 +4,7 @@ import { Box, Container, Typography, TextField, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
 import { useState, useEffect } from "react";
-import api from '../api/base';
+// import api from '../api/base';
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
@@ -45,6 +45,8 @@ export default function DailyForm() {
     }
     return isValid;
   };
+
+  // 
 
   // following functions are for the MOCK UP SEND
 
@@ -89,6 +91,8 @@ export default function DailyForm() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    
+    check24Hours(indoorHours,outdoorHours)
 
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
@@ -98,12 +102,12 @@ export default function DailyForm() {
         try{
           // MOCK-UP FUNCTIONS & FLOW
 
-          //const response = postLocationData(indoorLocation, outdoorLocation),
-          // const dailyAQI = response.data.aqiAverageObject
-          // const indoorAQI = response.data.indoorObject
-          // const outdoorAQI = response.data.outdoorObject
-          // const riskScore = calculateRiskScore(indoorAQI, outdoorAQI) / calculateRiskScore(dailyAQI)
-          // postRiskScore(riskScore)
+    //       //const response = postLocationData(indoorLocation, outdoorLocation),
+    //       // const dailyAQI = response.data.aqiAverageObject
+    //       // const indoorAQI = response.data.indoorObject
+    //       // const outdoorAQI = response.data.outdoorObject
+    //       // const riskScore = calculateRiskScore(indoorAQI, outdoorAQI) / calculateRiskScore(dailyAQI)
+    //       // postRiskScore(riskScore)
 
           console.log(`Indoor Hours: ${indoorHours}`);
           console.log(`Outdoor Hours: ${outdoorHours}`);
@@ -117,8 +121,6 @@ export default function DailyForm() {
         } catch (err) {
           console.log(`Error: ${err.message}`)
         }
-
-      
     }
   };
 
@@ -150,6 +152,34 @@ export default function DailyForm() {
     setOutdoorLocation(placeData);
   };
 
+  const check24Hours = (indoorHours, outdoorHours) => {
+    const totalHours = indoorHours + outdoorHours
+    if (totalHours === 24) {
+      // do nothing
+    } else if (totalHours < 24) {
+      // also validate 0 hours to double check with the user if correct input
+  
+      var indoorHourRatio = indoorHours/totalHours;
+      var outdoorHourRatio = outdoorHours/totalHours;
+
+      var leftoverHours = 24-totalHours;
+
+      const newIndoorHours = Math.round(leftoverHours * indoorHourRatio)
+      console.log(newIndoorHours)
+      
+      const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio)
+      console.log(newOutdoorHours)
+
+      const adjustedIndoorHours = indoorHours + newIndoorHours
+      const adjustedOutdoorHours = outdoorHours + newOutdoorHours
+
+      console.log(`adjusted indoors, ${adjustedIndoorHours}`)
+      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`)
+
+    }
+
+  }
+
   return (
     <>
       <UserPlaceholder />
@@ -179,7 +209,7 @@ export default function DailyForm() {
               >
                 While indoors, where did you spend most of your time?
               </Typography>
-              <DailySearchbar passPlaceData={handleIndoorPlaceChange} />
+              {/* <DailySearchbar passPlaceData={handleIndoorPlaceChange} /> */}
 
               <Typography
                 variant="h4"
@@ -200,7 +230,7 @@ export default function DailyForm() {
               >
                 While outdoors, where did you spend most of your time?
               </Typography>
-              <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
+              {/* <DailySearchbar passPlaceData={handleOutdoorPlaceChange} /> */}
 
               <Typography
                 variant="h4"
