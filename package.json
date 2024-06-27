@@ -4,8 +4,7 @@
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
-    "eslint": "^8.35.0",
-    "eslint-plugin-react": "^7.34.3"
+    "eslint": "^8.35.0"
   },
   "scripts": {
     "lint": "eslint ."
