@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { Autocomplete, LoadScript } from "@react-google-maps/api";
 import { Box } from "@mui/system";
 import { styled } from "@mui/system";
-import {SearchIcon} from '@mui/icons-material/Search'
 
 const StyledInput = styled("input")({
   width: "100%",

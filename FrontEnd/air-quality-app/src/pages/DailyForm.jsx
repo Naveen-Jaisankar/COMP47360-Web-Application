@@ -4,6 +4,7 @@ import { Box, Container, Typography, TextField, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
 import { useState, useEffect } from "react";
+import api from '../api/base';
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
@@ -12,6 +13,8 @@ export default function DailyForm() {
   const [outdoorHours, setOutdoorHours] = useState(0);
   const [maxIndoorHours, setMaxIndoorHours] = useState(24);
   const [maxOutdoorHours, setMaxOutdoorHours] = useState(24);
+  const indoorFactor = 3;
+  const maskFactor = 1;
 
   const checkValidLocation = (indoorLocation, outdoorLocation) => {
     let isValid = false;
@@ -43,7 +46,48 @@ export default function DailyForm() {
     return isValid;
   };
 
-  const submitHandler = (e) => {
+  // following functions are for the MOCK UP SEND
+
+  // This function posts the location and it will return the AQI of those areas
+
+  // const postLocationData = async (indoorLocation, outdoorLocation) => {
+  //   const locationData = {indoorLocation, outdoorLocation};
+  //   const response = await api.post('/', locationData)
+  // // // or
+  //   const response = await api.post ('/', {
+  //     indoorlocation: indoorLocation,
+  //     outdoorlocation: outdoorLocation,
+  //   }) 
+
+  //   // return response;
+  // }
+
+  // A less granular approach would be just a getAQIfunction
+  //   const getAQI = async () => {
+  //   const response = await api.get('/');
+  // }
+  
+  // This will send the Riskscore + relevant user details
+  // const postRiskScore = async (riskScore) => {
+  //   const response = await api.post('/', {
+  //     id: 11,
+  //     riskScore: riskScore,
+  //     date: new Date();
+  // })
+
+  // granular version
+  // const calculateRiskScore = (indoorAQI, outdoorAQI, indoorHours, outdoorHours) => {
+    // ????? No formula outlined here
+  // }
+
+  // The formula as outlined by matas
+  // const calculateRiskScore = (dailyAQI, indoorHours, outdoorHours) => {
+  //   const rawAQI =(dailyAQI * outdoorHours / maskFactor) + ((dailyAQI/indoorFactor) * indoorHours) ;
+  //   const riskScore = rawAQI/24;
+  //   return riskScore
+  // }
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
@@ -51,15 +95,30 @@ export default function DailyForm() {
     if (!isValid) {
       alert("Please choose a location in Manhattan");
     } else {
-      console.log(`Indoor Hours: ${indoorHours}`);
-      console.log(`Outdoor Hours: ${outdoorHours}`);
-      console.log(`Indoor Location: ${indoorLocation.address}`);
-      console.log(`Indoor Lat: ${indoorLocation.lat}`);
-      console.log(`Indoor Lng: ${indoorLocation.lng}`);
-      console.log(`Outdoor Location: ${outdoorLocation.address}`);
-      console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
-      console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
-      alert("Form submitted :D");
+        try{
+          // MOCK-UP FUNCTIONS & FLOW
+
+          //const response = postLocationData(indoorLocation, outdoorLocation),
+          // const dailyAQI = response.data.aqiAverageObject
+          // const indoorAQI = response.data.indoorObject
+          // const outdoorAQI = response.data.outdoorObject
+          // const riskScore = calculateRiskScore(indoorAQI, outdoorAQI) / calculateRiskScore(dailyAQI)
+          // postRiskScore(riskScore)
+
+          console.log(`Indoor Hours: ${indoorHours}`);
+          console.log(`Outdoor Hours: ${outdoorHours}`);
+          console.log(`Indoor Location: ${indoorLocation.address}`);
+          console.log(`Indoor Lat: ${indoorLocation.lat}`);
+          console.log(`Indoor Lng: ${indoorLocation.lng}`);
+          console.log(`Outdoor Location: ${outdoorLocation.address}`);
+          console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
+          console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
+          alert("Form submitted :D");
+        } catch (err) {
+          console.log(`Error: ${err.message}`)
+        }
+
+      
     }
   };
 
@@ -124,7 +183,7 @@ export default function DailyForm() {
 
               <Typography
                 variant="h4"
-                compnent="h2"
+                component="h2"
                 sx={{ marginBottom: "1rem" }}
               >
                 How many hours did you spend indoors today?
