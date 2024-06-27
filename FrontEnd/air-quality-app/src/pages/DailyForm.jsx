@@ -14,26 +14,29 @@ export default function DailyForm() {
   const [maxOutdoorHours, setMaxOutdoorHours] = useState(24);
 
   const checkValidLocation = (indoorLocation, outdoorLocation) => {
-    let isValid = true;
+    let isValid = false;
 
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
+        console.log(component)
         if (
-          component.long_name === "New Jersey" ||
-          component.short_name === "NJ"
+          component.long_name === "Manhattan" ||
+          component.short_name === "Manhattan"
         ) {
-          isValid = false;
+          isValid = true;
         }
       });
     }
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
+        console.log("outdoors:")
+        console.log(component)
         if (
-          component.long_name === "New Jersey" ||
-          component.short_name === "NJ"
+          component.long_name === "Manhattan" ||
+          component.short_name === "Manhattan"
         ) {
-          isValid = false;
+          isValid = true;
         }
       });
     }
@@ -46,7 +49,7 @@ export default function DailyForm() {
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
     if (!isValid) {
-      alert("Please choose a location in New York City");
+      alert("Please choose a location in Manhattan");
     } else {
       console.log(`Indoor Hours: ${indoorHours}`);
       console.log(`Outdoor Hours: ${outdoorHours}`);
