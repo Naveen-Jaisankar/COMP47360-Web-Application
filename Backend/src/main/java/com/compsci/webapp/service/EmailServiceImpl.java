@@ -51,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
 				e.printStackTrace();
 			}
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             LOGGER.error("failed to send email", e);
             throw new IllegalStateException("failed to send email");
         }
