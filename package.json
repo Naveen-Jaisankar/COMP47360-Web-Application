@@ -2,11 +2,5 @@
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.0.2",
     "react-router-dom": "^6.23.1"
-  },
-  "devDependencies": {
-    "eslint": "^8.35.0"
-  },
-  "scripts": {
-    "lint": "eslint ."
   }
 }
