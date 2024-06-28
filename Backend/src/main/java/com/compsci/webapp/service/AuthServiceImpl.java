@@ -29,8 +29,10 @@ import com.compsci.webapp.entity.EmailConfirmationEntity;
 import com.compsci.webapp.entity.UserEntity;
 import com.compsci.webapp.repositiory.EmailConfirmationRepository;
 import com.compsci.webapp.repositiory.UserRepository;
+import com.compsci.webapp.request.ResendVerificationEmailReqeust;
 import com.compsci.webapp.request.UserRegisterRequest;
 import com.compsci.webapp.request.UserSignInRequest;
+import com.compsci.webapp.response.ResendVerificationEmailResponse;
 import com.compsci.webapp.response.UserRegisterResponse;
 import com.compsci.webapp.response.UserSignInResponse;
 
@@ -38,7 +40,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 	
 	@Autowired
     private UserRepository userRepository;
@@ -86,8 +88,15 @@ public class UserServiceImpl implements UserService {
         confirmationToken.setEmailConfirmationToken(token);
         
         emailConfirmationRepository.save(confirmationToken);
+
+        constructandSendVerificationEmail(token,user);
         
-        String link = "http://localhost:8080/api/v1/auth/confirm?token=" + token;
+        return mapToUserRegisterResponse(user);
+		
+	}
+	
+	private void constructandSendVerificationEmail(String token,UserEntity user) {
+		String link = "http://localhost:8080/api/v1/auth/confirm?token=" + token;
         try {
         	Template verificationEmailTemplate = freemarkerConfig.getTemplate("verification_email.ftl");
         	Map<String, Object> verificationEmailValueMapper = new HashMap<>();
@@ -99,11 +108,23 @@ public class UserServiceImpl implements UserService {
         }catch(Exception e) {
         	System.out.println("Failed to send verification email");
         }
-        
-        
-        return mapToUserRegisterResponse(user);
-		
 	}
+	
+	@Override
+	public ResendVerificationEmailResponse resendVerificationEmail(ResendVerificationEmailReqeust resendEmailReqeust) {
+		if (Boolean.TRUE.equals(userRepository.existsByUserEmail(resendEmailReqeust.getEmailId()))) {
+			UserEntity user = userRepository.findByUserEmail(resendEmailReqeust.getEmailId()).orElseThrow();
+			Long userId = user.getUserId();
+			String token = UUID.randomUUID().toString();
+			int updated = emailConfirmationRepository.updateEmailConfirmationDetails(userId,token , LocalDateTime.now().plusMinutes(15), LocalDateTime.now());
+			constructandSendVerificationEmail(token,user);
+		}else {
+			throw new IllegalArgumentException("Email-id doesn't exist");
+		}
+		return null;
+	}
+	
+	
 
 	private UserRegisterResponse mapToUserRegisterResponse(UserEntity user){
 		UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
@@ -179,5 +200,7 @@ public class UserServiceImpl implements UserService {
         }
 		return "Confirmed";
 	}
+
+	
 
 }

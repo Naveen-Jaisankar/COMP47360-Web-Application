@@ -10,14 +10,10 @@ package com.compsci.webapp.response;
  */
 
 public class UserRegisterResponse {
-    
-    private Long userId;
-    
+        
     private String userName;
         
     private String userEmail;
-    
-    private String userPassword;
     
     private String message;
 
@@ -29,13 +25,6 @@ public class UserRegisterResponse {
         this.message = message;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getUserName() {
         return userName;
@@ -51,14 +40,6 @@ public class UserRegisterResponse {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
     }
 
 

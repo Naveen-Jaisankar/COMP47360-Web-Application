@@ -33,4 +33,13 @@ public interface EmailConfirmationRepository extends JpaRepository<EmailConfirma
             "WHERE e.emailConfirmationToken = ?1")
     int updateEmailConfirmationConfirmedAt(String token,
                           LocalDateTime confirmedAt);
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE EmailConfirmationEntity e " +
+           "SET e.emailConfirmationToken = ?2, " +
+           "e.emailConfirmationExpiresAt = ?3, " +
+           "e.emailConfirmationCreatedAt = ?4 " +
+           "WHERE e.userId.id = ?1")
+    int updateEmailConfirmationDetails(Long userId, String newToken, LocalDateTime newExpiresAt, LocalDateTime newCreatedAt);
 }

@@ -1,7 +1,9 @@
 package com.compsci.webapp.service;
 
+import com.compsci.webapp.request.ResendVerificationEmailReqeust;
 import com.compsci.webapp.request.UserRegisterRequest;
 import com.compsci.webapp.request.UserSignInRequest;
+import com.compsci.webapp.response.ResendVerificationEmailResponse;
 import com.compsci.webapp.response.UserRegisterResponse;
 import com.compsci.webapp.response.UserSignInResponse;
 
@@ -15,11 +17,13 @@ import com.compsci.webapp.response.UserSignInResponse;
  */
 
 
-public interface UserService {
+public interface AuthService {
     
     UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest);
 
     UserSignInResponse userSignIn(UserSignInRequest userSignInRequest);
+    
+    ResendVerificationEmailResponse resendVerificationEmail(ResendVerificationEmailReqeust resendEmailReqeust);
 
     String confirmToken(String token);
 
