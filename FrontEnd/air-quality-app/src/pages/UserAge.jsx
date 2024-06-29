@@ -5,6 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
 
 const UserAge = ({ nextStep }) => {
   const [age, setAge] = useState('');
@@ -18,7 +19,7 @@ const UserAge = ({ nextStep }) => {
       <h2 className="text-2xl font-bold mb-4 text-center">Getting Started</h2>
       <p className="mb-6 text-center">Your answers to the following questions will be used to make your own health profile.</p>
       <FormControl component="fieldset">
-        <FormLabel component="legend" className="mb-4 text-center">What's your age?</FormLabel>
+        <FormLabel component="legend" className="mb-4 text-center">What&apos;s your age?</FormLabel>
         <RadioGroup value={age} onChange={handleChange}>
           <FormControlLabel value="0-17" control={<Radio />} label="0-17" />
           <FormControlLabel value="18-34" control={<Radio />} label="18-34" />
@@ -34,5 +35,11 @@ const UserAge = ({ nextStep }) => {
     </div>
   );
 };
+
+
+UserAge.propTypes = {
+  nextStep: PropTypes.func
+}
+
 
 export default UserAge;
