@@ -1,5 +1,4 @@
 import contactInfo from './footerconfig';
-import React from 'react';
 
 const Footer = ()=>{
     return(
