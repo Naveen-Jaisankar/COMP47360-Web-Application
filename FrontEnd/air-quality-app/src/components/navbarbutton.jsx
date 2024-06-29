@@ -34,5 +34,5 @@ export default function NavbarButton ({to, children, ...props}) {
 
 NavbarButton.propTypes = {
     to: PropTypes.string.isRequired,
-    children: PropTypes.ReactNode,
+    children: PropTypes.string,
 }
