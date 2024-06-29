@@ -3,7 +3,8 @@ module.exports = {
   "plugins": ["react"],
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "parserOptions": {
     "ecmaFeatures": {
