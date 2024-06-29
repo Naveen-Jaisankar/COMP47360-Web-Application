@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Switch, Slider, Typography, Paper, Container } from '@mui/material';
 import { SettingsContext } from '../context/SettingsContext';
 
