@@ -13,7 +13,9 @@ module.exports = {
     "sourceType": "module"
   },
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
   },
   "settings": {
     "react": {
