@@ -1,9 +1,8 @@
-import { Container, Typography, Box, Grid, CardMedia } from "@mui/material";
+import { Container, Typography, Box, Grid } from "@mui/material";
 import Infocard from "../components/infocard";
 import ReactPlayer from "react-player"
 
 const image1 = "../src/static/proxy-image.png";
-const banner = "../src/static/01-03_City_map2v_generated.jpg";
 const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI"
 const Home = () => {
   return (
@@ -37,7 +36,7 @@ const Home = () => {
                   color: "white",
                 }}
               >
-                "Quote that captures app spirit"
+                &quot; Quote that captures app spirit &quot;
               </Typography>
               <Typography
                 variant="h4"
