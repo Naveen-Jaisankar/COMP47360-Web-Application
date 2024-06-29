@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Radio from '@mui/material/Radio';
 import Checkbox from '@mui/material/Checkbox';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
 
 const GeneralHealthSection = ({ nextStep }) => {
   const [respCondition, setRespCondition] = useState('No');
@@ -45,5 +46,9 @@ const GeneralHealthSection = ({ nextStep }) => {
     </div>
   );
 };
+
+GeneralHealthSection.propTypes = {
+  nextStep: PropTypes.func
+}
 
 export default GeneralHealthSection;

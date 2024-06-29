@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { Drawer, Typography } from "@mui/material";
+import { Drawer, Typography} from "@mui/material";
 import navbarHeights from "./navbarheights";
 
 export const drawerWidth = 220;
