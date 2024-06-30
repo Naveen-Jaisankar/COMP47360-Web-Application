@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Grid, CardMedia } from "@mui/material";
+import { Container, Typography, Box, Grid, } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import Infocard from "../components/infocard";
 import ReactPlayer from "react-player"
@@ -18,6 +18,13 @@ const QuoteBox = styled(Box)({
   flexDirection: "column",
   marginLeft: "4rem",
 });
+
+const ThickHeadingTypography = styled(Typography)({
+  fontFamily: "Roboto flex, Roboto, sans-serif",
+  fontSize: "4rem",
+  fontWeight: 700,
+  color: "white",
+})
 
 const GetStartedBox = styled(Box)({
   height: "80vh",
@@ -75,18 +82,12 @@ const Home = () => {
             }}
           >
             <QuoteBox>
-              <Typography
+              <ThickHeadingTypography
                 variant="h1"
                 component="h1"
-                sx={{
-                  fontFamily: "Roboto flex, Roboto, sans-serif",
-                  fontSize: "4rem",
-                  fontWeight: 700,
-                  color: "white",
-                }}
               >
                 "Quote that captures app spirit"
-              </Typography>
+              </ThickHeadingTypography>
               <Typography
                 variant="h4"
                 component="p"
@@ -201,3 +202,4 @@ const Home = () => {
 };
 
 export default Home;
+export {ThickHeadingTypography, CreamBackgroundBox}

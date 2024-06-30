@@ -3,8 +3,9 @@ import UserPlaceholder from "../components/userplaceholder";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { styled } from "@mui/system";
+import {ThickHeadingTypography} from "./Home"
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -17,7 +18,7 @@ const GreyBackgroundBox = styled(Box) ({
   backgroundColor: "#F1F3F2",
   margin: "1rem",
   padding: "2rem",
-  borderRadius: 5,
+  borderRadius: "20px",
 });
 
 export default function DailyForm() {
@@ -148,9 +149,12 @@ export default function DailyForm() {
             marginTop: "2rem",
           }}
         >
-          <Typography variant="h1" component="h1">
+          <ThickHeadingTypography variant="h1" component="h1" sx={{
+            color: "black",
+            paddingLeft: "1rem"
+          }}>
             Your Daily Quiz
-          </Typography>
+          </ThickHeadingTypography>
 
           <GreyBackgroundBox>
             <form onSubmit={submitHandler}>
