@@ -4,6 +4,7 @@ import { Box, Container, Typography, TextField, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
 import { useState, useEffect } from "react";
+import pm_dictionary from "../components/aqi-pm25-dictionary";
 // import api from '../api/base';
 
 export default function DailyForm() {
@@ -46,48 +47,72 @@ export default function DailyForm() {
     return isValid;
   };
 
-  // 
 
   // following functions are for the MOCK UP SEND
 
   // This function posts the location and it will return the AQI of those areas
 
-  // const postLocationData = async (indoorLocation, outdoorLocation) => {
-  //   const locationData = {indoorLocation, outdoorLocation};
-  //   const response = await api.post('/', locationData)
-  // // // or
-  //   const response = await api.post ('/', {
-  //     indoorlocation: indoorLocation,
-  //     outdoorlocation: outdoorLocation,
-  //   }) 
-
-  //   // return response;
+  // const postIndoorLocationData = async (indoorLocation) => {
+  // try{
+  //   const indoorLocationData = {
+  //     loc_lat: indoorLocation.lat,
+  //     loc_lon: indoorLocation.lng
+  //   };
+    
+  //   const indoorResponse = await api.post('/predict_with_location', indoorLocationData)
+  //   return indoorResponse.data.predicted_aqi;
+  // } catch(error){
+  //   console.error("Error posting indoor location data", error)
+  //   throw error;
+  // }
   // }
 
-  // A less granular approach would be just a getAQIfunction
-  //   const getAQI = async () => {
-  //   const response = await api.get('/');
+  // const postOutdoorLocationData = async (outdoorLocation) => {
+  //   try{
+  //     const outdoorLocationData = {
+  //       loc_lat: outdoorLocation.lat,
+  //       loc_lon: outdoorLocation.lng
+  //     };
+      
+  //     const outdoorResponse = await api.post('/predict_with_location', outdoorLocationData)
+  //     return outdoorResponse.data.predicted_aqi;
+  //   } catch(error){
+  //     console.error("Error posting outdoor location data", error)
+  //     throw error;
+  //   }
+  //   }
+
+  // These will only return AQI and need to converted to PM2.5
+
+// const pmConverter = (aqiData) => {
+//   const pmData = pm_dictionary[Math.round(aqiData)]
+//   return pmData
+
+// }
+
+//  Get User ID
+
+// const getID() = async () => {
+//   const idResponse = await api.get('/')
+//   return idResponse
+// }
+
+// Calculate Score
+
+  // const calculateRiskScore = (indoorPM, outdoorPM, indoorHours, outdoorHours) => {
+  //   const rawPM =(outdoorPM * outdoorHours / maskFactor) + ((indoorPM/indoorFactor) * indoorHours) ;
+  //   const riskScore = rawPM/24;
+  //   return riskScore
   // }
-  
-  // This will send the Riskscore + relevant user details
-  // const postRiskScore = async (riskScore) => {
+
+    // This will send the Riskscore + relevant user details
+  // const postRiskScore = async (riskScore, id) => {
   //   const response = await api.post('/', {
   //     id: 11,
   //     riskScore: riskScore,
   //     date: new Date();
   // })
 
-  // granular version
-  // const calculateRiskScore = (indoorAQI, outdoorAQI, indoorHours, outdoorHours) => {
-    // ????? No formula outlined here
-  // }
-
-  // The formula as outlined by matas
-  // const calculateRiskScore = (dailyAQI, indoorHours, outdoorHours) => {
-  //   const rawAQI =(dailyAQI * outdoorHours / maskFactor) + ((dailyAQI/indoorFactor) * indoorHours) ;
-  //   const riskScore = rawAQI/24;
-  //   return riskScore
-  // }
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -101,13 +126,13 @@ export default function DailyForm() {
     } else {
         try{
           // MOCK-UP FUNCTIONS & FLOW
-
-    //       //const response = postLocationData(indoorLocation, outdoorLocation),
-    //       // const dailyAQI = response.data.aqiAverageObject
-    //       // const indoorAQI = response.data.indoorObject
-    //       // const outdoorAQI = response.data.outdoorObject
-    //       // const riskScore = calculateRiskScore(indoorAQI, outdoorAQI) / calculateRiskScore(dailyAQI)
-    //       // postRiskScore(riskScore)
+          // const indoorAQI = postIndoorLocationData(indoorLocation)
+          // const outdoorAQI = postOutdoorLocationData(outdoorLocation)
+          // const indoorPM = pmConverter(indoorAQI)
+          // const outdoorPM = pmConverter(outdoorAQI)
+          // const riskScore = calculateRiskScore(indoorPM, outdoorPM, indoorHours, outdoorHours)
+          // const id = getID()
+          // postRiskScore(riskScore,id)
 
           console.log(`Indoor Hours: ${indoorHours}`);
           console.log(`Outdoor Hours: ${outdoorHours}`);
@@ -209,7 +234,7 @@ export default function DailyForm() {
               >
                 While indoors, where did you spend most of your time?
               </Typography>
-              {/* <DailySearchbar passPlaceData={handleIndoorPlaceChange} /> */}
+              <DailySearchbar passPlaceData={handleIndoorPlaceChange} />
 
               <Typography
                 variant="h4"
@@ -230,7 +255,7 @@ export default function DailyForm() {
               >
                 While outdoors, where did you spend most of your time?
               </Typography>
-              {/* <DailySearchbar passPlaceData={handleOutdoorPlaceChange} /> */}
+              <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
 
               <Typography
                 variant="h4"
