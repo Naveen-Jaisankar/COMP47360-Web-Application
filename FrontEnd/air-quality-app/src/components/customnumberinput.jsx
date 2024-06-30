@@ -5,7 +5,7 @@ import {
   Unstable_NumberInput as BaseNumberInput,
   numberInputClasses,
 } from '@mui/base/Unstable_NumberInput';
-import { fontSize, styled } from '@mui/system';
+import { styled } from '@mui/system';
 
 const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   return (
@@ -30,13 +30,14 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-export default function CustomNumberInput({value, onChange, max, ...props}) {
+export default function CustomNumberInput({value, onChange, max, arialabel,...props}) {
 
+  //  validates input
   const numericValue = typeof value === 'string' ? Number(value) : value;
 
   return (
     <NumberInput
-      aria-label="Demo number input"
+      aria-label={arialabel}
       placeholder="Type a number…"
       value={numericValue}
       onChange={onChange}
