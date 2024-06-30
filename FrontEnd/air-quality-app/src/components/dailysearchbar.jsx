@@ -3,6 +3,7 @@ import { Autocomplete, LoadScript } from "@react-google-maps/api";
 import { Box } from "@mui/system";
 import { styled } from "@mui/system";
 
+
 const StyledInput = styled("input")({
   width: "100%",
   padding: "1rem",
@@ -29,9 +30,11 @@ const DailySearchbar = ({passPlaceData}) => {
   };
 
   const handlePlaceChange = () => {
+    // checks if an input exists
     if (inputRef.current && inputRef.current.getPlace) {
       const place = inputRef.current.getPlace()
 
+      // checks if place has loaded
       if (place && place.geometry && place.geometry.location) {
         const placeData = {
           components_array: place.address_components,
@@ -40,6 +43,12 @@ const DailySearchbar = ({passPlaceData}) => {
           lng: place.geometry.location.lng(),
         }
       
+      // a placeholder function which contains placeData outlined above and is passed as a prop to the daily form parent component.
+      // Placeholder meaning that is not defined within the daily search bar.
+      // When passed as a prop in daily form ie <Daily searchbar passPlaceData="func()"> 
+      // it gives the placeData that it is holding to the function that *is* defined 
+      // in the daily form. Essentially replacing it. This is done so that data can pass from the child to the parent components.
+
       passPlaceData(placeData)
       
       }
