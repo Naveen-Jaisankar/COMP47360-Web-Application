@@ -25,7 +25,7 @@ const getLastSevenDays = () => {
       const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' });
       label = `${dayName} - ${formattedDate}`;
     }
-
+    // User input from daily quiz and model input needs to be put in here!
     days.push({ day: label, PersonalExposure: Math.random() * 100, AQI: Math.random() * 100 });
   }
 
