@@ -35,6 +35,7 @@ function App() {
           <Route path="/user/dailyform" element={<DailyForm/>} />
           <Route path="/user/history" element={<UserHistory/>} />
           <Route path="/privacy" element={<Privacy/>} />
+          <Route path="/register" element={<Register />} />
         </Routes>
         </MainContent>
       </div>
