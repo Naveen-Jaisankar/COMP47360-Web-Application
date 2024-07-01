@@ -3,6 +3,7 @@ import joblib
 import pandas as pd
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS # type: ignore
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
@@ -92,6 +93,9 @@ aqi_model = joblib.load('aqi_model.pkl')
 grid_info = pd.read_csv('grid_info_full_ver.csv')
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
+
+
 
 
 # Helper function to find grid based on latitude and longitude
