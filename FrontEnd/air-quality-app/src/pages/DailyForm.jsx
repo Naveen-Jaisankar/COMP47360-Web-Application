@@ -94,6 +94,10 @@ export default function DailyForm() {
 
       console.log(`adjusted indoors, ${adjustedIndoorHours}`);
       console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
+    } else if (totalHours === 0 ){
+      // this is the average day, if the user did not put in any hours.
+      setIndoorHours(22);
+      setOutdoorHours(2);
     }
   }
 
