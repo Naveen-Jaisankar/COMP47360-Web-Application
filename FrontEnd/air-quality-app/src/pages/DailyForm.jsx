@@ -34,6 +34,8 @@ export default function DailyForm() {
   // checks if location is in Manhattan
   const checkValidLocation = (indoorLocation, outdoorLocation) => {
     let isValid = false;
+    let indoorCheck = false;
+    let outdoorCheck = false;
 
     // If the location has loaded, check each component within the array if they match with the word "Manhattan"
     // if so, the location is valid. This accounts for less detailed/more detailed addresses with more/less components within the array.
@@ -45,7 +47,7 @@ export default function DailyForm() {
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
         ) {
-          isValid = true;
+          indoorCheck = true;
         }
       });
     }
@@ -58,9 +60,13 @@ export default function DailyForm() {
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
         ) {
-          isValid = true;
+          outdoorCheck = true;
         }
       });
+    }
+
+    if (indoorCheck === true && outdoorCheck === true) {
+      isValid = true;
     }
     return isValid;
   };
