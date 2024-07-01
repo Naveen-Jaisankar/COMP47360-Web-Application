@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Radio from '@mui/material/Radio';
 import Checkbox from '@mui/material/Checkbox';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -7,6 +7,8 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
+import constants from './../constant';
 
 const GeneralHealthSection = ({ nextStep }) => {
   const [respCondition, setRespCondition] = useState('No');
@@ -17,17 +19,17 @@ const GeneralHealthSection = ({ nextStep }) => {
 
   return (
     <div className="max-w-md mx-auto my-8 p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-center">Getting Started</h2>
-      <p className="mb-6 text-center">Your answers to the following questions will be used to make your own health profile.</p>
+      <h2 className="text-2xl font-bold mb-4 text-center">{constants.general.getting_started}</h2>
+      <p className="mb-6 text-center">{constants.generalHealth.title}</p>
       <FormControl component="fieldset">
-        <FormLabel component="legend" className="mb-4 text-center">Do you have any pre-existing respiratory conditions?</FormLabel>
+        <FormLabel component="legend" className="mb-4 text-center">{constants.generalHealth.title}</FormLabel>
         <RadioGroup value={respCondition} onChange={handleRespChange}>
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
         </RadioGroup>
         {respCondition === 'Yes' && (
             <div className='mt-4'>
-                <FormLabel component="legend" className="mb-4 text-center">Do you have any pre-existing respiratory conditions?</FormLabel>
+                <FormLabel component="legend" className="mb-4 text-center">{constants.generalHealth.title}</FormLabel>
                 <FormGroup>
                     <FormControlLabel value="Asthma" control={<Checkbox />} label="Asthma" />
                     <FormControlLabel value="Long Covid" control={<Checkbox />} label="Long Covid" />
@@ -39,11 +41,15 @@ const GeneralHealthSection = ({ nextStep }) => {
       </FormControl>
       <div className="flex justify-center mt-6">
         <Button variant="contained" color="primary" onClick={nextStep}>
-          Save & Continue
+          {constants.general.save_and_continue}
         </Button>
       </div>
     </div>
   );
 };
+
+GeneralHealthSection.propTypes = {
+  nextStep: PropTypes.func
+}
 
 export default GeneralHealthSection;
