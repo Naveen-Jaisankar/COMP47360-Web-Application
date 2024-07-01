@@ -58,7 +58,14 @@ public class FlaskClient {
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
         client.close();
-        return new JSONObject(responseString);
+        System.out.println("Response from server (predict_with_location): " + responseString);
+
+        // Handle potential non-JSON response
+        if (responseString.trim().startsWith("{")) {
+            return new JSONObject(responseString);
+        } else {
+            throw new Exception("Server returned non-JSON response: " + responseString);
+        }
     }
 
     public static JSONArray predictForAllGrids(JSONObject input) throws Exception {
