@@ -24,12 +24,12 @@ import jakarta.validation.Valid;
  public class AuthController {
 
      @Autowired 
-     private AuthService userService;
+     private AuthService authService;
 
      @PostMapping("/registerUser")
      public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
          UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
-         userRegisterResponse = userService.registerUser(userRegisterRequest);
+         userRegisterResponse = authService.registerUser(userRegisterRequest);
          return ResponseEntity.ok(userRegisterResponse);
 
      }
@@ -37,26 +37,26 @@ import jakarta.validation.Valid;
      @PostMapping("/resendVerificationEmail")
      public ResponseEntity<?> resendVerificationEmail(@Valid @RequestBody ResendVerificationEmailReqeust resendVerificationEmailReqeust){
     	 ResendVerificationEmailResponse resendVerificationEmailResponse = new ResendVerificationEmailResponse();
-    	 resendVerificationEmailResponse = userService.resendVerificationEmail(resendVerificationEmailReqeust);
+    	 resendVerificationEmailResponse = authService.resendVerificationEmail(resendVerificationEmailReqeust);
     	 return ResponseEntity.ok(resendVerificationEmailResponse);
      }
      
      @GetMapping("/confirm")
      public ResponseEntity<?> confirm(@RequestParam("token") String token) {
-         return ResponseEntity.ok(userService.confirmToken(token));
+         return ResponseEntity.ok(authService.confirmToken(token));
      }
 
      @PostMapping("/signin")
      public ResponseEntity<?> userSignin(
              @Valid @RequestBody UserSignInRequest userSignInRequest) {
          UserSignInResponse userSignInResponse = new UserSignInResponse();
-         userSignInResponse = userService.userSignIn(userSignInRequest);
+         userSignInResponse = authService.userSignIn(userSignInRequest);
          return ResponseEntity.ok(userSignInResponse);
      }
 
      @GetMapping("/validateToken")
      public String validateToken(@RequestParam("token") String token) {
-         userService.validateToken(token);
+         authService.validateToken(token);
          return "Token is valid";
      }
 
