@@ -3,6 +3,7 @@ import { TextField, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AirIcon from '@mui/icons-material/Air';
 import Typography from '@mui/material/Typography';
+import constants from './../constant';
 
 const Register = () => {
   const [username, setUserName] = useState('');
@@ -19,8 +20,8 @@ const Register = () => {
     <div className="flex flex-col items-center justify-center min-h-screen">
 
         <AirIcon fontSize="large" className='mb-4'></AirIcon>
-        <Typography variant="h4" className="mb-4 font-bold">Create an account</Typography>
-        <Typography variant="body1" className="mb-8 text-gray-500">Enter your details to sign up</Typography>
+        <Typography variant="h4" className="mb-4 font-bold">{constants.register.title}</Typography>
+        <Typography variant="body1" className="mb-8 text-gray-500">{constants.register.body}</Typography>
 
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
 
@@ -36,7 +37,7 @@ const Register = () => {
             <TextField label="Password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth type="password" />
             </div>
 
-            <Button variant="contained" type="submit" fullWidth> Create my account </Button>
+            <Button variant="contained" type="submit" fullWidth> {constants.register.btn} </Button>
         </form>
 
         <p className="text-center mt-4">Already a member?{' '} 
