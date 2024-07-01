@@ -63,8 +63,12 @@ const DashBoard = ({ isSidebarOpen }) => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
+                <XAxis 
+                  dataKey="day" 
+                />
+                <YAxis 
+                  label={{ value: 'Air Quality Index (AQI)', angle: -90, position: 'left', style: { textAnchor: 'middle' } }}
+                />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 {/* Area (AQI) */}
