@@ -1,5 +1,6 @@
 // taken from https://mui.com/base-ui/react-number-input/#component
 
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import {
   Unstable_NumberInput as BaseNumberInput,
@@ -30,7 +31,7 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-export default function CustomNumberInput({value, onChange, max, arialabel,...props}) {
+export default function CustomNumberInput({value, onChange, max, arialabel}) {
 
   //  validates input
   const numericValue = typeof value === 'string' ? Number(value) : value;
@@ -187,3 +188,11 @@ const StyledButton = styled('button')(
   }
 `,
 );
+
+CustomNumberInput.propTypes = {
+  value: PropTypes.number,
+  onChange: PropTypes.func,
+  max: PropTypes.number,
+  arialabel: PropTypes.string,
+}
+

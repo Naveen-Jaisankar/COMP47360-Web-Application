@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Paper} from "@mui/material"
+import { Container, Typography, Box } from "@mui/material"
 import UserContent from "../components/usercontent"
 import UserPlaceholder from "../components/userplaceholder"
 import CustomCalendar from "../components/customcalendar"
