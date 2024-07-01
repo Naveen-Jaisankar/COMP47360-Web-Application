@@ -1,4 +1,4 @@
-import React, {useMemo, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import {useMap} from '@vis.gl/react-google-maps';
 
 const MapHandler = ({selectedPlace}) =>{
