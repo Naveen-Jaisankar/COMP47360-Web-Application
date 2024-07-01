@@ -1,0 +1,10 @@
+package com.compsci.webapp.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ExposureScoreRepository extends JpaRepository<ExposureScore, Long> {
+    
+    ExposureScore findByUserIdAndExposureDate(Long userId, LocalDate exposureDate);
+}
