@@ -10,6 +10,7 @@ import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
 import Privacy from './pages/Privacy';
 import UserHistory from './pages/UserHistory';
+import UserDashboard from './pages/UserDashboard';
 import { SettingsContext } from './context/SettingsContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -30,7 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/map" element={<Map />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings" element={<Settings/>} />
           <Route path="/form" element={<Form />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>}/>
@@ -38,6 +39,7 @@ function App() {
           <Route path="/user" element={<UserPanel/>} />
           <Route path="/user/dailyform" element={<DailyForm/>} />
           <Route path="/user/history" element={<UserHistory/>} />
+          <Route path="/userdashboard" element={<UserDashboard/>} />
           <Route path="/privacy" element={<Privacy/>} />
         </Routes>
       </MainContent>
