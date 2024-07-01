@@ -1,0 +1,54 @@
+#spring.application.name=profile-service
+#spring.jpa.properties.jakarta.persistence.EntityManagerFactory.interface: jakarta.persistence.EntityManagerFactory
+
+
+  
+
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+logging:
+  file:
+    name: logs/app.log
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/rp
+    username: group12
+    password: G12webapp
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jackson:
+    serialization:
+      INDENT_OUTPUT: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: naveen.jaisankar1999@gmail.com
+    password: awmpzueoebuyngal
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  application:
+    name: webapp
