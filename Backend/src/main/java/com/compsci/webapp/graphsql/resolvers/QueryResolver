@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class QueryResolver implements GraphQLQueryResolver {
 
     @Autowired
-    private ExposureScoreRepository exposureScoreRepository;
+    private InductionQuizScore inductionScoreRepository;
 
     @Autowired
     private StGeorgeQuizScoreRepository stGeorgeQuizScoreRepository;
@@ -22,7 +22,7 @@ public class QueryResolver implements GraphQLQueryResolver {
      * @param exposureDate The date for which exposure score is fetched
      * @return The ExposureScore object if found, otherwise null
      */
-    public ExposureScore getExposureScore(Long userId, String exposureDate) {
+    public InductionQuizScore getIndunctionScore(Long userId, String exposureDate) {
         LocalDate date = LocalDate.parse(exposureDate);
         return exposureScoreRepository.findByUserIdAndExposureDate(userId, date);
     }
