@@ -187,20 +187,5 @@ public class AuthServiceImpl implements AuthService {
 		jwtService.validateToken(token);
 	}
 	
-	public String buildAccountConfirmationEmail() {
-		
-		try {
-        	Template verificationEmailTemplate = freemarkerConfig.getTemplate("confirmation_email.ftl");
-        	Map<String, Object> verificationEmailValueMapper = new HashMap<>();
-            emailService.send(
-            		user.getUserEmail(),
-            		FreeMarkerTemplateUtils.processTemplateIntoString(verificationEmailTemplate, verificationEmailValueMapper));
-        }catch(Exception e) {
-        	System.out.println("Failed to send verification email");
-        }
-		return "Confirmed";
-	}
-
 	
-
 }
