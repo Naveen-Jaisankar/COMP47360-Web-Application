@@ -30,6 +30,7 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/form" element={<Form />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
         </MainContent>
       </div>
