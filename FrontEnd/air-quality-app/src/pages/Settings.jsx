@@ -2,6 +2,8 @@ import { useContext } from 'react';
 import { Switch, Slider, Typography, Paper, Container } from '@mui/material';
 import { SettingsContext } from '../context/SettingsContext';
 import { styled } from '@mui/system';
+import constant from '../constant';
+
 
 const ColumnContainer = styled(Container)({
   display: 'flex',
@@ -21,7 +23,6 @@ const SettingsPaper = styled(Paper)({
  
 })
 
-import constant from '../constant';
 
 const Settings = () =>{
 
