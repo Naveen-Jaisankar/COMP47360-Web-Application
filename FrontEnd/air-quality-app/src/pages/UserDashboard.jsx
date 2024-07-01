@@ -1,19 +1,43 @@
 import React from 'react';
 import { Card, CardContent, Typography, Avatar, Box } from '@mui/material';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Infocard from "../components/infocard";
 
 const image1 = "../src/static/proxy-image.png";
 
 const data = [
-  { day: 'Monday', value: 2 },
-  { day: 'Tuesday', value: 5.5 },
-  { day: 'Wednesday', value: 2 },
-  { day: 'Thursday', value: 8.5 },
-  { day: 'Friday', value: 1.5 },
-  { day: 'Saturday', value: 5 },
-  { day: 'Sunday', value: 14 }
+  { day: 'Monday', PersonalExposure: 20, AQI: 40 },
+  { day: 'Tuesday', PersonalExposure: 60, AQI: 50 },
+  { day: 'Wednesday', PersonalExposure: 25, AQI: 35 },
+  { day: 'Thursday', PersonalExposure: 9, AQI: 80 },
+  { day: 'Friday', PersonalExposure: 24.5, AQI: 85 },
+  { day: 'Saturday', PersonalExposure: 31.2, AQI: 60 },
+  { day: 'Sunday', PersonalExposure: 17, AQI: 48.2 }
 ];
+
+// Custom Tooltip Component
+const CustomTooltip = ({ payload, label }) => {
+  if (!payload || payload.length === 0) return null;
+
+  const { PersonalExposure, AQI } = payload[0].payload;
+
+  return (
+    <div className="custom-tooltip p-2 bg-white border rounded shadow">
+      <p className="label">{label}</p>
+      <p className="desc">
+        <strong>Personal Exposure:</strong> {PersonalExposure}
+      </p>
+      <p className="desc">
+        <strong>AQI:</strong> {AQI}
+      </p>
+      {PersonalExposure > AQI && (
+        <p className="highlight text-red-500">
+          <strong>Alert:</strong> Personal Exposure is above AQI
+        </p>
+      )}
+    </div>
+  );
+};
 
 const DashBoard = ({ isSidebarOpen }) => {
   return (
@@ -22,21 +46,45 @@ const DashBoard = ({ isSidebarOpen }) => {
         <Typography variant="h4">Your Dashboard</Typography>
       </header>
       <section className="mb-8">
-        <div className=" p-4 rounded shadow-md">
-          <Box className="w-full h-64 md:h-80 lg:h-96">
-            <LineChart
-              width={500}
-              height={300}
-              data={data}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
-            </LineChart>
+        <div className="p-4 rounded shadow-md">
+          <Box className="w-full h-96">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <defs>
+                  {/* Gradient for AQI */}
+                  <linearGradient id="colorAQI" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ff7300" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#ff7300" stopOpacity={0} />
+                  </linearGradient>
+                  {/* Gradient for PersonalExposure */}
+                  <linearGradient id="colorPersonalExposure" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                {/* Area (AQI) */}
+                <Area
+                  type="monotone"
+                  dataKey="AQI"
+                  stroke="#ff7300"
+                  fillOpacity={1}
+                  fill="url(#colorAQI)"
+                />
+                {/* Area (PersonalExposure) */}
+                <Area
+                  type="monotone"
+                  dataKey="PersonalExposure"
+                  stroke="#8884d8"
+                  fillOpacity={1}
+                  fill="url(#colorPersonalExposure)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </Box>
           <Typography variant="h6">Summary:</Typography>
           <Typography variant="body1">
