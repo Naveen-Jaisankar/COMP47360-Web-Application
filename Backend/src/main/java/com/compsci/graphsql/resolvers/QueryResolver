@@ -1,0 +1,51 @@
+import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+
+@Component
+public class QueryResolver implements GraphQLQueryResolver {
+
+    @Autowired
+    private ExposureScoreRepository exposureScoreRepository;
+
+    @Autowired
+    private StGeorgeQuizScoreRepository stGeorgeQuizScoreRepository;
+
+    @Autowired
+    private DailyQuizScoreRepository dailyQuizScoreRepository;
+
+    /**
+     *  gets the exposure score for a user on a specific date.
+     * @param userId The ID of the user
+     * @param exposureDate The date for which exposure score is fetched
+     * @return The ExposureScore object if found, otherwise null
+     */
+    public ExposureScore getExposureScore(Long userId, String exposureDate) {
+        LocalDate date = LocalDate.parse(exposureDate);
+        return exposureScoreRepository.findByUserIdAndExposureDate(userId, date);
+    }
+
+    /**
+     * gets the St George Quiz score for a user on a specific date.
+     * @param userId  ID of the user
+     * @param quizDate  date for which St George Quiz score is fetched
+     * @return  StGeorgeQuizScore object if found, otherwise null
+     */
+    public StGeorgeQuizScore getStGeorgeQuizScore(Long userId, String quizDate) {
+        LocalDate date = LocalDate.parse(quizDate);
+        return stGeorgeQuizScoreRepository.findByUserIdAndQuizDate(userId, date);
+    }
+
+    /**
+     *  gets Daily Quiz score for a user on a specific date.
+     * @param userId  ID of the user
+     * @param quizDate  date for which Daily Quiz score is fetched
+     * @return  DailyQuizScore object if found, otherwise null
+     */
+    public DailyQuizScore getDailyQuizScore(Long userId, String quizDate) {
+        LocalDate date = LocalDate.parse(quizDate);
+        return dailyQuizScoreRepository.findByUserIdAndQuizDate(userId, date);
+    }
+}
