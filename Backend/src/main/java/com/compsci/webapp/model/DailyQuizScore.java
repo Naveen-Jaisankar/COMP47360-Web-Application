@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "dailyquizscore")
 public class DailyQuizScore {
@@ -26,5 +25,37 @@ public class DailyQuizScore {
     @Column(name = "quiz_score")
     private Integer quizScore;
 
-   
+    // Getters and setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public LocalDate getQuizDate() {
+        return quizDate;
+    }
+
+    public void setQuizDate(LocalDate quizDate) {
+        this.quizDate = quizDate;
+    }
+
+    public Integer getQuizScore() {
+        return quizScore;
+    }
+
+    public void setQuizScore(Integer quizScore) {
+        this.quizScore = quizScore;
+    }
 }
