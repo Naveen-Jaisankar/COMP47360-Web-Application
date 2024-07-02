@@ -26,8 +26,6 @@ export default function DailyForm() {
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-  const [maxIndoorHours, setMaxIndoorHours] = useState(24);
-  const [maxOutdoorHours, setMaxOutdoorHours] = useState(24);
 
   // Validation functions
 
@@ -74,9 +72,11 @@ export default function DailyForm() {
   // checks if the user has inputted 24 hours, if not this function will proportionately "fill" the rest of hours
   // based of users input. If input is 0, it will take the "average day" spent indoors/outdoors i.e. 2 hours indoors/22 hours outdoors
   const check24Hours = (indoorHours, outdoorHours) => {
+    let hourCheck = true;
     const totalHours = indoorHours + outdoorHours;
-    if (totalHours === 24) {
-      // do nothing
+    if (totalHours === 0) {
+      setIndoorHours(22);
+      setOutdoorHours(2);
     } else if (totalHours < 24) {
       var indoorHourRatio = indoorHours / totalHours;
       var outdoorHourRatio = outdoorHours / totalHours;
@@ -94,11 +94,14 @@ export default function DailyForm() {
 
       console.log(`adjusted indoors, ${adjustedIndoorHours}`);
       console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
-    } else if (totalHours === 0 ){
-      // this is the average day, if the user did not put in any hours.
-      setIndoorHours(22);
-      setOutdoorHours(2);
+
+      setIndoorHours(adjustedIndoorHours)
+      setOutdoorHours(adjustedOutdoorHours)
+    } else if (totalHours > 24){
+      hourCheck = false;
     }
+
+    return hourCheck;
   }
 
   // Submission function
@@ -106,12 +109,14 @@ export default function DailyForm() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    check24Hours(indoorHours, outdoorHours);
+    const is24Hours = check24Hours(indoorHours, outdoorHours);
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
     if (!isValid) {
       alert("Please choose a location in Manhattan");
-    } else {
+    } else if (!is24Hours) {
+      alert("24 hours exceeded, number inputs are invalid")
+    } else{
       try {
         console.log(`Indoor Hours: ${indoorHours}`);
         console.log(`Outdoor Hours: ${outdoorHours}`);
@@ -122,6 +127,11 @@ export default function DailyForm() {
         console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
         console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
         alert("Form submitted :D");
+
+        setIndoorLocation("");
+        setOutdoorLocation("");
+        setIndoorHours(0);
+        setOutdoorHours(0);
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
@@ -133,13 +143,11 @@ export default function DailyForm() {
     const handleIndoorHoursChange = (event, newValue) => {
       const indoorValue = newValue;
       setIndoorHours(indoorValue);
-      setMaxOutdoorHours(24 - indoorValue);
     };
 
     const handleOutdoorHoursChange = (event, newValue) => {
       const outdoorValue = newValue;
       setOutdoorHours(outdoorValue);
-      setMaxIndoorHours(24 - outdoorValue);
     };
 
     const handleIndoorPlaceChange = (placeData) => {
@@ -171,7 +179,9 @@ export default function DailyForm() {
               <QuestionTypography variant="h4" component="h2">
                 While indoors, where did you spend most of your time?
               </QuestionTypography>
-              <DailySearchbar passPlaceData={handleIndoorPlaceChange} />
+              <DailySearchbar 
+                value={indoorLocation.address || ""} 
+                passPlaceData={handleIndoorPlaceChange} />
 
               <QuestionTypography variant="h4" component="h2">
                 How many hours did you spend indoors today?
@@ -179,7 +189,6 @@ export default function DailyForm() {
               <CustomNumberInput
                 value={indoorHours}
                 onChange={handleIndoorHoursChange}
-                max={maxIndoorHours}
                 arialabel={"Number of Hours spent indoors"}
               />
               <QuestionTypography variant="h4" component="h2">
@@ -193,7 +202,6 @@ export default function DailyForm() {
               <CustomNumberInput
                 value={outdoorHours}
                 onChange={handleOutdoorHoursChange}
-                max={maxOutdoorHours}
                 arialabel={"Number of Hours spent indoors"}
               />
 

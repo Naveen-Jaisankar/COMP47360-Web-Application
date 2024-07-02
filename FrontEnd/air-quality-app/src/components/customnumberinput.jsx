@@ -31,7 +31,7 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-export default function CustomNumberInput({value, onChange, max, arialabel}) {
+export default function CustomNumberInput({value, onChange, arialabel}) {
 
   //  validates input
   const numericValue = typeof value === 'string' ? Number(value) : value;
@@ -43,7 +43,6 @@ export default function CustomNumberInput({value, onChange, max, arialabel}) {
       value={numericValue}
       onChange={onChange}
       min= {0}
-      max= {max}
       sx={{
         margin: "1rem",
         height: "3.5rem",
@@ -192,7 +191,6 @@ const StyledButton = styled('button')(
 CustomNumberInput.propTypes = {
   value: PropTypes.number,
   onChange: PropTypes.func,
-  max: PropTypes.number,
   arialabel: PropTypes.string,
 }
 
