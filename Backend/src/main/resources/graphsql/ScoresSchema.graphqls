@@ -1,0 +1,10 @@
+type DailyQuizScore {
+    id: ID!
+    userId: Long!
+    quizDate: String!
+    score: Int!
+}
+
+type Mutation {
+    saveDailyQuizScore(userId: Long!, quizDate: String!, score: Int!): DailyQuizScore
+}
