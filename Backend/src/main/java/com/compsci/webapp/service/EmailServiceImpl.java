@@ -1,6 +1,19 @@
 package com.compsci.webapp.service;
 
- import java.io.UnsupportedEncodingException;
+ /**
+ * Module Name: EmailServiceImpl.java
+ * Date of Creation: 17-Jun-2024
+ * Author: navee
+ *
+ * Description:
+ * This class handles ...
+ */
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import lombok.AllArgsConstructor;
+
+import java.io.UnsupportedEncodingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +22,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import jakarta.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
