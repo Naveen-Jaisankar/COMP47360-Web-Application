@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './custom-calendar.css'; // Ensure this includes your updated styles
+import './custom-calendar.css';
 import { Paper } from '@mui/material';
 
 const CustomCalendar = () => {
   const [completedDaily, setCompletedDaily] = useState([]);
   const [dateStatuses, setDateStatuses] = useState({}); // State for storing date statuses
 
-  // Fetch dates and their statuses from backend or define mock data
+  // Fetch dates and their statuses from back end
   useEffect(() => {
     // Example mock data for completed dates and statuses
     const mockDates = [

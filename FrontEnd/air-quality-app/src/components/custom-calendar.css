@@ -5,20 +5,20 @@
   width: 100% !important;
   border-radius: 10px; /* Rounds the corners of the calendar container */
   overflow: hidden; /* Prevents content from overflowing outside the rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
-  position: relative; /* Ensure proper clipping */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  position: relative; /* Ensures proper clipping */
 }
 
 /* Rounds the corners of the tiles */
 .react-calendar__tile {
-  border-radius: 8px; /* Adjust as needed for more or less rounding */
-  position: relative; /* Required for absolute positioning of content */
+  border-radius: 8px;
+  position: relative;
   overflow: hidden; /* Prevents content from extending outside the tile */
 }
 
 /* Adjusts the navigation header to fit within the rounded corners */
 .react-calendar__navigation {
-  border-radius: 10px; /* Adjust as needed for more or less rounding */
+  border-radius: 10px;
   overflow: hidden; /* Prevents overflow in navigation header */
 }
 
@@ -27,10 +27,10 @@
   color: #1f1b13 !important;
 }
 
-/* Highlighted today's date */
+/* Highlights today's date */
 .react-calendar__tile--now {
   background-color: grey !important;
-  border-radius: 8px; /* Ensure the rounded corners apply to today's date tile */
+  border-radius: 8px; /* Ensures the rounded corners apply to today's date tile */
 }
 
 /* Hides neighboring month days */
@@ -44,7 +44,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.5rem; /* Size of the tick icon */
-  position: absolute; /* Positioning for centering */
+  position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
@@ -57,12 +57,12 @@
   color: transparent; /* Hide the number */
 }
 
-/* Color for success tick */
+/* Colour for success tick */
 .status.success {
   color: green;
 }
 
-/* Color for failure tick */
+/* Colour for failure tick */
 .status.failure {
   color: red;
 }
