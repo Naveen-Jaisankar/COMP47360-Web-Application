@@ -24,19 +24,23 @@ const Login = () => {
 
         <AirIcon fontSize="large" className='mb-4'></AirIcon>
 
-        <Typography variant="h4" className="mb-4 font-bold">{constant.Login.login}</Typography>
-        <Typography variant="body1" className="mb-8 text-gray-500"> {constant.Login.login_body} </Typography>
+        <Typography variant="h4" className="mb-4 font-bold">{constant.loginConsts.login}</Typography>
+        <Typography variant="body1" className="mb-8 text-gray-500"> {constant.loginConsts.login_body} </Typography>
 
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
             <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" className="mb-3" />
 
             <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" />
 
-            <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4"> {constant.Login.login_btn} </Button>
+            <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4"> {constant.loginConsts.login_btn} </Button>
 
-            <div className="flex justify-center mt-3">
-                <Link href="/register" className="text-blue-500 mt-3">
-                  {constant.Login.create_acnt}
+            <div className="flex flex-col items-center justify-center mt-3">
+                <Link href="/register" className="text-blue-500 mt-3 p-2">
+                  {constant.loginConsts.create_acnt}
+                </Link>
+
+                <Link href="/forgotpass" className="text-blue-500 mt-3 p-2">
+                  {constant.loginConsts.forgot_pass}
                 </Link>
             </div>
 

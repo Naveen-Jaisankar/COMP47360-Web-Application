@@ -1,33 +1,100 @@
-import {Map,
-        APIProvider,
-} from "@vis.gl/react-google-maps"
+import { useState, useCallback, useEffect} from 'react';
+import {GoogleMap, HeatmapLayer, useJsApiLoader, Marker} from '@react-google-maps/api';
+
+import PlaceAutomplete from '../components/mapautocomplete';
 
 // resources used:
-// https://www.youtube.com/watch?v=PfZ4oLftItk&list=PL2rFahu9sLJ2QuJaKKYDaJp0YqjFCDCtN
-// https://blog.victorwilliams.me/how-to-add-google-maps-to-react-app-visgl
+//https://youtu.be/Y7tpjR2dLOQ?si=Elw_hGiTmzay0xuf
 
-const googleMapsKey= import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-const position = { lat: 40.7831, lng: -73.9712 };
-const customMapId = import.meta.env.VITE_GOOGLE_MAPS_ID;
+// const googleMapsKey= import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+// const customMapId = import.meta.env.VITE_GOOGLE_MAPS_ID;
+
+const centerPosition = { lat: 40.773631, lng: -73.971290 };
+
+const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
+const libs = ['visualization', 'places']
+
+//dummy data
+const heatMapData = [
+    { lat: 40.7128, lng:-74.0060, weight:2 },
+    { lat: 40.758896, lng: -73.985130, weight:5 },
+    { lat: 40.813819, lng: -73.949219, weight:1 },
+    { lat: 40.693619, lng: -74.009215, weight:3 },
+    { lat: 40.879352, lng: -73.923219, weight:3 },
+    { lat: 40.725819, lng: -73.996130, weight:2 },
+    { lat: 40.748352, lng: -74.004215, weight:1 },
+    { lat: 40.819352, lng: -73.944219, weight:6 },
+    { lat: 40.695819, lng: -74.013130, weight:4 },
+    { lat: 40.763352, lng: -73.983219, weight:3 },
+    { lat: 40.739352, lng: -73.969219, weight:2 },
+    { lat: 40.799352, lng: -73.929219, weight:1 },
+    { lat: 40.729352, lng: -73.989219, weight:1.5 },
+    { lat: 40.769352, lng: -73.959219, weight:4 },
+    { lat: 40.789352, lng: -73.939219, weight:2 },
+    { lat: 40.749352, lng: -73.979219, weight:3 },
+    { lat: 40.809352, lng: -73.909219, weight:5 },
+    { lat: 40.719352, lng: -74.019219, weight:1},
+    { lat: 40.779352, lng: -73.949219, weight:2.5 },
+    { lat: 40.759352, lng: -73.969219, weight:1 },
+    { lat: 40.829352, lng: -73.919219, weight:5 },
+] 
+
+const airQualityGradient = [
+    "rgba(32, 205, 50, 0)", // Good air quality
+    "rgba(32, 205, 50, 1)", // Good air quality
+    "rgba(255, 255, 0, 1)", // Moderate air quality
+    "rgba(255, 160, 122, 1)", // Unhealthy for sensitive groups
+    "rgba(255, 0, 0, 1)", // Unhealthy
+    "rgba(139, 10, 26, 1)", // Very unhealthy
+    "rgba(108, 92, 231, 1)", // Hazardous
+  ];
 
 export default function MapPage () {
+
+    const [map, setMap] = useState(null);
+
+    const {isLoaded} = useJsApiLoader({
+        googleMapsApiKey:googleMapsKey,
+        libraries:libs
+    })
+
+    const handlePlaceSelected = useCallback((location) => {
+        if (map) {
+          map.panTo(new google.maps.LatLng(location.lat(), location.lng()));
+          map.zoom = 12;
+        }
+      }, [map]);
+
+    if(!isLoaded)
+    {
+        return(<div>Loading...please wait</div>)
+    }
+
     return (
-        <>
-        <APIProvider apiKey={googleMapsKey}>
         <div>
-            <Map
-            style={{width: '100vw', height: '90vh'}}
-            defaultZoom={13}
-            defaultCenter={position}
-            gestureHandling={'greedy'}
-            // disableDefaultUI={true}
-            mapId={customMapId}></Map>
+            <GoogleMap mapContainerStyle={{position:'relative', width:'100vw', height:'100vh'}}
+                center={centerPosition} zoom={12} onLoad={(map)=> setMap(map)}
+                options={{ disableDefaultUI:{zoomControl:true, mapTypeControl:true, streetViewControl:true}}}>
 
+                {map && heatMapData &&
+                    <>
+                        <HeatmapLayer 
+                            data={heatMapData.map((data)=>(
+                                {location:new google.maps.LatLng(data.lat, data.lng), weight:data.weight}
+                            ))}
+                            options={{ 
+                                radius:20,
+                                dissipating:true,
+                                opacity:0.5,
+                                gradient:airQualityGradient
+                            }}
+                        />
+                    </>
+                }
+                <div>
+                    <PlaceAutomplete onPlaceSelected = {handlePlaceSelected} map = {map}/>
+                </div>
+            </GoogleMap>
         </div>
-        
-        
-        </APIProvider>
-
-        </>
     )
 }

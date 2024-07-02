@@ -32,11 +32,12 @@ export const homePage =  {
     air_pollution_body : "What does the science say about air pollution?"
 }
 
-export const login = {
+export const loginConsts = {
     login : "Log-In",
     login_body : "Where data meets the air",
     login_btn : "Login",
     create_acnt : " Not a member? Create an account here",
+    forgot_pass:"Forgot Password? Click here!"
 }
 
 export const register = {
@@ -63,7 +64,7 @@ export default {
     general,
     generalHealth,
     homePage,
-    login,
+    loginConsts,
     register,
     settings,
     userAge,
