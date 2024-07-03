@@ -1,10 +1,9 @@
-import { Container, Typography, Box, Grid, CardMedia } from "@mui/material";
-
+import { Container, Typography, Box, Grid } from "@mui/material";
 import Infocard from "../components/infocard";
 import ReactPlayer from "react-player"
+import constants from './../constant';
 
 const image1 = "../src/static/proxy-image.png";
-const banner = "../src/static/01-03_City_map2v_generated.jpg";
 const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI"
 const Home = () => {
   return (
@@ -38,7 +37,7 @@ const Home = () => {
                   color: "white",
                 }}
               >
-                "Quote that captures app spirit"
+                {constants.homePage.title1}
               </Typography>
               <Typography
                 variant="h4"
@@ -48,8 +47,7 @@ const Home = () => {
                   marginTop: 3,
                 }}
               >
-                Air quality is the problem of the decade, facing thousands of
-                people. Get started with us
+                {constants.homePage.title1_subtext}
               </Typography>
             </Box>
           </Box>
@@ -96,7 +94,7 @@ const Home = () => {
                       
                       }}
                     >
-                      How to Get Started
+                      {constants.homePage.getting_started}
                     </Typography>
                     <ReactPlayer url={videoUrl} width="100%" height="100%" style={{
                       top: 0,
@@ -143,10 +141,10 @@ const Home = () => {
                 }}
               >
                 <Typography variant="h2" component="h2">
-                  Air Pollution & You
+                  {constants.homePage.air_pollution_heading}
                 </Typography>
                 <Typography variant="body1" component="p">
-                  What does the science say about air pollution?
+                {constants.homePage.air_pollution_heading}
                 </Typography>
               </Box>
 
@@ -162,19 +160,19 @@ const Home = () => {
                   image={image1}
                   alt="Image Alt Text"
                   heading="Funky fact"
-                  text="More info"
+                  text={constants.general.more_info}
                 />
                 <Infocard
                   image={image1}
                   alt="Image Alt Text"
                   heading="Funky fact"
-                  text="More info"
+                  text={constants.general.more_info}
                 />
                 <Infocard
                   image={image1}
                   alt="Image Alt Text"
                   heading="Funky fact"
-                  text="More info"
+                  text={constants.general.more_info}
                 />
               </Box>
             </Container>

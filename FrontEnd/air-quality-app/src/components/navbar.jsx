@@ -1,9 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
 import AirIcon from '@mui/icons-material/Air';
 import NavbarButton from "./navbarbutton";
 import navbarHeights from './navbarheights';
+import constants from './../constant';
 
 const Navbar = () => {
   return (
@@ -31,11 +30,11 @@ const Navbar = () => {
                display: {xs:'none',md: 'flex'}  
             }}>Fair</Typography>
             <Box>
-                <NavbarButton to="/">Home</NavbarButton>
-                <NavbarButton to="/map">Map</NavbarButton>
-                <NavbarButton to="/settings">Settings</NavbarButton>
-                <NavbarButton to="/form">Form</NavbarButton>
-                <NavbarButton to="/register">Login/Register</NavbarButton>
+                <NavbarButton to="/">{constants.general.home}</NavbarButton>
+                <NavbarButton to="/map">{constants.general.map}</NavbarButton>
+                <NavbarButton to="/settings">{constants.general.settings}</NavbarButton>
+                <NavbarButton to="/form">{constants.general.form}</NavbarButton>
+                <NavbarButton to="/register">{constants.general.login_register}</NavbarButton>
             </Box>
 
         </Toolbar>

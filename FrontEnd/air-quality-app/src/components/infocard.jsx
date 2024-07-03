@@ -1,5 +1,6 @@
 
 import {Typography, Card, CardContent, CardMedia} from '@mui/material';
+import PropTypes from 'prop-types';
 
 const Infocard = ({image, alt, heading, text})=>{
     return (
@@ -25,6 +26,13 @@ const Infocard = ({image, alt, heading, text})=>{
         
         </>
         )
+}
+
+Infocard.propTypes = {
+    image: PropTypes.string.isRequired,
+    alt: PropTypes.string,
+    heading: PropTypes.string,
+    text: PropTypes.string,
 }
 
 export default Infocard;
