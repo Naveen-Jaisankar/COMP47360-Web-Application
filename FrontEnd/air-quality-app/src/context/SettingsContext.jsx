@@ -1,5 +1,6 @@
-import React, { createContext, useState, useMemo, useContext, useEffect } from 'react';
+import { createContext, useState, useMemo, useEffect } from 'react';
 import { ThemeProvider , createTheme } from '@mui/material/styles';
+import PropTypes from 'prop-types';
 
 export const SettingsContext = createContext();
 
@@ -49,4 +50,8 @@ export const ThemeContextProvider = ({children}) =>{
           </ThemeProvider>
         </SettingsContext.Provider>
     );
-};
+  };
+
+  ThemeContextProvider.propTypes = {
+    children: PropTypes.object
+  }

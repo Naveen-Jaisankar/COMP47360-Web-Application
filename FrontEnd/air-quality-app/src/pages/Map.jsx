@@ -1,8 +1,5 @@
 import {Map,
         APIProvider,
-        AdvancedMarker,
-        Pin,
-        InfoWindow,
 } from "@vis.gl/react-google-maps"
 
 // resources used:
