@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(EmailServiceImpl.class);
-    private static final String TEAM_EMAIL_ID = "fairquality.nyc@gmail.com";
+    private static final String TEAM_EMAIL_ID = "fairquality.ny@gmail.com";
     private static final String SENDER_NAME = "F-Air";
 
     @Autowired
