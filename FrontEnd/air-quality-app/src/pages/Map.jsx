@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect} from 'react';
-import {GoogleMap, HeatmapLayer, useJsApiLoader, Marker} from '@react-google-maps/api';
+import { useState, useCallback} from 'react';
+import {GoogleMap, HeatmapLayer, useJsApiLoader} from '@react-google-maps/api';
 
 import PlaceAutomplete from '../components/mapautocomplete';
 
@@ -82,17 +82,12 @@ export default function MapPage () {
                             data={heatMapData.map((data)=>(
                                 {location:new google.maps.LatLng(data.lat, data.lng), weight:data.weight}
                             ))}
-                            options={{ 
-                                radius:20,
-                                dissipating:true,
-                                opacity:0.5,
-                                gradient:airQualityGradient
-                            }}
+                            options={{radius:20, dissipating:true, opacity:0.2, gradient:airQualityGradient}}
                         />
                     </>
                 }
                 <div>
-                    <PlaceAutomplete onPlaceSelected = {handlePlaceSelected} map = {map}/>
+                    <PlaceAutomplete onPlaceSelected = {handlePlaceSelected}/>
                 </div>
             </GoogleMap>
         </div>

@@ -1,8 +1,8 @@
-import {useRef, useEffect} from "react";
+import {useRef} from "react";
 import {Autocomplete} from '@react-google-maps/api';
 
 
-const PlaceAutomplete = (props)=>{
+const PlaceAutomplete = ({onPlaceSelected})=>{
 
     const autocompleteRef = useRef(null);
     const onLoad = (autocompleteInstance) =>{
@@ -14,7 +14,7 @@ const PlaceAutomplete = (props)=>{
         {
             const place = autocompleteRef.current.getPlace();
             if (place.geometry && place.geometry.location) {
-                props.onPlaceSelected(place.geometry.location);
+                onPlaceSelected(place.geometry.location);
             }
             else
             {
