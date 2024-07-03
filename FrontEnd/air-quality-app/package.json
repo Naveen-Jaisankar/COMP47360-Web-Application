@@ -21,6 +21,7 @@
     "@vis.gl/react-google-maps": "^1.0.2",
     "chart.js": "^4.4.3",
     "dayjs": "^1.11.11",
+    "deck.gl": "^9.0.20",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-normalize": "^10.0.1",
     "postcss-preset-env": "^9.5.14",
