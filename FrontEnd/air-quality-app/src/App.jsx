@@ -38,7 +38,7 @@ function App() {
           <Route path="/user/gettingstarted" element={<Starting />}></Route>
           <Route path="/user" element={<UserPanel/>} />
           <Route path="/user/dailyform" element={<DailyForm/>} />
-          <Route path="/user/userhistory" element={<UserHistory/>} />
+          <Route path="/user/history" element={<UserHistory/>} />
           <Route path="/user/userdashboard" element={<UserDashboard/>} />
           <Route path="/privacy" element={<Privacy/>} />
         </Routes>

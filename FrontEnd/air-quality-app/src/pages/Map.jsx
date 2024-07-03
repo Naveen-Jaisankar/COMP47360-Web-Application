@@ -1,15 +1,10 @@
-import React, {useState, useRef, useEffect, useMemo} from 'react';
+import {useState } from 'react';
 import {APIProvider, Map, MapControl, ControlPosition, useMap} from '@vis.gl/react-google-maps';
 import { IconButton } from '@mui/material';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import DeckGL from '@deck.gl/react';
-import { HeatmapLayer } from '@deck.gl/aggregation-layers';
 
-import {PlaceAutocompleteInput} from '../components/mapautocomplete';
-import MapHandler from '../components/maphandler';
-import {MapSidebar} from '../components/mapsidebar';
-import {MapOverlay} from '../components/mapoverlay';
+
 import data from '../components/sampleheatdata'
 
 // resources used:

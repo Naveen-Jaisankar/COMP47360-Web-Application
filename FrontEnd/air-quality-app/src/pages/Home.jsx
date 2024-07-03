@@ -1,5 +1,5 @@
 import { Container, Typography, Box, Grid, CardMedia } from "@mui/material";
-import { Helmet } from "react-helmet";
+
 import Infocard from "../components/infocard";
 import ReactPlayer from "react-player"
 
@@ -9,10 +9,6 @@ const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI"
 const Home = () => {
   return (
     <>
-      <Helmet>
-        <title>air-quality-app name - Manhattan air tracking application</title>
-        <meta content="This is the Home page of air-quality-app name, here you can find information about the application, facts about air pollution and how to use the website" />
-      </Helmet>
 
       {/* Introduction Section */}
       <section>
