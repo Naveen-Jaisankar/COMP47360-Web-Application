@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button} from '@mui/material';
-
 import {PlaceAutocompleteInput} from './mapautocomplete';
+import PropTypes from 'prop-types';
 
-export const MapSidebar = ({ isOpen}) => {
+export const MapSidebar = ({ isOpen }) => {
 
     //TODO: These will be used when working
     const [source, setSource] = useState(null);
@@ -26,5 +26,6 @@ export const MapSidebar = ({ isOpen}) => {
   );
 };
 
-
-
+MapSidebar.propTypes = {
+    isOpen: PropTypes.bool,
+  };
