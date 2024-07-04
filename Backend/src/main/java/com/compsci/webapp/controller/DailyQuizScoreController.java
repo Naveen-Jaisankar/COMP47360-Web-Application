@@ -1,61 +1,45 @@
 package com.compsci.webapp.controller;
 
-
 import com.compsci.webapp.model.DailyQuizScore;
+import com.compsci.webapp.service.DailyQuizScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
-import com.compsci.webapp.repository.DailyQuizScoreRepository;
 
-
-
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/dailyquizscores")
 public class DailyQuizScoreController {
 
-    private final DailyQuizScoreRepository dailyQuizScoreRepository;
+    private final DailyQuizScoreService dailyQuizScoreService;
 
     @Autowired
-    public DailyQuizScoreController(DailyQuizScoreRepository dailyQuizScoreRepository) {
-        this.dailyQuizScoreRepository = dailyQuizScoreRepository;
+    public DailyQuizScoreController(DailyQuizScoreService dailyQuizScoreService) {
+        this.dailyQuizScoreService = dailyQuizScoreService;
     }
 
     @GetMapping
     public List<DailyQuizScore> getAllDailyQuizScores() {
-        return dailyQuizScoreRepository.findAll();
+        return dailyQuizScoreService.getAllDailyQuizScores();
     }
 
     @GetMapping("/{id}")
     public DailyQuizScore getDailyQuizScoreById(@PathVariable Long id) {
-        return dailyQuizScoreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
+        return dailyQuizScoreService.getDailyQuizScoreById(id);
     }
 
     @PostMapping
     public DailyQuizScore createDailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
-        return dailyQuizScoreRepository.save(dailyQuizScore);
+        return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore);
     }
 
     @PutMapping("/{id}")
     public DailyQuizScore updateDailyQuizScore(@PathVariable Long id, @RequestBody DailyQuizScore quizScoreDetails) {
-        DailyQuizScore quizScore = dailyQuizScoreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
-
-        quizScore.setUserId(quizScoreDetails.getUserId());
-        quizScore.setQuizDate(quizScoreDetails.getQuizDate());
-        quizScore.setQuizScore(quizScoreDetails.getQuizScore());
-
-        return dailyQuizScoreRepository.save(quizScore);
+        return dailyQuizScoreService.updateDailyQuizScore(id, quizScoreDetails);
     }
 
     @DeleteMapping("/{id}")
     public void deleteDailyQuizScore(@PathVariable Long id) {
-        DailyQuizScore quizScore = dailyQuizScoreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
-
-        dailyQuizScoreRepository.delete(quizScore);
+        dailyQuizScoreService.deleteDailyQuizScore(id);
     }
 }
