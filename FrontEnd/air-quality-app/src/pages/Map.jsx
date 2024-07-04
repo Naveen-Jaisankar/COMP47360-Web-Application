@@ -106,10 +106,6 @@ export default function MapPage () {
     )
 }
 
-layers.propTypes = {
-    HeatmapLayer: PropTypes.arrayOf(PropTypes.instanceOf(HeatmapLayer)) // Correct type definition for layers
-}
-
 //two major issues: 1.) Location search bar getting hidden by navbar
 //2.) sidebar getting hidden underneath the map
 //3.) Heatmap not showing
