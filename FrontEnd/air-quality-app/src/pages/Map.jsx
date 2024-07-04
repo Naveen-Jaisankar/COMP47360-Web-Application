@@ -5,6 +5,7 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import PropTypes from 'prop-types';
 
+import {HeatmapLayer} from '@deck.gl/geo-layers'; // Import HeatmapLayer FOR ESLINT DEFINITION CHECKS!
 import data from '../components/sampleheatdata'
 
 // resources used:
@@ -106,7 +107,7 @@ export default function MapPage () {
 }
 
 layers.propTypes = {
-    HeatmapLayer: PropTypes.arrayOf
+    HeatmapLayer: PropTypes.arrayOf(PropTypes.instanceOf(HeatmapLayer)) // Correct type definition for layers
 }
 
 //two major issues: 1.) Location search bar getting hidden by navbar
