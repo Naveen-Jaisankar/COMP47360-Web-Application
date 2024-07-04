@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FlaskClient",
+            "request": "launch",
+            "mainClass": "com.compsci.FlaskClient",
+            "projectName": "webapp"
+        },
+        {
+            "type": "java",
             "name": "DatabaseConnectionTest",
             "request": "launch",
             "mainClass": "com.compsci.webapp.exception.DatabaseConnectionTest",
