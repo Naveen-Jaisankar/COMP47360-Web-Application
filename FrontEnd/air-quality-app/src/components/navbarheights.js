@@ -1,8 +1,8 @@
 const navbarHeights = {
-  xs: 56,
-  sm: 64,
-  md: 72,
-  lg: 80,
+  xs: 58,
+  sm: 62,
+  md: 70,
+  lg: 74,
 };
 
 export default navbarHeights;
