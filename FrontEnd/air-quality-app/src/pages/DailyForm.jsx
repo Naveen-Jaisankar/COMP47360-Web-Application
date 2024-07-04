@@ -1,52 +1,111 @@
 import UserContent from "../components/usercontent";
 import UserPlaceholder from "../components/userplaceholder";
-import { Box, Container, Typography, TextField, Button } from "@mui/material";
+import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState, useEffect } from "react";
-import pm_dictionary from "../components/aqi-pm25-dictionary";
-// import api from '../api/base';
+import { useState } from "react";
+import { styled } from "@mui/system";
+import {ThickHeadingTypography} from "./Home"
+import constants from './../constant';
+
+const QuestionTypography = styled(Typography)(({ theme }) => ({
+  marginBottom: "1rem",
+  fontWeight: "bold",
+  fontSize: "1.5rem",
+  color: theme.palette.text.primary,
+}));
+
+const GreyBackgroundBox = styled(Box) ({
+  backgroundColor: "#F1F3F2",
+  margin: "1rem",
+  padding: "2rem",
+  borderRadius: "20px",
+});
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-  const [maxIndoorHours, setMaxIndoorHours] = useState(24);
-  const [maxOutdoorHours, setMaxOutdoorHours] = useState(24);
-  const indoorFactor = 3;
-  const maskFactor = 1;
 
+  // Validation functions
+
+  // checks if location is in Manhattan
   const checkValidLocation = (indoorLocation, outdoorLocation) => {
     let isValid = false;
+    let indoorCheck = false;
+    let outdoorCheck = false;
+
+    // If the location has loaded, check each component within the array if they match with the word "Manhattan"
+    // if so, the location is valid. This accounts for less detailed/more detailed addresses with more/less components within the array.
 
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
-        console.log(component)
+        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
         ) {
-          isValid = true;
+          indoorCheck = true;
         }
       });
     }
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
-        console.log("outdoors:")
-        console.log(component)
+        console.log("outdoors:");
+        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
         ) {
-          isValid = true;
+          outdoorCheck = true;
         }
       });
+    }
+
+    if (indoorCheck === true && outdoorCheck === true) {
+      isValid = true;
     }
     return isValid;
   };
 
+  // checks if the user has inputted 24 hours, if not this function will proportionately "fill" the rest of hours
+  // based of users input. If input is 0, it will take the "average day" spent indoors/outdoors i.e. 2 hours indoors/22 hours outdoors
+  const check24Hours = (indoorHours, outdoorHours) => {
+    let hourCheck = true;
+    const totalHours = indoorHours + outdoorHours;
+    if (totalHours === 0) {
+      setIndoorHours(22);
+      setOutdoorHours(2);
+    } else if (totalHours < 24) {
+      var indoorHourRatio = indoorHours / totalHours;
+      var outdoorHourRatio = outdoorHours / totalHours;
+
+      var leftoverHours = 24 - totalHours;
+
+      const newIndoorHours = Math.round(leftoverHours * indoorHourRatio);
+      console.log(newIndoorHours);
+
+      const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio);
+      console.log(newOutdoorHours);
+
+      const adjustedIndoorHours = indoorHours + newIndoorHours;
+      const adjustedOutdoorHours = outdoorHours + newOutdoorHours;
+
+      console.log(`adjusted indoors, ${adjustedIndoorHours}`);
+      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
+
+      setIndoorHours(adjustedIndoorHours)
+      setOutdoorHours(adjustedOutdoorHours)
+    } else if (totalHours > 24){
+      hourCheck = false;
+    }
+
+    return hourCheck;
+  }
+
+  // Submission function
 
   // following functions are for the MOCK UP SEND
 
@@ -116,94 +175,55 @@ export default function DailyForm() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    
-    check24Hours(indoorHours,outdoorHours)
 
+    const is24Hours = check24Hours(indoorHours, outdoorHours);
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
     if (!isValid) {
       alert("Please choose a location in Manhattan");
-    } else {
-        try{
-          // MOCK-UP FUNCTIONS & FLOW
-          // const indoorAQI = postIndoorLocationData(indoorLocation)
-          // const outdoorAQI = postOutdoorLocationData(outdoorLocation)
-          // const indoorPM = pmConverter(indoorAQI)
-          // const outdoorPM = pmConverter(outdoorAQI)
-          // const riskScore = calculateRiskScore(indoorPM, outdoorPM, indoorHours, outdoorHours)
-          // const id = getID()
-          // postRiskScore(riskScore,id)
+    } else if (!is24Hours) {
+      alert("24 hours exceeded, number inputs are invalid")
+    } else{
+      try {
+        console.log(`Indoor Hours: ${indoorHours}`);
+        console.log(`Outdoor Hours: ${outdoorHours}`);
+        console.log(`Indoor Location: ${indoorLocation.address}`);
+        console.log(`Indoor Lat: ${indoorLocation.lat}`);
+        console.log(`Indoor Lng: ${indoorLocation.lng}`);
+        console.log(`Outdoor Location: ${outdoorLocation.address}`);
+        console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
+        console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
+        alert("Form submitted :D");
 
-          console.log(`Indoor Hours: ${indoorHours}`);
-          console.log(`Outdoor Hours: ${outdoorHours}`);
-          console.log(`Indoor Location: ${indoorLocation.address}`);
-          console.log(`Indoor Lat: ${indoorLocation.lat}`);
-          console.log(`Indoor Lng: ${indoorLocation.lng}`);
-          console.log(`Outdoor Location: ${outdoorLocation.address}`);
-          console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
-          console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
-          alert("Form submitted :D");
-        } catch (err) {
-          console.log(`Error: ${err.message}`)
-        }
+        setIndoorLocation("");
+        setOutdoorLocation("");
+        setIndoorHours(0);
+        setOutdoorHours(0);
+      } catch (err) {
+        console.log(`Error: ${err.message}`);
+      }
     }
   };
 
-  useEffect(() => {
-    console.log("Updated maxOutdoorHours:", maxOutdoorHours);
-  }, [maxOutdoorHours]);
+  // Form input functions
 
-  useEffect(() => {
-    console.log("Updated maxIndoorHours:", maxIndoorHours);
-  }, [maxIndoorHours]);
+    const handleIndoorHoursChange = (event, newValue) => {
+      const indoorValue = newValue;
+      setIndoorHours(indoorValue);
+    };
 
-  const handleIndoorHoursChange = (event, newValue) => {
-    const indoorValue = newValue;
-    setIndoorHours(indoorValue);
-    setMaxOutdoorHours(24 - indoorValue);
-  };
+    const handleOutdoorHoursChange = (event, newValue) => {
+      const outdoorValue = newValue;
+      setOutdoorHours(outdoorValue);
+    };
 
-  const handleOutdoorHoursChange = (event, newValue) => {
-    const outdoorValue = newValue;
-    setOutdoorHours(outdoorValue);
-    setMaxIndoorHours(24 - outdoorValue);
-  };
+    const handleIndoorPlaceChange = (placeData) => {
+      setIndoorLocation(placeData);
+    };
 
-  const handleIndoorPlaceChange = (placeData) => {
-    setIndoorLocation(placeData);
-  };
-
-  const handleOutdoorPlaceChange = (placeData) => {
-    setOutdoorLocation(placeData);
-  };
-
-  const check24Hours = (indoorHours, outdoorHours) => {
-    const totalHours = indoorHours + outdoorHours
-    if (totalHours === 24) {
-      // do nothing
-    } else if (totalHours < 24) {
-      // also validate 0 hours to double check with the user if correct input
-  
-      var indoorHourRatio = indoorHours/totalHours;
-      var outdoorHourRatio = outdoorHours/totalHours;
-
-      var leftoverHours = 24-totalHours;
-
-      const newIndoorHours = Math.round(leftoverHours * indoorHourRatio)
-      console.log(newIndoorHours)
-      
-      const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio)
-      console.log(newOutdoorHours)
-
-      const adjustedIndoorHours = indoorHours + newIndoorHours
-      const adjustedOutdoorHours = outdoorHours + newOutdoorHours
-
-      console.log(`adjusted indoors, ${adjustedIndoorHours}`)
-      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`)
-
-    }
-
-  }
+    const handleOutdoorPlaceChange = (placeData) => {
+      setOutdoorLocation(placeData);
+    };
 
   return (
     <>
@@ -211,68 +231,50 @@ export default function DailyForm() {
       <UserContent>
         <Container
           sx={{
-            marginTop: "3rem",
+            marginTop: "2rem",
           }}
         >
-          <Typography variant="h1" component="h1">
-            Your Daily Quiz
-          </Typography>
+          <ThickHeadingTypography variant="h1" component="h1" sx={{
+            color: "black",
+            paddingLeft: "1rem"
+          }}>
+            {constants.dailyForm.title}
+          </ThickHeadingTypography>
 
-          <Box
-            sx={{
-              backgroundColor: "#F1F3F2",
-              margin: "1rem",
-              padding: "2rem",
-              borderRadius: 5,
-            }}
-          >
+          <GreyBackgroundBox>
             <form onSubmit={submitHandler}>
-              <Typography
-                variant="h4"
-                component="h2"
-                sx={{ marginBottom: "1rem" }}
-              >
-                While indoors, where did you spend most of your time?
-              </Typography>
-              <DailySearchbar passPlaceData={handleIndoorPlaceChange} />
+              <QuestionTypography variant="h4" component="h2">
+                {constants.dailyForm.q1_indoorLocation}
+              </QuestionTypography>
+              <DailySearchbar 
+                value={indoorLocation.address || ""} 
+                passPlaceData={handleIndoorPlaceChange} />
 
-              <Typography
-                variant="h4"
-                component="h2"
-                sx={{ marginBottom: "1rem" }}
-              >
-                How many hours did you spend indoors today?
-              </Typography>
+              <QuestionTypography variant="h4" component="h2">
+                {constants.dailyForm.q2_indoorHours}
+              </QuestionTypography>
               <CustomNumberInput
                 value={indoorHours}
                 onChange={handleIndoorHoursChange}
-                max={maxIndoorHours}
+                arialabel={"Number of Hours spent indoors"}
               />
-              <Typography
-                variant="h4"
-                component="h2"
-                sx={{ marginBottom: "1rem" }}
-              >
-                While outdoors, where did you spend most of your time?
-              </Typography>
+              <QuestionTypography variant="h4" component="h2">
+               {constants.dailyForm.q3_outdoorLocation}
+              </QuestionTypography>
               <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
 
-              <Typography
-                variant="h4"
-                component="h2"
-                sx={{ marginBottom: "1rem" }}
-              >
-                How many hours did you spend outdoors today?
-              </Typography>
+              <QuestionTypography variant="h4" component="h2">
+               {constants.dailyForm.q4_outdoorHours}
+              </QuestionTypography>
               <CustomNumberInput
                 value={outdoorHours}
                 onChange={handleOutdoorHoursChange}
-                max={maxOutdoorHours}
+                arialabel={"Number of Hours spent indoors"}
               />
 
               <Button type="submit">Submit</Button>
             </form>
-          </Box>
+          </GreyBackgroundBox>
         </Container>
       </UserContent>
     </>
