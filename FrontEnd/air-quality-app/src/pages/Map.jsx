@@ -1,5 +1,6 @@
-import { useState, useCallback} from 'react';
-import {GoogleMap, HeatmapLayer, useJsApiLoader} from '@react-google-maps/api';
+import { useState, useEffect, useCallback } from 'react';
+import { GoogleMap, HeatmapLayer, useJsApiLoader } from '@react-google-maps/api';
+import axiosInstance from './../axios'
 
 import PlaceAutomplete from '../components/mapautocomplete';
 
@@ -49,14 +50,38 @@ const airQualityGradient = [
     "rgba(108, 92, 231, 1)", // Hazardous
   ];
 
-export default function MapPage () {
-
+export default function MapPage() {
     const [map, setMap] = useState(null);
+    const [heatMapData, setHeatMapData] = useState([]);
 
-    const {isLoaded} = useJsApiLoader({
-        googleMapsApiKey:googleMapsKey,
-        libraries:libs
-    })
+    const { isLoaded } = useJsApiLoader({
+        googleMapsApiKey: googleMapsKey,
+        libraries: libs
+    });
+
+    useEffect(() => {
+
+        const locationInput = {
+            loc_lat: 40.75838928128043,
+            loc_lon: -73.97503124048248,
+            time_stamp: 1780310800,
+            humidity: 62,
+            wind_deg: 259,
+            temp: 286.59444444444443,
+            wind_speed: 5.4704,
+            wind_gust: 0.0,
+            pressure: 1009.482859,
+            weather_id: 502
+        };
+
+        axiosInstance.post('/map/getAllAQIValues', locationInput)
+            .then(response => {
+                console.log("Location data sent successfully!", response);
+            })
+            .catch(error => {
+                console.error("There was an error sending the location data!", error);
+            });
+    }, []);
 
     const handlePlaceSelected = useCallback((location) => {
         if (map) {
@@ -72,17 +97,17 @@ export default function MapPage () {
 
     return (
         <div>
-            <GoogleMap mapContainerStyle={{position:'relative', width:'100vw', height:'100vh'}}
-                center={centerPosition} zoom={12} onLoad={(map)=> setMap(map)}
-                options={{ disableDefaultUI:{zoomControl:true, mapTypeControl:true, streetViewControl:true}}}>
-
-                {map && heatMapData &&
+            <GoogleMap mapContainerStyle={{ position: 'relative', width: '100vw', height: '100vh' }}
+                center={centerPosition} zoom={12} onLoad={(map) => setMap(map)}
+                options={{ disableDefaultUI: { zoomControl: true, mapTypeControl: true, streetViewControl: true } }}>
+                
+                {map && heatMapData.length > 0 &&
                     <>
-                        <HeatmapLayer 
-                            data={heatMapData.map((data)=>(
-                                {location:new google.maps.LatLng(data.lat, data.lng), weight:data.weight}
+                        <HeatmapLayer
+                            data={heatMapData.map((data) => (
+                                { location: new google.maps.LatLng(data.lat, data.lng), weight: data.weight }
                             ))}
-                            options={{radius:20, dissipating:true, opacity:0.2, gradient:airQualityGradient}}
+                            options={{ radius: 20, dissipating: true, opacity: 0.2, gradient: airQualityGradient }}
                         />
                     </>
                 }
