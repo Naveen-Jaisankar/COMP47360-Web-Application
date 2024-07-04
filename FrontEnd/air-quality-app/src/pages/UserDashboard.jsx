@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Avatar, Box } from '@mui/material';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Infocard from "../components/infocard";
+import PropTypes from 'prop-types';
 
 const image1 = "../src/static/proxy-image.png";
 
@@ -147,3 +148,19 @@ const CustomTooltip = ({ payload, label }) => {
 };
 
 export default DashBoard;
+
+DashBoard.propTypes = {
+  isSidebarOpen: PropTypes.bool,
+};
+
+CustomTooltip.propTypes = {
+  payload: PropTypes.arrayOf(
+    PropTypes.shape({
+      payload: PropTypes.shape({
+        PersonalExposure: PropTypes.number.isRequired,
+        AQI: PropTypes.number.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+  label: PropTypes.string.isRequired,
+};
