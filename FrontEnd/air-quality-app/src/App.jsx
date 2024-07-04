@@ -34,7 +34,6 @@ function App() {
           <Route path="/settings" element={<Settings/>} />
           <Route path="/form" element={<Form />} />
           <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>}/>
           <Route path="/user/gettingstarted" element={<Starting />}></Route>
           <Route path="/user" element={<UserPanel/>} />
           <Route path="/user/dailyform" element={<DailyForm/>} />
