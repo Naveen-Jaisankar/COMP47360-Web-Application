@@ -49,6 +49,10 @@ spring:
           auth: true
           starttls:
             enable: true
+  spring:
+  graphql:
+    path: /graphql
+
 
   application:
     name: webapp

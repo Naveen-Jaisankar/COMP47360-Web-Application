@@ -1,24 +1,24 @@
-package com.compsci.webapp.service;
+// package com.compsci.webapp.service;
 
-import com.compsci.webapp.model.DailyQuizScore;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+// import com.compsci.webapp.model.DailyQuizScore;
 
 
-@Service
-public class DailyQuizScoreService {
-
-    private final DailyQuizScoreRepository dailyQuizScoreRepository;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
 
 
-    @Autowired
-    public DailyQuizScoreService(DailyQuizScoreRepository dailyQuizScoreRepository) {
-        this.dailyQuizScoreRepository = dailyQuizScoreRepository;
-    }
+// @Service
+// public class DailyQuizScoreService {
 
-    public DailyQuizScore saveDailyQuizScore(DailyQuizScore score) {
-        return dailyQuizScoreRepository.save(score);
-    }
-}
+//     private final DailyQuizScoreRepository dailyQuizScoreRepository;
+
+
+//     @Autowired
+//     public DailyQuizScoreService(DailyQuizScoreRepository dailyQuizScoreRepository) {
+//         this.dailyQuizScoreRepository = dailyQuizScoreRepository;
+//     }
+
+//     public DailyQuizScore saveDailyQuizScore(DailyQuizScore score) {
+//         return dailyQuizScoreRepository.save(score);
+//     }
+// }
