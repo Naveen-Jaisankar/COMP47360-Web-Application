@@ -6,6 +6,7 @@ import CustomNumberInput from "../components/customnumberinput";
 import { useState } from "react";
 import { styled } from "@mui/system";
 import {ThickHeadingTypography} from "./Home"
+import constants from './../constant';
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -171,20 +172,20 @@ export default function DailyForm() {
             color: "black",
             paddingLeft: "1rem"
           }}>
-            Your Daily Quiz
+            {constants.dailyForm.title}
           </ThickHeadingTypography>
 
           <GreyBackgroundBox>
             <form onSubmit={submitHandler}>
               <QuestionTypography variant="h4" component="h2">
-                While indoors, where did you spend most of your time?
+                {constants.dailyForm.q1_indoorLocation}
               </QuestionTypography>
               <DailySearchbar 
                 value={indoorLocation.address || ""} 
                 passPlaceData={handleIndoorPlaceChange} />
 
               <QuestionTypography variant="h4" component="h2">
-                How many hours did you spend indoors today?
+                {constants.dailyForm.q2_indoorHours}
               </QuestionTypography>
               <CustomNumberInput
                 value={indoorHours}
@@ -192,12 +193,12 @@ export default function DailyForm() {
                 arialabel={"Number of Hours spent indoors"}
               />
               <QuestionTypography variant="h4" component="h2">
-                While outdoors, where did you spend most of your time?
+               {constants.dailyForm.q3_outdoorLocation}
               </QuestionTypography>
               <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
 
               <QuestionTypography variant="h4" component="h2">
-                How many hours did you spend outdoors today?
+               {constants.dailyForm.q4_outdoorHours}
               </QuestionTypography>
               <CustomNumberInput
                 value={outdoorHours}

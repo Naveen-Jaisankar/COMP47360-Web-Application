@@ -3,6 +3,7 @@ import UserContent from "../components/usercontent"
 import UserPlaceholder from "../components/userplaceholder"
 import CustomCalendar from "../components/customcalendar"
 import RiskProfileCard from "../components/riskprofilecard"
+import constants from './../constant';
 
 export default function UserHistory () {
     return (
@@ -19,7 +20,7 @@ export default function UserHistory () {
                 <Typography variant="h3" component='h2' sx={{
                     fontSize: "3rem",
                     marginBottom: "2rem",
-                }}>Your History</Typography>
+                }}>{constants.userHistory.title}</Typography>
 
                 <Box>
                 
@@ -33,7 +34,7 @@ export default function UserHistory () {
             }}>
                 <Typography variant="h3" component='h2' sx={{
                     fontSize: "3rem"
-                }}>Your Current Risk Profile</Typography>
+                }}>{constants.userHistory.riskProfileTitle}</Typography>
                 <RiskProfileCard />
 
                

@@ -3,6 +3,7 @@ import { Typography } from "@mui/material"
 import MainContent from "../components/maincontent"
 import { styled } from "@mui/system";
 import { CreamBackgroundBox } from "./Home";
+import constants from './../constant';
 
 const QuestionTypography = styled(Typography)({
   fontSize: "3rem",
@@ -29,22 +30,22 @@ export default function Privacy () {
                 <Box sx= {{
                     marginBottom: "3rem",
                 }}>
-                <Typography variant="h2" component='h1'>Privacy</Typography>
+                <Typography variant="h2" component='h1'>{constants.privacy.title}</Typography>
                 <AnswerTypography variant='body1' component='p'>
-                    Our privacy policy explains how we collect your personal data, how we use your personal data, and how it is stored.
+                    {constants.privacy.introduction}
                 </AnswerTypography>
                 </Box>
 
                 {/* Information section */}
                 <Box>
-                <QuestionTypography variant="h3" component='h2'>What personal data do you collect from me?</QuestionTypography>
-                <AnswerTypography variant='body1' component='p'>We collect etc.</AnswerTypography>
+                <QuestionTypography variant="h3" component='h2'>{constants.privacy.q1_personalData}</QuestionTypography>
+                <AnswerTypography variant='body1' component='p'>{constants.privacy.content}</AnswerTypography>
 
-                <QuestionTypography variant="h3" component='h2'>How do you use my personal data?</QuestionTypography>
-                <AnswerTypography variant='body1' component='p'>We collect etc.</AnswerTypography>
+                <QuestionTypography variant="h3" component='h2'>{constants.privacy.q2_useOfPersonalData}</QuestionTypography>
+                <AnswerTypography variant='body1' component='p'>{constants.privacy.content}</AnswerTypography>
 
-                <QuestionTypography variant="h3" component='h2'>How is my personal data stored?</QuestionTypography>
-                <AnswerTypography variant='body1' component='p'> We collect etc.</AnswerTypography>
+                <QuestionTypography variant="h3" component='h2'>{constants.privacy.q3_storageOfPersonalData}</QuestionTypography>
+                <AnswerTypography variant='body1' component='p'> {constants.privacy.content}</AnswerTypography>
                 </Box>
             </Container>
         
