@@ -4,9 +4,10 @@ import navbarHeights from "./navbarheights";
 
 export const drawerWidth = 220;
 
+// This is a user dashboard placeholder that will be replaced
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '& .MuiDrawer-paper': {
-        paddingTop: navbarHeights.xs, // Default padding for XS
+        paddingTop: navbarHeights.xs,
         [theme.breakpoints.up('sm')]: {
             paddingTop: navbarHeights.sm,
         },
