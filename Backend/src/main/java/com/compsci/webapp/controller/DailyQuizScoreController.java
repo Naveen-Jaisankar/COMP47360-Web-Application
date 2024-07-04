@@ -1,7 +1,7 @@
 package com.compsci.webapp.controller;
 
 
-import com.compsci.webapp.model.DailyQuizScore;
+import com.compsci.webapp.entity.DailyQuizScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;

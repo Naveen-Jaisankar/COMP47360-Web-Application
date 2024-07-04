@@ -1,6 +1,6 @@
 package com.compsci.webapp.repository;
 
-import com.compsci.webapp.model.DailyQuizScore;
+import com.compsci.webapp.entity.DailyQuizScore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
