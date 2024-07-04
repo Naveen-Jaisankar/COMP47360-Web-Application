@@ -5,7 +5,7 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import PropTypes from 'prop-types';
 
-import {HeatmapLayer} from '@deck.gl/geo-layers'; // Import HeatmapLayer FOR ESLINT DEFINITION CHECKS!
+import {HeatmapLayer} from '@deck.gl/aggregation-layers'; // Import HeatmapLayer FOR ESLINT DEFINITION CHECKS!
 import data from '../components/sampleheatdata'
 
 // resources used:
