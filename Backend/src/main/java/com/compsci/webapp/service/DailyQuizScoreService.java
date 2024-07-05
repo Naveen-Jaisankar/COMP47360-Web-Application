@@ -4,6 +4,9 @@ import com.compsci.webapp.entity.DailyQuizScore;
 import com.compsci.webapp.repository.DailyQuizScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.compsci.webapp.util.AQICalculator;
+
 
 import java.util.List;
 
@@ -11,10 +14,12 @@ import java.util.List;
 public class DailyQuizScoreService {
 
     private final DailyQuizScoreRepository dailyQuizScoreRepository;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public DailyQuizScoreService(DailyQuizScoreRepository dailyQuizScoreRepository) {
+    public DailyQuizScoreService(DailyQuizScoreRepository dailyQuizScoreRepository, RestTemplate restTemplate) {
         this.dailyQuizScoreRepository = dailyQuizScoreRepository;
+        this.restTemplate = restTemplate;
     }
 
     public List<DailyQuizScore> getAllDailyQuizScores() {
@@ -27,7 +32,22 @@ public class DailyQuizScoreService {
     }
 
     public DailyQuizScore createDailyQuizScore(DailyQuizScore dailyQuizScore) {
-        return dailyQuizScoreRepository.save(dailyQuizScore); // place logic calc the risk score added here 
+        // fetching AQI data for indoor and outdoor locations
+        double indoorAQI = fetchAQI(dailyQuizScore.getIndoorLocation());
+        double outdoorAQI = fetchAQI(dailyQuizScore.getOutdoorLocation());
+
+        // converting AQI to PM2.5
+        double indoorPM25 = AQICalculator.aqiToPm25((int) indoorAQI);
+        double outdoorPM25 = AQICalculator.aqiToPm25((int) outdoorAQI);
+
+        //  risk score based on PM2.5 and hours
+        double riskScore = calculateRiskScore(indoorPM25, outdoorPM25, dailyQuizScore.getIndoorHours(), dailyQuizScore.getOutdoorHours());
+
+        //  calculated risk score
+        dailyQuizScore.setRiskScore(riskScore);
+
+        // saves score to database
+        return dailyQuizScoreRepository.save(dailyQuizScore);
     }
 
     public DailyQuizScore updateDailyQuizScore(Long id, DailyQuizScore quizScoreDetails) {
@@ -47,4 +67,22 @@ public class DailyQuizScoreService {
 
         dailyQuizScoreRepository.delete(quizScore);
     }
+
+    // method that will fetch AQI from Flask API based on location
+    private double fetchAQI(String location) {
+        // implementation using RestTemplate - Flask API endpoint
+        String url = "http://flaskapi.example.com/aqi?location=" + location;
+        Integer aqi = restTemplate.getForObject(url, Integer.class);
+        return aqi != null ? aqi : 0.0; // Default value or handle null as needed
+    }
+
+    
+    private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {
+        double maskFactor = 1.0;
+        double indoorFactor = 3.0;
+
+        double rawPM = (outdoorPM * outdoorHours / maskFactor) + ((indoorPM / indoorFactor) * indoorHours);
+        return rawPM / 24.0;
+    }
+
 }

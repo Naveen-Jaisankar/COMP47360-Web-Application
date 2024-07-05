@@ -10,9 +10,17 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
+
+
 @Entity
 @Table(name = "dailyquizscore")
 public class DailyQuizScore {
+
+    private Double riskScore; // Assuming risk score is of type Double
+    private String indoorLocation; // Assuming indoor location is of type String
+    private String outdoorLocation; // Assuming outdoor location is of type String
+    private Integer indoorHours; // Assuming indoor hours is of type Integer
+    private Integer outdoorHours; // Assuming outdoor hours is of type Integer
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +66,45 @@ public class DailyQuizScore {
     }
 
     public void setQuizScore(Integer quizScore) {
-        this.quizScore = quizScore;
+            this.quizScore = quizScore; }
+    
+        public Double getRiskScore() {
+            return riskScore;
+        }
+    
+        public void setRiskScore(Double riskScore) {
+            this.riskScore = riskScore;
+        }
+    
+        public String getIndoorLocation() {
+            return indoorLocation;
+        }
+    
+        public void setIndoorLocation(String indoorLocation) {
+            this.indoorLocation = indoorLocation;
+        }
+    
+        public String getOutdoorLocation() {
+            return outdoorLocation;
+        }
+    
+        public void setOutdoorLocation(String outdoorLocation) {
+            this.outdoorLocation = outdoorLocation;
+        }
+    
+        public Integer getIndoorHours() {
+            return indoorHours;
+        }
+    
+        public void setIndoorHours(Integer indoorHours) {
+            this.indoorHours = indoorHours;
+        }
+    
+        public Integer getOutdoorHours() {
+            return outdoorHours;
+        }
+    
+        public void setOutdoorHours(Integer outdoorHours) {
+            this.outdoorHours = outdoorHours;
+        }
     }
-}
