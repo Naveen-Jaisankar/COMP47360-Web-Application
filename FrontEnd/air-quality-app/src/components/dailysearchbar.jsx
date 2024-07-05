@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
-import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
+import { useRef } from "react";
+import { Autocomplete, LoadScript } from "@react-google-maps/api";
 import { Box } from "@mui/system";
 import { styled } from "@mui/system";
+import PropTypes from 'prop-types';
+
 
 const StyledInput = styled("input")({
   width: "100%",
@@ -16,45 +18,71 @@ const StyledInput = styled("input")({
   },
 });
 
-const DailySearchbar = () => {
+const DailySearchbar = ({passPlaceData}) => {
   const inputRef = useRef();
   const apikey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-  let timeoutId;
+  const placeslib = ["places"];
+
+  const nyBounds = {
+    south: 40.477399,
+    west: -74.259090,
+    north: 40.917577,
+    east: -73.700272,
+  };
 
   const handlePlaceChange = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      if (inputRef.current && inputRef.current.getPlaces) {
-        const places = inputRef.current.getPlaces();
-        if (places && places.length > 0) {
-          const place = places[0];
-          console.log(place.formatted_address);
-          console.log(place.geometry.location.lat());
-          console.log(place.geometry.location.lng());
+    // checks if an input exists
+    if (inputRef.current && inputRef.current.getPlace) {
+      const place = inputRef.current.getPlace()
+
+      // checks if place has loaded
+      if (place && place.geometry && place.geometry.location) {
+        const placeData = {
+          components_array: place.address_components,
+          address: place.formatted_address,
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
         }
+      
+      // a placeholder function which contains placeData outlined above and is passed as a prop to the daily form parent component.
+      // Placeholder meaning that is not defined within the daily search bar.
+      // When passed as a prop in daily form ie <Daily searchbar passPlaceData="func()"> 
+      // it gives the placeData that it is holding to the function that *is* defined 
+      // in the daily form. Essentially replacing it. This is done so that data can pass from the child to the parent components.
+
+      passPlaceData(placeData)
+      
       }
-    }, 300);
-  };
+
+    }
+  }
 
   return (
     <Box sx={{ margin: "1rem" }}>
-      <LoadScript googleMapsApiKey={apikey} libraries={["places"]}>
-      <StandaloneSearchBox
+      <LoadScript googleMapsApiKey={apikey} libraries={placeslib}>
+        <Autocomplete
           onLoad={(ref) => (inputRef.current = ref)}
-          onPlacesChanged={handlePlaceChange}
+          onPlaceChanged={handlePlaceChange}
+          options={{
+            bounds: nyBounds,
+            strictBounds: true,
+          }}
         >
           <StyledInput
             type="text"
             className="form-control"
             placeholder="Enter Location"
           />
-        </StandaloneSearchBox>
+        </Autocomplete>
       </LoadScript>
     </Box>
   );
 };
 
+DailySearchbar.propTypes = {
+  passPlaceData: PropTypes.func,
+}
+
 export default DailySearchbar;
-     
+
+

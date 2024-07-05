@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './components/navbar';
@@ -10,6 +10,7 @@ import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
 import Privacy from './pages/Privacy';
 import UserHistory from './pages/UserHistory';
+import UserDashboard from './pages/UserDashboard';
 import { SettingsContext } from './context/SettingsContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -30,15 +31,16 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/map" element={<Map />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings" element={<Settings/>} />
           <Route path="/form" element={<Form />} />
           <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>}/>
           <Route path="/user/gettingstarted" element={<Starting />}></Route>
           <Route path="/user" element={<UserPanel/>} />
           <Route path="/user/dailyform" element={<DailyForm/>} />
           <Route path="/user/history" element={<UserHistory/>} />
+          <Route path="/user/userdashboard" element={<UserDashboard/>} />
           <Route path="/privacy" element={<Privacy/>} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </MainContent>
       </div>

@@ -1,0 +1,68 @@
+/* https://medium.com/@suvarna.kale/react-calendar-customization-4bdf89d04dbb */
+
+/* Ensures the calendar takes full width and is clipped properly */
+.react-calendar {
+  width: 100% !important;
+  border-radius: 10px; /* Rounds the corners of the calendar container */
+  overflow: hidden; /* Prevents content from overflowing outside the rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  position: relative; /* Ensures proper clipping */
+}
+
+/* Rounds the corners of the tiles */
+.react-calendar__tile {
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden; /* Prevents content from extending outside the tile */
+}
+
+/* Adjusts the navigation header to fit within the rounded corners */
+.react-calendar__navigation {
+  border-radius: 10px;
+  overflow: hidden; /* Prevents overflow in navigation header */
+}
+
+/* Weekends text color */
+.react-calendar__month-view__days__day--weekend {
+  color: #1f1b13 !important;
+}
+
+/* Highlights today's date */
+.react-calendar__tile--now {
+  background-color: grey !important;
+  border-radius: 8px; /* Ensures the rounded corners apply to today's date tile */
+}
+
+/* Hides neighboring month days */
+.react-calendar__month-view__days__day--neighboringMonth {
+  visibility: hidden;
+}
+
+/* Status indicators for completed dates */
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* Size of the tick icon */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Ensure the tick is on top */
+}
+
+/* Hide the default date number */
+.react-calendar__tile--success {
+  color: transparent; /* Hide the number */
+}
+
+/* Colour for success tick */
+.status.success {
+  color: green;
+}
+
+/* Colour for failure tick */
+.status.failure {
+  color: red;
+}

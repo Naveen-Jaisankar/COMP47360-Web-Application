@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import clsx from 'clsx';
-
+import PropTypes from 'prop-types';
 
 const drawerWidth = 240;
 
@@ -119,3 +119,8 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
 };
 
 export default Sidebar;
+
+Sidebar.propTypes = {
+    isOpen: PropTypes.bool,
+    toggleDrawer: PropTypes.func,
+};

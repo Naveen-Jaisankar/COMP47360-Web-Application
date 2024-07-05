@@ -1,49 +1,87 @@
-import { Container, Typography, Box, Grid, CardMedia } from "@mui/material";
-import { Helmet } from "react-helmet";
+import { Container, Typography, Box, Grid, } from "@mui/material";
 import Infocard from "../components/infocard";
 import ReactPlayer from "react-player"
+import constants from './../constant';
+import { styled } from "@mui/system";
 
 const image1 = "../src/static/proxy-image.png";
-const banner = "../src/static/01-03_City_map2v_generated.jpg";
-const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI"
+const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI";
+
+const BannerBox = styled(Box)({
+  backgroundColor: "#2E6095",
+  display: "flex",
+  alignItems: "center",
+});
+
+const QuoteBox = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  marginLeft: "4rem",
+});
+
+const ThickHeadingTypography = styled(Typography)({
+  fontFamily: "Roboto flex, Roboto, sans-serif",
+  fontSize: "4rem",
+  fontWeight: 700,
+  color: "white",
+})
+
+const GetStartedBox = styled(Box)({
+  height: "80vh",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  backgroundColor: "white",
+  borderRadius: "2vh",
+  border: "2px solid black",
+  padding: "1rem",
+});
+
+const TranscriptBox = styled(Box)({
+  marginTop: "2rem",
+  height: "70vh",
+  width: "100%",
+  backgroundColor: "black",
+});
+
+const CreamBackgroundBox = styled(Box)({
+  backgroundColor: "#F7F7F2",
+  height: "150vh",
+});
+
+const SmallerHeadingBox = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  textAlign: "center",
+  mb: 4,
+})
+
+const InfoCardBox = styled(Box)({
+  backgroundColor: "white",
+  margin: 2,
+  padding: 5,
+})
+
 const Home = () => {
   return (
     <>
-      <Helmet>
-        <title>air-quality-app name - Manhattan air tracking application</title>
-        <meta content="This is the Home page of air-quality-app name, here you can find information about the application, facts about air pollution and how to use the website" />
-      </Helmet>
 
       {/* Introduction Section */}
       <section>
         <header>
-          <Box
+          <BannerBox
             sx={{
-              backgroundColor: "#2E6095",
               height: { xs: 500, md: 700, lg: 900 },
-              display: "flex",
-              alignItems: "center",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                marginLeft: "4rem",
-              }}
-            >
-              <Typography
+            <QuoteBox>
+              <ThickHeadingTypography
                 variant="h1"
                 component="h1"
-                sx={{
-                  fontFamily: "Roboto flex, Roboto, sans-serif",
-                  fontSize: "4rem",
-                  fontWeight: 700,
-                  color: "white",
-                }}
               >
-                "Quote that captures app spirit"
-              </Typography>
+                {constants.homePage.title1}
+              </ThickHeadingTypography>
               <Typography
                 variant="h4"
                 component="p"
@@ -52,20 +90,14 @@ const Home = () => {
                   marginTop: 3,
                 }}
               >
-                Air quality is the problem of the decade, facing thousands of
-                people. Get started with us
+                {constants.homePage.title1_subtext}
               </Typography>
-            </Box>
-          </Box>
+            </QuoteBox>
+          </BannerBox>
         </header>
       </section>
 
-      <Box
-        sx={{
-          backgroundColor: "#F7F7F2",
-          height: "150vh",
-        }}
-      >
+      <CreamBackgroundBox>
         {/* Tutorial section */}
         <section>
           <Box>
@@ -78,18 +110,10 @@ const Home = () => {
             >
               <Grid item xs={12} sm={12} md={8}>
                 <Box>
-                  <Box
+                  <GetStartedBox
                     sx={{
-                      display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    height: "80vh",
-                    width: { xs: "100%", md: "90%" },
-                    backgroundColor: "white",
+                    width: { xs: "95%", md: "85%" },
                     marginTop: { xs: -2, md: -8 },
-                    borderRadius: 5,
-                    border: "2px solid black",
-                    padding: 2,
                     }}
                   >
                     <Typography
@@ -97,30 +121,25 @@ const Home = () => {
                       component="h2"
                       sx={{
                         margin: 2,
-                      
                       }}
                     >
-                      How to Get Started
+                      {constants.homePage.getting_started}
                     </Typography>
                     <ReactPlayer url={videoUrl} width="100%" height="100%" style={{
                       top: 0,
                       left: 0
                     }}/>
                       
-                  </Box>
+                  </GetStartedBox>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={4}>
                 <Box>
-                  <Box
+                  <TranscriptBox
                     sx={{
-                      marginLeft: { xs: 4, md: -5 },
-                      marginTop: 3,
-                      height: "70vh",
-                      width: "90%",
-                      backgroundColor: "black",
+                      marginLeft: { xs: 5, s: 4, md: -8 },
                     }}
-                  ></Box>
+                  ></TranscriptBox>
                 </Box>
               </Grid>
             </Grid>
@@ -129,30 +148,16 @@ const Home = () => {
 
         {/* Info-card Section */}
         <section>
-          <Box
-            sx={{
-              backgroundColor: "white",
-              margin: 2,
-              padding: 5,
-            }}
-          >
+          <InfoCardBox>
             <Container sx={{ marginTop: 4, marginBottom: 4, maxWidth: "lg" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  mb: 4,
-                }}
-              >
+              <SmallerHeadingBox>
                 <Typography variant="h2" component="h2">
-                  Air Pollution & You
+                  {constants.homePage.air_pollution_heading}
                 </Typography>
                 <Typography variant="body1" component="p">
-                  What does the science say about air pollution?
+                {constants.homePage.air_pollution_heading}
                 </Typography>
-              </Box>
+              </SmallerHeadingBox>
 
               <Box
                 sx={{
@@ -166,27 +171,28 @@ const Home = () => {
                   image={image1}
                   alt="Image Alt Text"
                   heading="Funky fact"
-                  text="More info"
+                  text={constants.general.more_info}
                 />
                 <Infocard
                   image={image1}
                   alt="Image Alt Text"
                   heading="Funky fact"
-                  text="More info"
+                  text={constants.general.more_info}
                 />
                 <Infocard
                   image={image1}
                   alt="Image Alt Text"
                   heading="Funky fact"
-                  text="More info"
+                  text={constants.general.more_info}
                 />
               </Box>
             </Container>
-          </Box>
+          </InfoCardBox>
         </section>
-      </Box>
+      </CreamBackgroundBox>
     </>
   );
 };
 
 export default Home;
+export {ThickHeadingTypography, CreamBackgroundBox}
