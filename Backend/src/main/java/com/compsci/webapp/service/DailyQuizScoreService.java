@@ -27,7 +27,7 @@ public class DailyQuizScoreService {
     }
 
     public DailyQuizScore createDailyQuizScore(DailyQuizScore dailyQuizScore) {
-        return dailyQuizScoreRepository.save(dailyQuizScore);
+        return dailyQuizScoreRepository.save(dailyQuizScore); // place logic calc the risk score added here 
     }
 
     public DailyQuizScore updateDailyQuizScore(Long id, DailyQuizScore quizScoreDetails) {
