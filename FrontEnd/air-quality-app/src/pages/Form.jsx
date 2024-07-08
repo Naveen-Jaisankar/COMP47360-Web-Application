@@ -1,8 +1,70 @@
-export default function Form () {
-    return (
-        <>
-        <h1>Here is the Form Page!</h1>
+import React, { useState } from 'react';
+import axiosInstance from '../api/base';
 
-        </>
-    )
-}
+const Form = () => {
+  const [userId, setUserId] = useState(1);  // Example userId
+  const [quizDate, setQuizDate] = useState(new Date().toISOString().split('T')[0]);  // Current date in YYYY-MM-DD format
+  const [score, setScore] = useState(8);
+
+  const handleSubmit = () => {
+    const data = {
+      userId: userId,
+      quizDate: quizDate,
+      score: score
+    };
+
+    axiosInstance.post('/api/dailyquizscores', data)
+      .then(response => {
+        console.log("Data sent successfully!", response);
+      })
+      .catch(error => {
+        console.error("There was an error sending the data!", error);
+      });
+  };
+
+  return (
+    <div>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+};
+
+export default Form;
+
+
+
+
+
+
+// import React, { useState } from 'react';
+// import axiosInstance from '../api/base';
+
+// const Form = () => {
+//   const [userId, setUserId] = useState(1);  // Example userId
+//   const [quizDate, setQuizDate] = useState(new Date().toISOString().split('T')[0]);  // Current date in YYYY-MM-DD format
+//   const [score, setScore] = useState(8);
+
+//   const handleSubmit = () => {
+//     const data = {
+//       userId: userId,
+//       quizDate: quizDate,
+//       score: score
+//     };
+
+//     axiosInstance.post('/api/dailyquizscores', data)
+//       .then(response => {
+//         console.log("Data sent successfully!", response);
+//       })
+//       .catch(error => {
+//         console.error("There was an error sending the data!", error);
+//       });
+//   };
+
+//   return (
+//     <div>
+//       <button onClick={handleSubmit}>Submit</button>
+//     </div>
+//   );
+// };
+
+// export default Form;
