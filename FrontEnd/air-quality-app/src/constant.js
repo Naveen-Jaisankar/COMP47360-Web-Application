@@ -71,8 +71,11 @@ export const privacy = {
     introduction: "Our privacy policy explains how we collect your personal data, how we use your personal data, and how it is stored.",
     q1_personalData:"What personal data do you collect from me?",
     q2_useOfPersonalData: "How do you use my personal data?",
-    q3_storageOfPersonalData: "How is my personal data stored?",
-    content: "We collect etc.",
+    q3_sharingOfPersonalData: "Do you share my data with any third parties?",
+    content1: "To understand your potential long-term exposure to air pollutants, we collect location and time spent data  exclusively through your participation in our forms. No other personal information is collected.",
+    content2: "The data you provide is used to generate a personalized weekly risk score. With this information we can provide an estimate of your potential air pollution exposure, and make personalized suggestions to furthur minimize your air pollution intake.",
+    content3: "We prioritize user privacy and do not share your personal data with any third parties. The data you provide is used solely for generating your personalized weekly air pollution risk score and is not used for any other purposes."
+
 
 }
 

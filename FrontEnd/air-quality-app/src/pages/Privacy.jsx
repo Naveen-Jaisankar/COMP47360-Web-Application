@@ -11,7 +11,8 @@ const QuestionTypography = styled(Typography)({
 });
 
 const AnswerTypography = styled(Typography)({
-    fontSize: "2rem"
+    fontSize: "2rem",
+    marginBottom: "2rem"
 })
 
 export default function Privacy () {
@@ -39,13 +40,13 @@ export default function Privacy () {
                 {/* Information section */}
                 <Box>
                 <QuestionTypography variant="h3" component='h2'>{constants.privacy.q1_personalData}</QuestionTypography>
-                <AnswerTypography variant='body1' component='p'>{constants.privacy.content}</AnswerTypography>
+                <AnswerTypography variant='body1' component='p'>{constants.privacy.content1}</AnswerTypography>
 
                 <QuestionTypography variant="h3" component='h2'>{constants.privacy.q2_useOfPersonalData}</QuestionTypography>
-                <AnswerTypography variant='body1' component='p'>{constants.privacy.content}</AnswerTypography>
+                <AnswerTypography variant='body1' component='p'>{constants.privacy.content2}</AnswerTypography>
 
-                <QuestionTypography variant="h3" component='h2'>{constants.privacy.q3_storageOfPersonalData}</QuestionTypography>
-                <AnswerTypography variant='body1' component='p'> {constants.privacy.content}</AnswerTypography>
+                <QuestionTypography variant="h3" component='h2'>{constants.privacy.q3_sharingOfPersonalData}</QuestionTypography>
+                <AnswerTypography variant='body1' component='p'> {constants.privacy.content3}</AnswerTypography>
                 </Box>
             </Container>
         
