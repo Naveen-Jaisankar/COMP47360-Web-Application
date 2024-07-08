@@ -1,5 +1,6 @@
 package com.compsci.webapp.service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.compsci.webapp.entity.DailyQuizScore;
 import com.compsci.webapp.repository.DailyQuizScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class DailyQuizScoreService {
 
     private final DailyQuizScoreRepository dailyQuizScoreRepository;
     private final RestTemplate restTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(DailyQuizScoreService.class);
 
     @Autowired
     public DailyQuizScoreService(DailyQuizScoreRepository dailyQuizScoreRepository, RestTemplate restTemplate) {
@@ -35,13 +37,17 @@ public class DailyQuizScoreService {
         // fetching AQI data for indoor and outdoor locations
         double indoorAQI = fetchAQI(dailyQuizScore.getIndoorLocation());
         double outdoorAQI = fetchAQI(dailyQuizScore.getOutdoorLocation());
+        logger.info("Indoor AQI: {}, Outdoor AQI: {}", indoorAQI, outdoorAQI);
 
         // converting AQI to PM2.5
         double indoorPM25 = AQICalculator.aqiToPm25((int) indoorAQI);
         double outdoorPM25 = AQICalculator.aqiToPm25((int) outdoorAQI);
+        logger.info("Indoor PM2.5: {}, Outdoor PM2.5: {}", indoorPM25, outdoorPM25);
+
 
         //  risk score based on PM2.5 and hours
         double riskScore = calculateRiskScore(indoorPM25, outdoorPM25, dailyQuizScore.getIndoorHours(), dailyQuizScore.getOutdoorHours());
+        logger.info("Calculated Risk Score: {}", riskScore);
 
         //  calculated risk score
         dailyQuizScore.setRiskScore(riskScore);
@@ -71,7 +77,7 @@ public class DailyQuizScoreService {
     // method that will fetch AQI from Flask API based on location
     private double fetchAQI(String location) {
         // implementation using RestTemplate - Flask API endpoint
-        String url = "http://flaskapi.example.com/aqi?location=" + location;
+        String url = "http://127.0.0.1:5001/predict_with_location=" + location;
         Integer aqi = restTemplate.getForObject(url, Integer.class);
         return aqi != null ? aqi : 0.0; // Default value or handle null as needed
     }
