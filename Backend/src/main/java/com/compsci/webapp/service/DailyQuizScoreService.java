@@ -61,7 +61,6 @@ public class DailyQuizScoreService {
                 .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
 
         quizScore.setUserId(quizScoreDetails.getUserId());
-        quizScore.setQuizDate(quizScoreDetails.getQuizDate());
         quizScore.setQuizScore(quizScoreDetails.getQuizScore());
 
         return dailyQuizScoreRepository.save(quizScore);
