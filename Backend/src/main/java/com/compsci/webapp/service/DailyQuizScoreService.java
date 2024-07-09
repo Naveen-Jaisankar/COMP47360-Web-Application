@@ -33,7 +33,7 @@ public class DailyQuizScoreService {
                 .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
     }
 
-    public DailyQuizScore createDailyQuizScore(DailyQuizScore dailyQuizScore) {
+    public DailyQuizScore evaluateAndStoreDailyQuizScore(DailyQuizScore dailyQuizScore) {
         // fetching AQI data for indoor and outdoor locations
         double indoorAQI = fetchAQI(dailyQuizScore.getIndoorLocation());
         double outdoorAQI = fetchAQI(dailyQuizScore.getOutdoorLocation());
