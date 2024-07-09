@@ -35,7 +35,7 @@ public class SecurityConfig {
             .requestMatchers("/api/v1/auth/profile/**").permitAll()
             .requestMatchers("/swagger-ui/**").permitAll()
             .requestMatchers("/api-docs/**").permitAll()
-            .requestMatchers("/api/dailyquizscores/**").permitAll()
+            .requestMatchers("/api/dailyquizscores/**").permitAll()//TODO will remove later - only for testing purpose
             
             .anyRequest().authenticated()
             .and()
@@ -51,12 +51,9 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-<<<<<<< HEAD
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:5174")); // no trailing slash
-=======
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // no trailing slash
->>>>>>> refs/remotes/origin/main
-        configuration.setAllowedMethods(Arrays.asList("*")); // Allow all methods
+		configuration.setAllowedMethods(Arrays.asList("*")); // Allow all methods
         configuration.setAllowedHeaders(Arrays.asList("*")); // Allow all headers
         configuration.setAllowCredentials(true); // Allow credentials
 
