@@ -58,6 +58,29 @@ export const userAge = {
     q1_age : "What's your age"
 }
 
+export const dailyForm = {
+    title: "Your Daily Quiz",
+    q1_indoorLocation : "While indoors, where did you spend most of your time?",
+    q2_indoorHours: "How many hours did you spend indoors today?",
+    q3_outdoorLocation: "While outdoors, where did you spend most of your time?",
+    q4_outdoorHours: "How many hours did you spend outdoors today?",
+}
+
+export const privacy = {
+    title: "Privacy",
+    introduction: "Our privacy policy explains how we collect your personal data, how we use your personal data, and how it is stored.",
+    q1_personalData:"What personal data do you collect from me?",
+    q2_useOfPersonalData: "How do you use my personal data?",
+    q3_storageOfPersonalData: "How is my personal data stored?",
+    content: "We collect etc.",
+
+}
+
+export const userHistory = {
+    title: "Your History",
+    riskProfileTitle: "Your Current Risk Profile"
+}
+
 export default {
     footerConstants,
     general,
@@ -67,4 +90,7 @@ export default {
     register,
     settings,
     userAge,
+    dailyForm,
+    privacy,
+    userHistory
 };
