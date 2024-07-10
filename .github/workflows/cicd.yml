@@ -6,7 +6,7 @@ on:
 
 jobs:
     build:
-        runs-on: [ubuntu-latest]
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout source
               uses: actions/checkout@v3
@@ -18,18 +18,16 @@ jobs:
             - name: Build Project
               run:  |
                 cd Backend
-                mvn clean install - DskipTests
+                mvn clean install -DskipTests
             - name: Login to docker hub
               run: |
-                cd Backend
-                docker login -u ${{secrets.DOCKER_USERNAME}} -p  ${{secrets.DOCKER_PASSWORD}}
+                docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
             - name: Build docker image
               run: |
                 cd Backend 
                 docker build -t group12/COMP47360-WEB-APPLICATION .
             - name: Publish image to docker hub
               run: |
-                cd Backend
                 docker push group12/COMP47360-WEB-APPLICATION:latest
 
     deploy:
@@ -38,14 +36,10 @@ jobs:
         steps:
             - name: Pull image from docker hub
               run: |
-                cd Backend 
                 docker pull group12/COMP47360-WEB-APPLICATION:latest
             - name: Delete old container
               run: |
-                cd Backend
-                docker rm -f COMP47360-WEB-APPLICATION-container
+                docker rm -f COMP47360-WEB-APPLICATION-container || true
             - name: Run docker container
               run: |
-                cd Backend 
                 docker run -d -p 8080:8080 --name COMP47360-WEB-APPLICATION-container group12/COMP47360-WEB-APPLICATION
-
