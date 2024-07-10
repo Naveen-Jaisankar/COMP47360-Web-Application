@@ -43,9 +43,7 @@ const PlaceAutomplete = ({onPlaceSelected})=>{
             fontSize: '14px',
             outline: 'none',
             textOverflow: 'ellipses',
-            position: 'absolute',
-            marginLeft: '12px',
-            top: '4vh',
+
             zIndex: '10'
             }}
         />

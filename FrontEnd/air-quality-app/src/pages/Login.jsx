@@ -39,7 +39,7 @@ const Login = () => {
                   {constant.loginConsts.create_acnt}
                 </Link>
 
-                <Link href="/forgotpass" className="text-blue-500 mt-3 p-2">
+                <Link href="/forgotpassword" className="text-blue-500 mt-3 p-2">
                   {constant.loginConsts.forgot_pass}
                 </Link>
             </div>

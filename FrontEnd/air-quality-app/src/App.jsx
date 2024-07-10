@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Starting from './pages/GettingStarted';
 import MainContent from './components/maincontent';
+import ForgotPass from './pages/ForgotPassword';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/privacy" element={<Privacy/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login/>}></Route>
+          <Route path='/forgotpassword' element={<ForgotPass/>} />
         </Routes>
         </MainContent>
       </div>
