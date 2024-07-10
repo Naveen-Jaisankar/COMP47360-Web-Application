@@ -55,10 +55,10 @@ jobs:
                 sudo systemctl enable docker
             - name: Pull image from docker hub
               run: |
-                docker pull naveenjaisankar1999/group12:latest
+                sudo docker pull naveenjaisankar1999/group12:latest
             - name: Delete old container
               run: |
-                docker rm -f group12-container || true
+                sudo docker rm -f group12-container || true
             - name: Run docker container
               run: |
-                docker run -d -p 8080:8080 --name group12-container naveenjaisankar1999/group12:latest
+                sudo docker run -d -p 8080:8080 --name group12-container naveenjaisankar1999/group12:latest
