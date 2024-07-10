@@ -16,7 +16,7 @@ export const general = {
     login_register : "Login/Register",
     save_and_continue : "Save & Continue",
     getting_started : "Getting Started",
-    more_info : "More Info"
+
 }
 
 export const generalHealth = {
@@ -25,16 +25,22 @@ export const generalHealth = {
 }
 
 export const homePage =  {
-    title1 : "\"Quote that captures app spirit\"",
-    title1_subtext : "Air quality is the problem of the decade, facing thousands of people. Get started with us",
+    title1 : "\"Wellness is a connection of paths: knowledge and action\"",
+    title1_subtext : "Empowering informed health choices. Breathe easier with Fair.",
     getting_started : "How to Get Started",
     air_pollution_heading : "Air Pollution & You",
-    air_pollution_body : "What does the science say about air pollution?"
+    air_pollution_body : "What does science say about air pollution?",
+    // https://www.cleanairfund.org/theme/facts-and-stats/
+    more_info1 : "Air pollution shortens the global average life expectancy by 2.2 years",
+    // https://smartairfilters.com/en/blog/best-masks-for-viruses-air-pollution/
+    more_info2 : "Masks can significantly reduce pollution exposure, with filtration efficiency ranging from 30% to 90% depending on the type",
+    // https://www.nejm.org/doi/full/10.1056/NEJMoa054409#:~:text=Each%20increase%20of%2010%20%CE%BCg,%3B%2095%25%20confidence%20interval%20%5BCI
+    more_info3 : "Chronic exposure to air pollution is associated with an increased risk of coronary heart disease and stroke."
 }
 
 export const login = {
     login : "Log-In",
-    login_body : "Where data meets the air",
+    login_body : "Breathe easier with Fair",
     login_btn : "Login",
     create_acnt : " Not a member? Create an account here",
 }
