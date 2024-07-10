@@ -61,4 +61,4 @@ jobs:
                 docker rm -f group12-container || true
             - name: Run docker container
               run: |
-                docker run -d -p 8080:8080 --name group12-container naveenjaisankar1999/group12
+                docker run -d -p 8080:8080 --name group12-container naveenjaisankar1999/group12:latest
