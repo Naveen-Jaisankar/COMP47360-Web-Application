@@ -25,10 +25,10 @@ jobs:
             - name: Build docker image
               run: |
                 cd Backend 
-                docker build -t group12/COMP47360-WEB-APPLICATION .
+                docker build -t naveenjaisankar1999/group12 .
             - name: Publish image to docker hub
               run: |
-                docker push group12/COMP47360-WEB-APPLICATION:latest
+                docker push naveenjaisankar1999/group12:latest
 
     deploy:
         needs: build
@@ -36,10 +36,10 @@ jobs:
         steps:
             - name: Pull image from docker hub
               run: |
-                docker pull group12/COMP47360-WEB-APPLICATION:latest
+                docker pull naveenjaisankar1999/group12:latest
             - name: Delete old container
               run: |
-                docker rm -f COMP47360-WEB-APPLICATION-container || true
+                docker rm -f group12-container || true
             - name: Run docker container
               run: |
-                docker run -d -p 8080:8080 --name COMP47360-WEB-APPLICATION-container group12/COMP47360-WEB-APPLICATION
+                docker run -d -p 8080:8080 --name group12-container naveenjaisankar1999/group12
