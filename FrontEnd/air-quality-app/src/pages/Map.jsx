@@ -7,6 +7,7 @@ import PlaceAutocomplete from '../components/mapautocomplete';
 import axiosInstance from './../axios';
 import mapstyle from '../components/mapstyles';
 import { MapSidebar } from '../components/mapsidebar';
+import { renderMapAlert } from '../components/mapalerts';
 
 const warningImg = "../src/static/icons8-warning-96.png";
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
@@ -94,6 +95,7 @@ export default function MapPage() {
       map.zoom = 14;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
       aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() })
+      renderMapAlert(aqiForLocation)
     }
   }, [map]);
 
@@ -148,7 +150,7 @@ export default function MapPage() {
             <div className='flex items-center justify-center bg-[#0D1B2A] text-white p-2 ml-3 rounded-lg'>
               <img src={warningImg} alt="Warning Icon" />
               <div className='break-words whitespace-normal'>
-                <h2 className="font-bold text-lg">Air Quality Hazardous In This Area</h2>
+                <h2 className="font-bold text-lg">{}</h2>
                 <p className="text-sm mt-1">AQI: 90-100</p>
                 <p className="text-sm mt-1">Unhealthy for all groups.</p>
               </div>
