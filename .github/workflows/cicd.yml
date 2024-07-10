@@ -32,8 +32,14 @@ jobs:
 
     deploy:
         needs: build
-        runs-on: [aws-ec2]
+        runs-on: ubuntu-latest
         steps:
+            - name: Install Docker
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y docker.io
+                sudo systemctl start docker
+                sudo systemctl enable docker
             - name: Pull image from docker hub
               run: |
                 docker pull naveenjaisankar1999/group12:latest
