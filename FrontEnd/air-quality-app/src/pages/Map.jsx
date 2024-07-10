@@ -24,6 +24,7 @@ const airQualityGradient = [
 
 const heatMapData = [];
 let predictedData = [];
+let aqiForLocation = 0;
 
 export default function MapPage() {
   const [map, setMap] = useState(null);
@@ -78,11 +79,21 @@ export default function MapPage() {
     }
   }, [lastRun]);
 
+  //this function calculates the aqi for a location based on search
+  const GetAqiForLocation = (loc) =>{
+    predictedData.forEach(datapoint =>{
+        if(loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= min_lon)
+            return datapoint.predicted_aqi;
+    });
+    return 0;
+  };
+
   const handlePlaceSelected = useCallback((location) => {
     if (map) {
       map.panTo(new google.maps.LatLng(location.lat(), location.lng()));
       map.zoom = 14;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
+      aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() })
     }
   }, [map]);
 
@@ -112,7 +123,7 @@ export default function MapPage() {
           center={centerPosition} zoom={12} onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: { zoomControl: true, mapTypeControl: true, streetViewControl: true }, styles: mapstyle }}>
 
-          <Marker onLoad={onLoad} position={{ lat: markerPos.lat, lng: markerPos.lng }} />
+
 
           {map && heatMapData.length > 0 &&
             <HeatmapLayer
@@ -122,6 +133,9 @@ export default function MapPage() {
               options={{ radius: 20, dissipating: true, opacity: 0.2, gradient: airQualityGradient }}
             />
           }
+
+          <Marker onLoad={onLoad} position={{ lat: markerPos.lat, lng: markerPos.lng }} />
+
 
           <div className='flex flex-col absolute ml-3 md:top-4 z-10 gap-4 xs:top-20'>
             <div className='flex flex-row items-center'>
