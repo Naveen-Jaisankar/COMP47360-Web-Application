@@ -15,9 +15,9 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/rp
-    username: root
-    password: Raghul_2002
+    url: jdbc:mysql://fairdbinstance.cb4yayicmxl0.eu-west-1.rds.amazonaws.com:3306/rp
+    username: admin
+    password: gS175WKh
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
