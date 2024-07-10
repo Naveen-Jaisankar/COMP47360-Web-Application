@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/dailyquizscores")
+    
 public class DailyQuizScoreController {
 
     private final DailyQuizScoreService dailyQuizScoreService;
@@ -18,28 +19,25 @@ public class DailyQuizScoreController {
         this.dailyQuizScoreService = dailyQuizScoreService;
     }
 
-    @GetMapping
+    @GetMapping("/getAllDailyQuizScores")
     public List<DailyQuizScore> getAllDailyQuizScores() {
         return dailyQuizScoreService.getAllDailyQuizScores();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getDailyQuizScoreById")
     public DailyQuizScore getDailyQuizScoreById(@PathVariable Long id) {
         return dailyQuizScoreService.getDailyQuizScoreById(id);
     }
 
-    @PostMapping
+    @PostMapping("/CreateDailyQuizScore")
     public DailyQuizScore DailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
         return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); // once user hits submit button - 4 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateDailyQuizScore")
     public DailyQuizScore updateDailyQuizScore(@PathVariable Long id, @RequestBody DailyQuizScore quizScoreDetails) {
         return dailyQuizScoreService.updateDailyQuizScore(id, quizScoreDetails);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteDailyQuizScore(@PathVariable Long id) {
-        dailyQuizScoreService.deleteDailyQuizScore(id);
     }
 }
