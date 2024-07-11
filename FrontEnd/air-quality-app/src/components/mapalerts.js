@@ -48,15 +48,15 @@ let alertContent = {
 
 function renderMapAlert(aqiForLocation) {
     let aqiStatus = setAqiStatus(aqiForLocation);
-    let alertHeading = alertHeading[aqiStatus];
-    let aqiNumber = aqiNumber[aqiStatus];
-    let alertContent = alertContent[aqiStatus];
+    let alertHeadingText= alertHeading[aqiStatus];
+    let aqiNumberText = aqiNumber[aqiStatus];
+    let alertContentText = alertContent[aqiStatus];
 
 
     return {
-        alertHeading: alertHeading,
-        aqiNumber: aqiNumber,
-        alertContent: alertContent,
+        alertHeading: alertHeadingText,
+        aqiNumber: aqiNumberText,
+        alertContent: alertContentText,
     };
 }
 
