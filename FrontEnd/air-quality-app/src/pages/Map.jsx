@@ -7,7 +7,6 @@ import PlaceAutocomplete from '../components/mapautocomplete';
 import axiosInstance from './../axios';
 import mapstyle from '../components/mapstyles';
 import { MapSidebar } from '../components/mapsidebar';
-import { renderMapAlert } from '../components/mapalerts';
 
 const warningImg = "../src/static/icons8-warning-96.png";
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
@@ -32,6 +31,7 @@ export default function MapPage() {
   const [markerPos, setMarkerPos] = useState(centerPosition);
   const [isMapSidebarOpen, setIsMapSidebarOpen] = useState(false);
   const [lastRun, setLastRun] = useState(Date.now());
+  const [shouldRenderMarker, setShouldRenderMarker] = useState(false); // Variable to control when the marker will be loaded in.
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: googleMapsKey,
@@ -80,7 +80,7 @@ export default function MapPage() {
     }
   }, [lastRun]);
 
-  //this function calculates the aqi for a location based on search
+  // This function calculates the aqi for a location based on search
   const GetAqiForLocation = (loc) =>{
     predictedData.forEach(datapoint =>{
         if(loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= min_lon)
@@ -95,7 +95,6 @@ export default function MapPage() {
       map.zoom = 14;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
       aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() })
-      renderMapAlert(aqiForLocation)
     }
   }, [map]);
 
@@ -109,11 +108,20 @@ export default function MapPage() {
     setIsMapSidebarOpen(prevState => !prevState);
   }, []);
 
+  useEffect(() => {
+    // Set a delay of 0.04 seconds before rendering the marker for the first time
+    const timer = setTimeout(() => {
+      setShouldRenderMarker(true);
+    }, 40); // Adjust the delay time here as needed
+    return () => clearTimeout(timer); // Clears out the delay for future marker rendering
+  }, []);
+
   const onLoad = marker => {
     console.log('marker: ', marker);
-  };
+};
 
   if (!isLoaded) {
+    console.log("This shi ain't loaded")
     return (<div>Loading...please wait</div>);
   }
 
@@ -125,8 +133,6 @@ export default function MapPage() {
           center={centerPosition} zoom={12} onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: { zoomControl: true, mapTypeControl: true, streetViewControl: true }, styles: mapstyle }}>
 
-
-
           {map && heatMapData.length > 0 &&
             <HeatmapLayer
               data={heatMapData.map((data) => (
@@ -136,8 +142,7 @@ export default function MapPage() {
             />
           }
 
-          <Marker onLoad={onLoad} position={{ lat: markerPos.lat, lng: markerPos.lng }} />
-
+          {shouldRenderMarker && <Marker onLoad={onLoad} position={{ lat: markerPos.lat, lng: markerPos.lng }} />}
 
           <div className='flex flex-col absolute ml-3 md:top-4 z-10 gap-4 xs:top-20'>
             <div className='flex flex-row items-center'>
@@ -150,7 +155,7 @@ export default function MapPage() {
             <div className='flex items-center justify-center bg-[#0D1B2A] text-white p-2 ml-3 rounded-lg'>
               <img src={warningImg} alt="Warning Icon" />
               <div className='break-words whitespace-normal'>
-                <h2 className="font-bold text-lg">{}</h2>
+                <h2 className="font-bold text-lg">Air Quality Hazardous In This Area</h2>
                 <p className="text-sm mt-1">AQI: 90-100</p>
                 <p className="text-sm mt-1">Unhealthy for all groups.</p>
               </div>
