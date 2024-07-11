@@ -1,5 +1,6 @@
 package com.compsci.webapp.service;
 
+import com.compsci.webapp.util.FlaskClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -127,12 +128,12 @@ public class DailyQuizScoreService {
     }
 
     private double fetchAqiFromDataModel(double locLat, double locLon, long timeStamp, JSONObject weatherDetails) throws Exception {
-        URL url = new URL(DATA_MODEL_URL);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json; utf-8");
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setDoOutput(true);
+//        URL url = new URL(DATA_MODEL_URL);
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//        conn.setRequestMethod("POST");
+//        conn.setRequestProperty("Content-Type", "application/json; utf-8");
+//        conn.setRequestProperty("Accept", "application/json");
+//        conn.setDoOutput(true);
 
         JSONObject jsonInput = new JSONObject();
         jsonInput.put("loc_lat", locLat);
@@ -146,30 +147,32 @@ public class DailyQuizScoreService {
         jsonInput.put("wind_gust", weatherDetails.getJSONObject("wind").optDouble("gust", 0.0));
         jsonInput.put("weather_id", weatherDetails.getJSONArray("weather").getJSONObject(0).getInt("id"));
 
-        try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = jsonInput.toString().getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
+        return FlaskClient.predictWithLocation(jsonInput).getDouble("predicted_aqi");
 
-        StringBuilder response = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
-        }
-
-        double aqi;
-        try {
-            aqi = Double.parseDouble(response.toString());
-            
-            logger.info("AQI Model response: {}", aqi);
-        } catch (NumberFormatException e) {
-            logger.error("Error parsing AQI response: ", e);
-            aqi = 0.0; //  value in case of error
-        }
-
-        return aqi;
+//        try (OutputStream os = conn.getOutputStream()) {
+//            byte[] input = jsonInput.toString().getBytes("utf-8");
+//            os.write(input, 0, input.length);
+//        }
+//
+//        StringBuilder response = new StringBuilder();
+//        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+//            String responseLine;
+//            while ((responseLine = br.readLine()) != null) {
+//                response.append(responseLine.trim());
+//            }
+//        }
+//
+//        double aqi;
+//        try {
+//            aqi = Double.parseDouble(response.toString());
+//
+//            logger.info("AQI Model response: {}", aqi);
+//        } catch (NumberFormatException e) {
+//            logger.error("Error parsing AQI response: ", e);
+//            aqi = 0.0; //  value in case of error
+//        }
+//
+//        return aqi;
     }
 
     private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {

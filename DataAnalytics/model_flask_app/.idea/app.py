@@ -2,7 +2,7 @@ import joblib
 import pandas as pd
 import os
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+# from flask_cors import CORS
 from sklearn.base import BaseEstimator, TransformerMixin
 
 class WindDirectionEncoder(BaseEstimator, TransformerMixin):
@@ -85,7 +85,7 @@ aqi_model = joblib.load(aqi_model_path)
 grid_info = pd.read_csv(grid_info_path)
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
+# CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
 
 # Helper function to find grid based on latitude and longitude
 def find_grid(lat, lon):
