@@ -109,10 +109,10 @@ export default function MapPage() {
   }, []);
 
   useEffect(() => {
-    // Set a delay of 0.04 seconds before rendering the marker for the first time
+    // Set a delay of 1 second before rendering the marker for the first time (0.04 seconds lowest so far)
     const timer = setTimeout(() => {
       setShouldRenderMarker(true);
-    }, 40); // Adjust the delay time here as needed
+    }, 1000); // Adjust the delay time here as needed
     return () => clearTimeout(timer); // Clears out the delay for future marker rendering
   }, []);
 
@@ -121,7 +121,6 @@ export default function MapPage() {
 };
 
   if (!isLoaded) {
-    console.log("This shi ain't loaded")
     return (<div>Loading...please wait</div>);
   }
 
