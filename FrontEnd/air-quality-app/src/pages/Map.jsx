@@ -7,9 +7,10 @@ import PlaceAutocomplete from '../components/mapautocomplete';
 import axiosInstance from './../axios';
 import mapstyle from '../components/mapstyles';
 import { MapSidebar } from '../components/mapsidebar';
-import { renderMapAlert } from '../components/mapalerts';
+import MapAlertCard from '../components/mapalertcard';
 
-const warningImg = "../src/static/icons8-warning-96.png";
+
+// const warningImg = "../src/static/icons8-warning-96.png";
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
 const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
 const libs = ['visualization', 'places'];
@@ -32,7 +33,7 @@ export default function MapPage() {
   const [markerPos, setMarkerPos] = useState(centerPosition);
   const [isMapSidebarOpen, setIsMapSidebarOpen] = useState(false);
   const [lastRun, setLastRun] = useState(Date.now());
-
+ 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: googleMapsKey,
     libraries: libs
@@ -95,7 +96,6 @@ export default function MapPage() {
       map.zoom = 14;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
       aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() })
-      renderMapAlert(aqiForLocation)
     }
   }, [map]);
 
@@ -146,15 +146,10 @@ export default function MapPage() {
               </IconButton>
               <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
             </div>
+            <MapAlertCard aqi={aqiForLocation}>
 
-            <div className='flex items-center justify-center bg-[#0D1B2A] text-white p-2 ml-3 rounded-lg'>
-              <img src={warningImg} alt="Warning Icon" />
-              <div className='break-words whitespace-normal'>
-                <h2 className="font-bold text-lg">{}</h2>
-                <p className="text-sm mt-1">AQI: 90-100</p>
-                <p className="text-sm mt-1">Unhealthy for all groups.</p>
-              </div>
-            </div>
+            </MapAlertCard>
+
           </div>
         </GoogleMap>
       </div>
