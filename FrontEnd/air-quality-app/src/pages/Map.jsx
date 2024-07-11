@@ -24,7 +24,7 @@ const airQualityGradient = [
 
 const heatMapData = [];
 let predictedData = [];
-let aqiForLocation = 0;
+let aqiForLocation = 100;
 
 export default function MapPage() {
   const [map, setMap] = useState(null);
