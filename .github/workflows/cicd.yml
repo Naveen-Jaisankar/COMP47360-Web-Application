@@ -29,6 +29,12 @@ jobs:
             - name: Publish image to docker hub
               run: |
                 docker push naveenjaisankar1999/group12:latest
+            - name: Build Docker Image of Client
+              run: |
+                cd FrontEnd/air-quality-app
+                docker build -t naveenjaisankar1999/fairclient .
+            - name: Publish image to docker hub
+              run: docker push naveenjaisankar1999/fairclient:latest
 
     deploy:
         needs: build
@@ -59,3 +65,14 @@ jobs:
             - name: Run docker container
               run: |
                 sudo docker run -d -p 8080:8080 --name group12-container naveenjaisankar1999/group12:latest
+            - name: Pull image from docker hub for client app
+              run: docker pull naveenjaisankar1999/fairclient:latest
+            - name: Delete Old Container client app
+              run: docker rm -f fair-client-container
+            - name: Run docker container client app
+              run: docker run -d -p 3000:80 --name fair-client-container naveenjaisankar1999/fairclient:latest
+            # - name: Run docker container
+            #   env:
+            #       VITE_GOOGLEMAP_KEY: ${{secrets.VITE_GOOGLEMAP_KEY }}
+            #       VITE_NPS_API_KEY: ${{secrets.VITE_NPS_API_KEY }}
+            #   run: docker run -d -p 3000:80 --env VITE_GOOGLEMAP_KEY=$VITE_GOOGLEMAP_KEY --env VITE_NPS_API_KEY=$VITE_NPS_API_KEY --name parkfinder-client-container shalineraghupathy/parkfinder-client:latest
