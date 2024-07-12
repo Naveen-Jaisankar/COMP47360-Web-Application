@@ -1,6 +1,6 @@
 import {useRef} from "react";
 import {Autocomplete} from '@react-google-maps/api';
-
+import PropTypes from 'prop-types';
 
 const PlaceAutomplete = ({onPlaceSelected})=>{
 
@@ -52,3 +52,7 @@ const PlaceAutomplete = ({onPlaceSelected})=>{
 }
 
 export default PlaceAutomplete;
+
+PlaceAutomplete.propTypes = {
+    onPlaceSelected:PropTypes.func
+};

@@ -22,4 +22,5 @@ MapAlertCard.propTypes = {
   alertHeading: PropTypes.string,
   aqiNumber: PropTypes.number,
   alertContent: PropTypes.string,
+  aqi:PropTypes.number
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button} from '@mui/material';
+import PropTypes from 'prop-types';
 
 export const MapSidebar = ({ isOpen}) => {
 
@@ -22,4 +23,8 @@ export const MapSidebar = ({ isOpen}) => {
         </div>
     </div>
   );
+};
+
+MapSidebar.propTypes = {
+    isOpen:PropTypes.bool
 };

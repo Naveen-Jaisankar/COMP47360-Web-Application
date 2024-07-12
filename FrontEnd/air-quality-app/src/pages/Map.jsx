@@ -1,3 +1,4 @@
+/*global google*/
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { GoogleMap, HeatmapLayer, useJsApiLoader, Marker } from '@react-google-maps/api';
 // import { IconButton } from '@mui/material';
