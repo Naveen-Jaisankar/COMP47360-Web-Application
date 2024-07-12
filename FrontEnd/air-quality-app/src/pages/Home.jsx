@@ -3,6 +3,7 @@ import Infocard from "../components/infocard";
 import ReactPlayer from "react-player"
 import constants from './../constant';
 import { styled } from "@mui/system";
+import MainContent from "../components/maincontent";
 
 const image1 = "../src/static/proxy-image.png";
 const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI";
@@ -11,6 +12,8 @@ const BannerBox = styled(Box)({
   backgroundColor: "#2E6095",
   display: "flex",
   alignItems: "center",
+ '@media (max-width:600px)': {
+    paddingTop: "15rem", }
 });
 
 const QuoteBox = styled(Box)({
@@ -66,10 +69,11 @@ const InfoCardBox = styled(Box)({
 const Home = () => {
   return (
     <>
-
+      {/* <MainContent> */}
       {/* Introduction Section */}
       <section>
         <header>
+          
           <BannerBox
             sx={{
               height: { xs: 500, md: 700, lg: 900 },
@@ -188,8 +192,10 @@ const Home = () => {
               </Box>
             </Container>
           </InfoCardBox>
+         
         </section>
       </CreamBackgroundBox>
+      {/* </MainContent> */}
     </>
   );
 };
