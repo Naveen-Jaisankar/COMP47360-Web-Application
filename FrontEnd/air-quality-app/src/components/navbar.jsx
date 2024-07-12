@@ -55,7 +55,6 @@ const Navbar = () => {
                 <NavbarButton to="/">{constants.general.home}</NavbarButton>
                 <NavbarButton to="/map">{constants.general.map}</NavbarButton>
                 <NavbarButton to="/settings">{constants.general.settings}</NavbarButton>
-                <NavbarButton to="/form">{constants.general.form}</NavbarButton>
                 <NavbarButton to="/register">{constants.general.login_register}</NavbarButton>
             </Box>
 

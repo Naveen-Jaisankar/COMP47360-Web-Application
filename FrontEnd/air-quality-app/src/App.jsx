@@ -14,7 +14,6 @@ import UserDashboard from './pages/UserDashboard';
 import { SettingsContext } from './context/SettingsContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Starting from './pages/GettingStarted';
 import MainContent from './components/maincontent';
 import { UserPanel } from './pages/UserPanel';
 import ForgotPass from './pages/ForgotPassword';
@@ -35,11 +34,10 @@ function App() {
           <Route path="/settings" element={<Settings/>} />
           <Route path="/form" element={<Form />} />
           <Route path="/login" element={<Login/>} />
-          <Route path="/user/gettingstarted" element={<Starting />}></Route>
           <Route path="/user" element={<UserPanel/>} />
           <Route path="/user/dailyform" element={<DailyForm/>} />
           <Route path="/user/history" element={<UserHistory/>} />
-          <Route path="/user/userdashboard" element={<UserDashboard/>} />
+          {/* <Route path="/user/userdashboard" element={<UserDashboard/>} /> */}
           <Route path="/privacy" element={<Privacy/>} />
           <Route path="/register" element={<Register />} />
           <Route path='/forgotpassword' element={<ForgotPass/>} />

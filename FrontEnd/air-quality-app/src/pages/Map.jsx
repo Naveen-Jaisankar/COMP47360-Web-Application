@@ -1,26 +1,28 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { GoogleMap, HeatmapLayer, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { IconButton } from '@mui/material';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+// import { IconButton } from '@mui/material';
+// import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+// import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+
 import PlaceAutocomplete from '../components/mapautocomplete';
 import axiosInstance from './../axios';
 import mapstyle from '../components/mapstyles';
 import { MapSidebar } from '../components/mapsidebar';
 import MapAlertCard from '../components/mapalertcard';
+import Legend from '../components/maplegend';
 
-const warningImg = "../src/static/icons8-warning-96.png";
+// const warningImg = "../src/static/icons8-warning-96.png";
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
 const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
 const libs = ['visualization', 'places'];
 const airQualityGradient = [
   "rgba(32, 205, 50, 0)",
-  "rgba(32, 205, 50, 1)",
+  "rgba(0, 228, 0, 1)",
   "rgba(255, 255, 0, 1)",
-  "rgba(255, 160, 122, 1)",
+  "rgba(255, 126, 0, 1)",
   "rgba(255, 0, 0, 1)",
-  "rgba(139, 10, 26, 1)",
-  "rgba(108, 92, 231, 1)",
+  "rgba(143, 63, 151, 1)",
+  "rgba(126, 0, 35, 1)",
 ];
 
 const heatMapData = [];
@@ -39,9 +41,9 @@ export default function MapPage() {
     libraries: libs
   });
 
-  useEffect(() => {
-    console.log("Marker position updated:", markerPos);
-  }, [markerPos]);
+  // useEffect(() => {
+  //   console.log("Marker position updated:", markerPos);
+  // }, [markerPos]);
 
   useEffect(() => {
     const locationInput = {
@@ -64,11 +66,11 @@ export default function MapPage() {
           predictedData = response;
           response.forEach(result => {
             let wt = 6;
-            if (result.predicted_aqi <= 20) wt = 1;
-            else if (result.predicted_aqi <= 40) wt = 2;
-            else if (result.predicted_aqi <= 60) wt = 3;
-            else if (result.predicted_aqi <= 80) wt = 4;
-            else if (result.predicted_aqi <= 100) wt = 5;
+            if (result.predicted_aqi <= 50) wt = 1;
+            else if (result.predicted_aqi <= 100) wt = 2;
+            else if (result.predicted_aqi <= 150) wt = 3;
+            else if (result.predicted_aqi <= 200) wt = 4;
+            else if (result.predicted_aqi <= 300) wt = 5;
 
             heatMapData.push({ lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt });
           });
@@ -84,7 +86,7 @@ export default function MapPage() {
   // This function calculates the aqi for a location based on search
   const GetAqiForLocation = (loc) =>{
     predictedData.forEach(datapoint =>{
-        if(loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= min_lon)
+        if(loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= datapoint.min_lon)
             return datapoint.predicted_aqi;
     });
     return 0;
@@ -101,13 +103,14 @@ export default function MapPage() {
 
   const mapContainerStyle = useMemo(() => ({
     position: 'relative',
-    width: isMapSidebarOpen ? '80vw' : '100vw',
+    // width: isMapSidebarOpen ? '80vw' : '100vw',
+    width:'100vw',
     height: '100vh'
   }), [isMapSidebarOpen]);
 
-  const handleToggleSidebar = useCallback(() => {
-    setIsMapSidebarOpen(prevState => !prevState);
-  }, []);
+  // const handleToggleSidebar = useCallback(() => {
+  //   setIsMapSidebarOpen(prevState => !prevState);
+  // }, []);
 
   useEffect(() => {
     // Set a delay of 1 second before rendering the marker for the first time (0.04 seconds lowest so far)
@@ -117,18 +120,14 @@ export default function MapPage() {
     return () => clearTimeout(timer); // Clears out the delay for future marker rendering
   }, []);
 
-  const onLoad = marker => {
-    console.log('marker: ', marker);
-};
-
   if (!isLoaded) {
     return (<div>Loading...please wait</div>);
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <MapSidebar isOpen={isMapSidebarOpen} />
-      <div style={{ width: '100vw', height: '100vh' }} className={`flex-1 ${!isMapSidebarOpen ? 'ml-0' : 'ml-0 md:ml-[20vw]'}`}>
+      <div style={{ width: '100vw', height: '100vh' }} className='flex-1 ml-0'>
         <GoogleMap mapContainerStyle={mapContainerStyle}
           center={centerPosition} zoom={12} onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: { zoomControl: true, mapTypeControl: true, streetViewControl: true }, styles: mapstyle }}>
@@ -142,16 +141,16 @@ export default function MapPage() {
             />
           }
 
-          {shouldRenderMarker && <Marker onLoad={onLoad} position={{ lat: markerPos.lat, lng: markerPos.lng }} />}
+          {shouldRenderMarker && <Marker position={{ lat: markerPos.lat, lng: markerPos.lng }} />}
 
-          <div className='flex flex-col absolute ml-3 md:top-4 z-10 gap-4 xs:top-20'>
-            <div className='flex flex-row items-center'>
-              <IconButton onClick={handleToggleSidebar} className='font-bold'>
+          <div className='flex flex-col fixed ml-3 z-10 gap-2 top-12 mt-6'>
+            <div className='flex flex-row items-center ml-3 p-2'>
+              {/* <IconButton onClick={handleToggleSidebar} className='font-bold'>
                 {isMapSidebarOpen ? <ArrowBackIosRoundedIcon /> : <ArrowForwardIosRoundedIcon />}
-              </IconButton>
+              </IconButton> */}
               <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
             </div>
-            <MapAlertCard aqi={aqiForLocation}></MapAlertCard>
+            <MapAlertCard aqi={aqiForLocation} />
 
             {/* <div className='flex items-center justify-center bg-[#0D1B2A] text-white p-2 ml-3 rounded-lg'>
               <img src={warningImg} alt="Warning Icon" />
@@ -161,6 +160,10 @@ export default function MapPage() {
                 <p className="text-sm mt-1">Unhealthy for all groups.</p>
               </div> */}
             {/* </div> */}
+          </div>
+
+          <div className='flex fixed z-10 right-2 mr-3 bottom-4'>
+            <Legend />
           </div>
         </GoogleMap>
       </div>

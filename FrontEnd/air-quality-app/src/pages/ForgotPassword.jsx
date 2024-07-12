@@ -25,10 +25,10 @@ const ForgotPass = () => {
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
             <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" className="mb-3" />
 
-            <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4"> {constant.loginConsts.login_btn} </Button>
+            <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4"> {constant.ForgotPass.for_btn} </Button>
         </form>
-        {/* TODO: this div should be visible only when user clicks on the button*/}
-        <div className='reset-message'> Please check your email for reset password link</div>
+        {/* TODO: this div should be visible only when user clicks on the button
+        <div className='reset-message'> Please check your email for reset password link</div> */}
     </div>
   );
 };

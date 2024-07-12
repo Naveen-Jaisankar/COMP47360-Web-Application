@@ -63,12 +63,12 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                 <CloseIcon />
               </IconButton>
               <div className="flex flex-col items-center mt-1"> 
-                <Avatar
+                {/* <Avatar
                   alt="User"
                   src="https://via.placeholder.com/150"
                   sx={{ width: 150, height: 150, margin: 'auto', display: 'block' }}
                   className="md:w-48 lg:w-64"
-                />
+                /> */}
                 {/* Replace with username from database */}
                 <p className="text-lg mt-2">Welcome back, User</p>
                 <p className="text-lg text-center mt-2 mb-2">Take your exposure quiz today</p>

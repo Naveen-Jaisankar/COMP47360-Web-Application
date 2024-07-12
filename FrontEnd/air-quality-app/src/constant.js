@@ -82,6 +82,10 @@ export const userHistory = {
     riskProfileTitle: "Your Current Risk Profile"
 }
 
+export const ForgotPass = {
+    for_btn:"Reset Password"
+}
+
 export default {
     footerConstants,
     general,
@@ -93,5 +97,6 @@ export default {
     userAge,
     dailyForm,
     privacy,
-    userHistory
+    userHistory,
+    ForgotPass
 };
