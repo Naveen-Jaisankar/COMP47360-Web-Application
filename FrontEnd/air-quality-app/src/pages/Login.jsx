@@ -6,17 +6,25 @@ import Link from '@mui/material/Link';
 import AirIcon from '@mui/icons-material/Air';
 import constant from '../constant';
 
-
-
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // TODO: connect this with login logic implemented by backend
-    console.log('Email:', email);
-    console.log('Password:', password);
+    if (!validateEmail(email)) {
+      setEmailError('Invalid email address');
+    } else {
+      // TODO: connect this with login logic implemented by backend
+      console.log('Email:', email);
+      console.log('Password:', password);
+    }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
   };
 
   return (
@@ -28,9 +36,20 @@ const Login = () => {
         <Typography variant="body1" className="mb-8 text-gray-500"> {constant.loginConsts.login_body} </Typography>
 
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
-            <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" className="mb-3" />
+            <TextField 
+              label="Email" 
+              type="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              fullWidth 
+              margin="normal" 
+              className="mb-3" 
+              error={emailError !== ''}
+              helperText={emailError}
+              required
+            />
 
-            <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" />
+            <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" required/>
 
             <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4"> {constant.loginConsts.login_btn} </Button>
 
@@ -43,9 +62,6 @@ const Login = () => {
                   {constant.loginConsts.forgot_pass}
                 </Link>
             </div>
-
-            {/* TODO:Add forgot password option */}
-
         </form>
     </div>
   );

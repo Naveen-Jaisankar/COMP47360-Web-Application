@@ -27,7 +27,7 @@ const getLastSevenDays = () => {
       label = `${dayName} - ${formattedDate}`;
     }
     // User input from daily quiz and model input needs to be put in here!
-    days.push({ day: label, PersonalExposure: Math.random() * 100, AQI: Math.random() * 100 });
+    days.push({ day: label, PersonalExposure: (Math.random() * 100).toFixed(2), AQI: (Math.random() * 100).toFixed(2) });
   }
 
   return days;

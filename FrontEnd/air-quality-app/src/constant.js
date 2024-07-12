@@ -77,13 +77,18 @@ export const privacy = {
 
 }
 
+export const userSidebar = {
+    welcomeText:"Welcome back, User",
+    exposureText:"Take your exposure quiz today"
+}
+
 export const userHistory = {
     title: "Your History",
     riskProfileTitle: "Your Current Risk Profile"
 }
 
 export const ForgotPass = {
-    for_btn:"Reset Password"
+    forgotText:"Reset Password"
 }
 
 export default {
@@ -98,5 +103,6 @@ export default {
     dailyForm,
     privacy,
     userHistory,
-    ForgotPass
+    ForgotPass,
+    userSidebar
 };

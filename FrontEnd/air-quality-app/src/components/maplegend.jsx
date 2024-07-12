@@ -45,6 +45,7 @@ const Legend = () => {
         <ScaleValue>150</ScaleValue>
         <ScaleValue>200</ScaleValue>
         <ScaleValue>300</ScaleValue>
+        <ScaleValue> &gt; 300</ScaleValue>
       </GradientBar>
     </LegendContainer>
   );

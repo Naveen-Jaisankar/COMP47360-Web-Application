@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import clsx from 'clsx';
+import constant from '../constant';
 import PropTypes from 'prop-types';
 
 const drawerWidth = 240;
@@ -46,7 +47,6 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                 duration: theme.transitions.duration.enteringScreen,
               }),
             overflowX: 'hidden',
-            // Adjust the top margin
             marginTop: {
               xs: '56px',
               sm: '64px',
@@ -70,8 +70,8 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                   className="md:w-48 lg:w-64"
                 /> */}
                 {/* Replace with username from database */}
-                <p className="text-lg mt-2">Welcome back, User</p>
-                <p className="text-lg text-center mt-2 mb-2">Take your exposure quiz today</p>
+                <p className="text-lg mt-2">{constant.userSidebar.welcomeText}</p>
+                <p className="text-lg text-center mt-2 mb-2">{constant.userSidebar.exposureText}</p>
                 <Button variant="contained" className="bg-white text-green-500 mt-1" component ={Link} to="/user/dailyform">
                   Start
                 </Button>

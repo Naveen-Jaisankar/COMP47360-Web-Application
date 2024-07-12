@@ -9,11 +9,21 @@ const Register = () => {
   const [username, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO:  connect this with login logic implemented by backend
-    console.log('Form submitted:', { username, email, password });
+    if (!validateEmail(email)) {
+      setEmailError('Invalid email address');
+    } else {
+      // TODO:  connect this with login logic implemented by backend
+      console.log('Form submitted:', { username, email, password });
+    }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
   };
 
   return (
@@ -26,15 +36,23 @@ const Register = () => {
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
 
             <div className="mb-4">
-            <TextField label="User Name" value={username} onChange={(e) => setUserName(e.target.value)} fullWidth margin="normal" />
+            <TextField label="User Name" value={username} onChange={(e) => setUserName(e.target.value)} fullWidth margin="normal" required/>
             </div>
 
             <div className="mb-4">
-            <TextField label="Email" value={email} onChange={(e) => setEmail(e.target.value)} fullWidth />
+            <TextField 
+              label="Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              fullWidth 
+              error={emailError !== ''}
+              helperText={emailError}
+              required
+            />
             </div>
 
             <div className="mb-4">
-            <TextField label="Password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth type="password" />
+            <TextField label="Password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth type="password" required/>
             </div>
 
             <Button variant="contained" type="submit" fullWidth> {constants.register.btn} </Button>

@@ -6,7 +6,7 @@ import { GoogleMap, HeatmapLayer, useJsApiLoader, Marker } from '@react-google-m
 // import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import PlaceAutocomplete from '../components/mapautocomplete';
-import axiosInstance from './../axios';
+import axiosInstance from '../axios';
 import mapstyle from '../components/mapstyles';
 import { MapSidebar } from '../components/mapsidebar';
 import MapAlertCard from '../components/mapalertcard';
