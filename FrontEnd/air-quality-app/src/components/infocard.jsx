@@ -35,6 +35,7 @@ Infocard.propTypes = {
     image: PropTypes.string.isRequired,
     alt: PropTypes.string,
     heading: PropTypes.string,
+    style: PropTypes.object,
     text: PropTypes.string,
 }
 
