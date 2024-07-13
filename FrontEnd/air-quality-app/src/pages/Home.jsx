@@ -7,20 +7,26 @@ import { styled } from "@mui/system";
 const image1 = "../src/static/proxy-image.png";
 const image2 = "../src/static/face-mask2.png";
 const image3 = "../src/static/heart.png";
+const bannerImage = "../src/static/newyorktest8.jpg"
 const videoUrl = "https://www.youtube.com/watch?v=FKBVwX8dVhI";
 
 const BannerBox = styled(Box)({
   backgroundColor: "#2E6095",
   display: "flex",
   alignItems: "center",
-  paddingBottom: "2rem", // Add padding at the bottom for the overlap
-  position: "relative", // Make sure it's positioned relatively
+  paddingBottom: "2rem",
+  position: "relative", 
+  backgroundImage: `url(${bannerImage})`,
+  backgroundSize: "cover",
+  // background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)), url(${bannerImage})`,
+
 });
 
 const QuoteBox = styled(Box)({
   display: "flex",
   flexDirection: "column",
   marginLeft: "4rem",
+
 });
 
 const ThickHeadingTypography = styled(Typography)({
@@ -28,6 +34,7 @@ const ThickHeadingTypography = styled(Typography)({
   fontSize: "4rem",
   fontWeight: 700,
   color: "white",
+  borderColor: "black",
 });
 
 const GetStartedBox = styled(Box)({
