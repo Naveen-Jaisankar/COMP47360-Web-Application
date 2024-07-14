@@ -14,6 +14,7 @@ export const general = {
     settings : "Settings",
     form : "Form",
     login_register : "Login/Register",
+    logout:'Logout',
     save_and_continue : "Save & Continue",
     getting_started : "Getting Started",
     more_info : "More Info"

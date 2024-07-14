@@ -1,30 +1,51 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import AirIcon from '@mui/icons-material/Air';
+import {useNavigate} from 'react-router-dom';
+
 import constant from '../constant';
+import axiosInstance from '../axios';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   const [emailError, setEmailError] = useState('');
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!validateEmail(email)) {
+    if (!validateEmail(userEmail)) {
       setEmailError('Invalid email address');
     } else {
-      // TODO: connect this with login logic implemented by backend
-      console.log('Email:', email);
-      console.log('Password:', password);
+      const loginData = {
+        userEmail: userEmail,
+        userPassword: userPassword
+      };
+
+      axiosInstance.post('/auth/signin', loginData)
+      .then(response =>{
+        const token = response.data.token;
+        login(token);
+        if(response.status === 200)
+        {
+          navigate('/user')
+        }
+      })
+      .catch(error =>{
+        console.log(error)
+      })
+
     }
   };
 
-  const validateEmail = (email) => {
+  const validateEmail = (userEmail) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
+    return emailRegex.test(userEmail);
   };
 
   return (
@@ -39,8 +60,8 @@ const Login = () => {
             <TextField 
               label="Email" 
               type="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+              value={userEmail} 
+              onChange={(e) => setUserEmail(e.target.value)} 
               fullWidth 
               margin="normal" 
               className="mb-3" 
@@ -49,7 +70,7 @@ const Login = () => {
               required
             />
 
-            <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" required/>
+            <TextField label="Password" type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} fullWidth margin="normal" required/>
 
             <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4"> {constant.loginConsts.login_btn} </Button>
 
