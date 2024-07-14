@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const AuthContext = createContext();
-
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
@@ -34,3 +34,7 @@ const AuthProvider = ({ children }) => {
 };
 
 export { AuthProvider, AuthContext };
+
+AuthProvider.propTypes = {
+  children: PropTypes.object
+}
