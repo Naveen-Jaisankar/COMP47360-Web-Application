@@ -7,6 +7,7 @@ import { useState } from "react";
 import { styled } from "@mui/system";
 import {ThickHeadingTypography} from "./Home"
 import constants from './../constant';
+import axiosInstance from '../api/base';
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -41,7 +42,7 @@ export default function DailyForm() {
 
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
-        console.log(component);
+        // console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -53,8 +54,8 @@ export default function DailyForm() {
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
-        console.log("outdoors:");
-        console.log(component);
+        // console.log("outdoors:");
+        // console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -85,16 +86,16 @@ export default function DailyForm() {
       var leftoverHours = 24 - totalHours;
 
       const newIndoorHours = Math.round(leftoverHours * indoorHourRatio);
-      console.log(newIndoorHours);
+      // console.log(newIndoorHours);
 
       const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio);
-      console.log(newOutdoorHours);
+      // console.log(newOutdoorHours);
 
       const adjustedIndoorHours = indoorHours + newIndoorHours;
       const adjustedOutdoorHours = outdoorHours + newOutdoorHours;
 
-      console.log(`adjusted indoors, ${adjustedIndoorHours}`);
-      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
+      // console.log(`adjusted indoors, ${adjustedIndoorHours}`);
+      // console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
 
       setIndoorHours(adjustedIndoorHours)
       setOutdoorHours(adjustedOutdoorHours)
@@ -105,6 +106,7 @@ export default function DailyForm() {
     return hourCheck;
   }
 
+
   // Submission function
 
   const submitHandler = async (e) => {
@@ -113,21 +115,49 @@ export default function DailyForm() {
     const is24Hours = check24Hours(indoorHours, outdoorHours);
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
+    // organises location data into a string
+    let indoorLocationArray = [indoorLocation.lat ,indoorLocation.lng];
+    let outdoorLocationArray = [outdoorLocation.lat, outdoorLocation.lng];
+
+    let indoorLocationToSend= indoorLocationArray.toString();
+    let outdoorLocationToSend = outdoorLocationArray.toString();
+
+    const data = {
+
+      userId: 1,
+      quizDate: new Date(),
+      quizScore: 85,
+      indoorLocation: indoorLocationToSend,
+      outdoorLocation: outdoorLocationToSend,
+      indoorHours: indoorHours,
+      outdoorHours: outdoorHours,
+
+    };
+
     if (!isValid) {
       alert("Please choose a location in Manhattan");
     } else if (!is24Hours) {
       alert("24 hours exceeded, number inputs are invalid")
     } else{
       try {
-        console.log(`Indoor Hours: ${indoorHours}`);
-        console.log(`Outdoor Hours: ${outdoorHours}`);
-        console.log(`Indoor Location: ${indoorLocation.address}`);
-        console.log(`Indoor Lat: ${indoorLocation.lat}`);
-        console.log(`Indoor Lng: ${indoorLocation.lng}`);
-        console.log(`Outdoor Location: ${outdoorLocation.address}`);
-        console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
-        console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
-        alert("Form submitted :D");
+
+        axiosInstance.post('/api/dailyquizscores', data)
+        .then(response => {
+          console.log("Data sent successfully!", response);
+        })
+        .catch(error => {
+          console.error("There was an error sending the data!", error);
+        });
+
+    //     // console.log(`Indoor Hours: ${indoorHours}`);
+    //     // console.log(`Outdoor Hours: ${outdoorHours}`);
+    //     // console.log(`Indoor Location: ${indoorLocation.address}`);
+    //     // console.log(`Indoor Lat: ${indoorLocation.lat}`);
+    //     // console.log(`Indoor Lng: ${indoorLocation.lng}`);
+    //     // console.log(`Outdoor Location: ${outdoorLocation.address}`);
+    //     // console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
+    //     // console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
+        alert("Form submitted");
 
         setIndoorLocation("");
         setOutdoorLocation("");
