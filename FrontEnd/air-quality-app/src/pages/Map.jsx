@@ -26,7 +26,6 @@ const airQualityGradient = [
   "rgba(126, 0, 35, 1)",
 ];
 
-const heatMapData = [];
 let predictedData = [];
 let aqiForLocation = 100;
 
@@ -34,19 +33,21 @@ export default function MapPage() {
   const [map, setMap] = useState(null);
   const [markerPos, setMarkerPos] = useState(centerPosition);
   const [isMapSidebarOpen, setIsMapSidebarOpen] = useState(false);
-  const [lastRun, setLastRun] = useState(Date.now());
   const [shouldRenderMarker, setShouldRenderMarker] = useState(false); // Variable to control when the marker will be loaded in.
+  const [heatMapData, setHeatMapData] = useState([]); // Move heatMapData to state
+  const [loading, setLoading] = useState(true); // State to manage loading state
+  const [lastFetchTime, setLastFetchTime] = useState(0); // State to store the last fetch time
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: googleMapsKey,
     libraries: libs
   });
 
-  // useEffect(() => {
+    // useEffect(() => {
   //   console.log("Marker position updated:", markerPos);
   // }, [markerPos]);
 
-  useEffect(() => {
+  const fetchAQIData = useCallback(async () => {
     const locationInput = {
       loc_lat: 40.75838928128043,
       loc_lon: -73.97503124048248,
@@ -60,36 +61,47 @@ export default function MapPage() {
       weather_id: 502
     };
 
-    const now = Date.now();
-    if (now - lastRun >= 3600000) {
-      axiosInstance.post('/map/getAllAQIValues', locationInput)
-        .then(response => {
-          predictedData = response;
-          response.forEach(result => {
-            let wt = 6;
-            if (result.predicted_aqi <= 50) wt = 1;
-            else if (result.predicted_aqi <= 100) wt = 2;
-            else if (result.predicted_aqi <= 150) wt = 3;
-            else if (result.predicted_aqi <= 200) wt = 4;
-            else if (result.predicted_aqi <= 300) wt = 5;
+    try {
+      const response = await axiosInstance.post('/map/getAllAQIValues', locationInput);
+      predictedData = response.data;
+      const newHeatMapData = response.data.map(result => {
+        let wt = 6;
+        if (result.predicted_aqi <= 50) wt = 1;
+        else if (result.predicted_aqi <= 100) wt = 2;
+        else if (result.predicted_aqi <= 150) wt = 3;
+        else if (result.predicted_aqi <= 200) wt = 4;
+        else if (result.predicted_aqi <= 300) wt = 5;
 
-            heatMapData.push({ lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt });
-          });
-          console.log("Location data sent successfully!", response);
-        })
-        .catch(error => {
-          console.error("There was an error sending the location data!", error);
-        });
-      setLastRun(now);
+        return { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt };
+      });
+      setHeatMapData(newHeatMapData);
+      console.log("Location data sent successfully!", response);
+      setLoading(false); // Set loading to false once data is fetched
+      setLastFetchTime(Date.now()); // Update the last fetch time
+    } catch (error) {
+      console.error("There was an error sending the location data!", error);
+      setLoading(false); // Set loading to false in case of an error
     }
-  }, [lastRun]);
+  }, []);
 
-  // This function calculates the aqi for a location based on search
-  const GetAqiForLocation = (loc) =>{
-    predictedData.forEach(datapoint =>{
-        if(loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= datapoint.min_lon)
-            return datapoint.predicted_aqi;
-    });
+  useEffect(() => {
+    // Fetch data immediately
+    fetchAQIData();
+
+    // Set up interval to fetch data every two minutes
+    const interval = setInterval(() => {
+      fetchAQIData();
+    }, 120000); // Fetch data every two minutes
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [fetchAQIData]);
+
+  const GetAqiForLocation = (loc) => {
+    for (const datapoint of predictedData) {
+      if (loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= datapoint.min_lon) {
+        return datapoint.predicted_aqi;
+      }
+    }
     return 0;
   };
 
@@ -98,7 +110,7 @@ export default function MapPage() {
       map.panTo(new google.maps.LatLng(location.lat(), location.lng()));
       map.zoom = 14;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
-      aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() })
+      aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() });
     }
   }, [map]);
 
@@ -125,6 +137,12 @@ export default function MapPage() {
     return (<div>Loading...please wait</div>);
   }
 
+  const formatLastFetchTime = (timestamp) => {
+    if (timestamp === 0) return "Never";
+    const date = new Date(timestamp);
+    return date.toLocaleString();
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       <MapSidebar isOpen={isMapSidebarOpen} />
@@ -133,7 +151,7 @@ export default function MapPage() {
           center={centerPosition} zoom={12} onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: { zoomControl: true, mapTypeControl: true, streetViewControl: true }, styles: mapstyle }}>
 
-          {map && heatMapData.length > 0 &&
+          {map && !loading && heatMapData.length > 0 &&
             <HeatmapLayer
               data={heatMapData.map((data) => (
                 { location: new google.maps.LatLng(data.lat, data.lng), weight: data.weight }
@@ -152,7 +170,6 @@ export default function MapPage() {
               <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
             </div>
             <MapAlertCard aqi={aqiForLocation} />
-
             {/* <div className='flex items-center justify-center bg-[#0D1B2A] text-white p-2 ml-3 rounded-lg'>
               <img src={warningImg} alt="Warning Icon" />
               <div className='break-words whitespace-normal'>
@@ -161,6 +178,10 @@ export default function MapPage() {
                 <p className="text-sm mt-1">Unhealthy for all groups.</p>
               </div> */}
             {/* </div> */}
+
+            <div className="text-sm mt-2">
+              Last fetch time: {formatLastFetchTime(lastFetchTime)}
+            </div>
           </div>
 
           <div className='flex fixed z-10 right-2 mr-3 bottom-4'>
