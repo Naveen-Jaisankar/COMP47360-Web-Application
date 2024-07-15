@@ -1,11 +1,11 @@
 package com.compsci.webapp.entity;
 
 import jakarta.persistence.Column;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
@@ -13,6 +13,7 @@ import java.time.LocalDate;
 
 
 @Entity
+@IdClass(DailyQuizID.class)
 @Table(name = "dailyquizscore")
 public class DailyQuizScore {
 
@@ -23,14 +24,15 @@ public class DailyQuizScore {
     private Integer outdoorHours; // Assuming outdoor hours is of type Integer
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
+
+    @Id
+    @Column(name = "quiz_date")
+    private LocalDate quizDate;
 
     @Column(name = "user_id")
     private Long userId;
-
-    @Column(name = "quiz_date")
-    private LocalDate quizDate;
 
     @Column(name = "quiz_score")
     private Integer quizScore;
