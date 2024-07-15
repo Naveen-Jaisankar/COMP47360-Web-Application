@@ -7,6 +7,7 @@ import { useState } from "react";
 import { styled } from "@mui/system";
 import {ThickHeadingTypography} from "./Home"
 import constants from './../constant';
+import Sidebar from '../components/usersidebar';
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -159,19 +160,18 @@ export default function DailyForm() {
       setOutdoorLocation(placeData);
     };
 
+    const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+    const toggleDrawer = () => {
+      setSidebarOpen(!isSidebarOpen);
+    };
+
   return (
-    <>
-      <UserPlaceholder />
-      <UserContent>
-        <Container
-          sx={{
-            marginTop: "2rem",
-          }}
-        >
-          <ThickHeadingTypography variant="h1" component="h1" sx={{
-            color: "black",
-            paddingLeft: "1rem"
-          }}>
+    <div className="flex">
+      <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
+      <UserContent className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
+        <Container sx={{marginTop: "2rem",}}>
+          <ThickHeadingTypography variant="h1" component="h1" sx={{color: "black", paddingLeft: "1rem"}}>
             {constants.dailyForm.title}
           </ThickHeadingTypography>
 
@@ -211,6 +211,6 @@ export default function DailyForm() {
           </GreyBackgroundBox>
         </Container>
       </UserContent>
-    </>
+    </div>
   );
 }
