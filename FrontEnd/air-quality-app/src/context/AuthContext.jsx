@@ -2,9 +2,11 @@ import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const AuthContext = createContext();
+
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -12,6 +14,7 @@ const AuthProvider = ({ children }) => {
       setToken(storedToken);
       setIsAuthenticated(true);
     }
+    setLoading(false);
   }, []);
 
   const login = (token) => {
@@ -27,7 +30,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, token }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, token, loading }}>
       {children}
     </AuthContext.Provider>
   );
@@ -36,5 +39,5 @@ const AuthProvider = ({ children }) => {
 export { AuthProvider, AuthContext };
 
 AuthProvider.propTypes = {
-  children: PropTypes.object
-}
+  children: PropTypes.node.isRequired,
+};
