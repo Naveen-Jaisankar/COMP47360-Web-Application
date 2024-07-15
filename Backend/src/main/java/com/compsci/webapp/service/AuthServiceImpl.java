@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	private void constructandSendVerificationEmail(String token,UserEntity user) {
-		String link = "http://34.244.248.2:3000/api/v1/auth/confirm?token=" + token;
+		String link = "http://34.244.248.2:8080/api/v1/auth/confirm?token=" + token;
         try {
         	Template verificationEmailTemplate = freemarkerConfig.getTemplate("verification_email.ftl");
         	Map<String, Object> verificationEmailValueMapper = new HashMap<>();
