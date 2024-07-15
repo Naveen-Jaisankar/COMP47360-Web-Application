@@ -14,6 +14,7 @@ export const general = {
     settings : "Settings",
     form : "Form",
     login_register : "Login/Register",
+    logout:'Logout',
     save_and_continue : "Save & Continue",
     getting_started : "Getting Started",
 
@@ -38,11 +39,12 @@ export const homePage =  {
     more_info3 : "Chronic exposure to air pollution is associated with an increased risk of coronary heart disease and stroke."
 }
 
-export const login = {
+export const loginConsts = {
     login : "Log-In",
     login_body : "Breathe easier with Fair",
     login_btn : "Login",
     create_acnt : " Not a member? Create an account here",
+    forgot_pass:"Forgot Password? Click here!"
 }
 
 export const register = {
@@ -85,9 +87,18 @@ export const privacy = {
 
 }
 
+export const userSidebar = {
+    welcomeText:"Welcome back, User",
+    exposureText:"Take your exposure quiz today"
+}
+
 export const userHistory = {
     title: "Your History",
     riskProfileTitle: "Your Current Risk Profile"
+}
+
+export const ForgotPass = {
+    forgotText:"Reset Password"
 }
 
 export default {
@@ -95,11 +106,13 @@ export default {
     general,
     generalHealth,
     homePage,
-    login,
+    loginConsts,
     register,
     settings,
     userAge,
     dailyForm,
     privacy,
-    userHistory
+    userHistory,
+    ForgotPass,
+    userSidebar
 };
