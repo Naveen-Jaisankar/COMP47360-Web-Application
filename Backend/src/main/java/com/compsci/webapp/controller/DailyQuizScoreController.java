@@ -5,6 +5,7 @@ import com.compsci.webapp.service.DailyQuizScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,22 +25,22 @@ public class DailyQuizScoreController {
     }
 
     @GetMapping("/{id}")
-    public DailyQuizScore getDailyQuizScoreById(@PathVariable Long id) {
+    public List<DailyQuizScore> getDailyQuizScoreById(@PathVariable Long id) {
         return dailyQuizScoreService.getDailyQuizScoreById(id);
     }
 
     @PostMapping
-    public DailyQuizScore DailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
-        return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); // once user hits submit button - 4 
+    public DailyQuizScore createDailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
+        return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); 
     }
 
-    @PutMapping("/{id}")
-    public DailyQuizScore updateDailyQuizScore(@PathVariable Long id, @RequestBody DailyQuizScore quizScoreDetails) {
-        return dailyQuizScoreService.updateDailyQuizScore(id, quizScoreDetails);
+    @PutMapping("/{id}/{quizDate}")
+    public DailyQuizScore updateDailyQuizScore(@PathVariable Long id, @PathVariable LocalDate quizDate, @RequestBody DailyQuizScore quizScoreDetails) {
+        return dailyQuizScoreService.updateDailyQuizScore(id, quizDate, quizScoreDetails);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteDailyQuizScore(@PathVariable Long id) {
-        dailyQuizScoreService.deleteDailyQuizScore(id);
+    @DeleteMapping("/{id}/{quizDate}")
+    public void deleteDailyQuizScore(@PathVariable Long id, @PathVariable LocalDate quizDate) {
+        dailyQuizScoreService.deleteDailyQuizScore(id, quizDate);
     }
 }

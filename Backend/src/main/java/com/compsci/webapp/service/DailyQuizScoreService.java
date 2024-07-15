@@ -9,6 +9,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.compsci.webapp.entity.DailyQuizID;
 import com.compsci.webapp.entity.DailyQuizScore;
 import com.compsci.webapp.repository.DailyQuizScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -41,9 +44,9 @@ public class DailyQuizScoreService {
         return dailyQuizScoreRepository.findAll();
     }
 
-    public DailyQuizScore getDailyQuizScoreById(Long id) {
-        return dailyQuizScoreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
+    public List<DailyQuizScore> getDailyQuizScoreById(Long id) {
+        return dailyQuizScoreRepository.findById(id);
+                // .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
     }
 
     public DailyQuizScore createDailyQuizScore(DailyQuizScore dailyQuizScore) {
@@ -68,9 +71,11 @@ public class DailyQuizScoreService {
         return dailyQuizScoreRepository.save(dailyQuizScore);
     }
 
-    public DailyQuizScore updateDailyQuizScore(Long id, DailyQuizScore quizScoreDetails) {
-        DailyQuizScore quizScore = dailyQuizScoreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
+  public DailyQuizScore updateDailyQuizScore(Long id, LocalDate quizDate, DailyQuizScore quizScoreDetails) {
+    DailyQuizID dailyQuizID = new DailyQuizID(id, quizDate);
+    DailyQuizScore quizScore = dailyQuizScoreRepository.findById(dailyQuizID)
+            .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id + " and quizDate: " + quizDate));
+            // .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
 
         quizScore.setUserId(quizScoreDetails.getUserId());
         quizScore.setQuizDate(quizScoreDetails.getQuizDate());
@@ -79,9 +84,13 @@ public class DailyQuizScoreService {
         return dailyQuizScoreRepository.save(quizScore);
     }
 
-    public void deleteDailyQuizScore(Long id) {
-        DailyQuizScore quizScore = dailyQuizScoreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
+    public void deleteDailyQuizScore(Long id, LocalDate quizDate) {
+        DailyQuizID dailyQuizID = new DailyQuizID();
+        dailyQuizID.setId(id);
+        dailyQuizID.setQuizDate(quizDate);
+
+        DailyQuizScore quizScore = dailyQuizScoreRepository.findById(dailyQuizID)
+                .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id + " and quizDate: " + quizDate));
 
         dailyQuizScoreRepository.delete(quizScore);
     }

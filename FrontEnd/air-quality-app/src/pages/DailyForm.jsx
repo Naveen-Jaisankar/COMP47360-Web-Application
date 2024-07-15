@@ -124,7 +124,7 @@ export default function DailyForm() {
 
     const data = {
 
-      userId: 1,
+      id: 1,
       quizDate: new Date(),
       quizScore: 85,
       indoorLocation: indoorLocationToSend,
