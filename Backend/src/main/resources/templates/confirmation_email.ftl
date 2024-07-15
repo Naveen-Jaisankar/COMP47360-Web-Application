@@ -48,7 +48,7 @@
             <p>Thank you for choosing our service!</p>
         </div>
         <div style="text-align: center;">
-            <a class="button" href="http://localhost:3000/signup">Go to Website</a>
+            <a class="button" href="http://34.244.248.2:3000/signup">Go to Website</a>
         </div>
     </div>
 </body>
