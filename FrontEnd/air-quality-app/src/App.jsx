@@ -17,7 +17,7 @@ import Register from './pages/Register';
 import MainContent from './components/maincontent';
 import { UserPanel } from './pages/UserPanel';
 import ForgotPass from './pages/ForgotPassword';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
