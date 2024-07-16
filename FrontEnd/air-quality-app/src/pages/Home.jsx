@@ -142,7 +142,6 @@ const Home = () => {
                 marginBottom: 5,
                 width: { xs: "100%", md: "90%", lg: "80%" },
                 backgroundColor: "#F7F7F2",
-                paddingBottom:2
               }}
             >
               <SmallerHeadingBox

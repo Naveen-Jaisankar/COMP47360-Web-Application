@@ -39,7 +39,7 @@ export const homePage =  {
     more_info3 : "Chronic exposure to air pollution is associated with an increased risk of coronary heart disease and stroke.",
     terms_title: "Terms To Know",
     terms: "When we talk about about air quality and air pollutants, you'll often see the term AQI. But what exactly does AQI mean? AQI, otherwise known as the Air Quality Index, is an objective measurement of the amount of pollutants within the air. AQI ranges from 0 to 500, with higher values indicating poorer air quality.",
-    terms2: "Another helpful term is PM2.5. These particles measure at 2.5 microns, about 28 times smaller than a strand of hair. As a result of their size, they can be inhaled and absorbed into the bloodstream causing harm. While this can appear frightening, it's important to know that for the majority people can handle occasional exposure to low levels of PM2.5. By understanding these terms, we can understand more about the air that we breathe."
+    terms2: "Another helpful term is PM2.5. These particles measure at 2.5 microns, about 28 times smaller than a strand of hair. As a result of their size, they can be inhaled and absorbed into the bloodstream causing harm. While this can appear frightening, it's important to know that for the majority of people can handle occasional exposure to low levels of PM2.5. By understanding these terms, we can understand more about the air that we breathe."
 }
 
 export const loginConsts = {
