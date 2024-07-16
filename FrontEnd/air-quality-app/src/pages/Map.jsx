@@ -11,6 +11,8 @@ import mapstyle from '../components/mapstyles';
 import { MapSidebar } from '../components/mapsidebar';
 import MapAlertCard from '../components/mapalertcard';
 import Legend from '../components/maplegend';
+import { heatData } from './heatdata';
+
 
 // const warningImg = "../src/static/icons8-warning-96.png";
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
@@ -29,12 +31,14 @@ const airQualityGradient = [
 let predictedData = [];
 let aqiForLocation = 100;
 
+
 export default function MapPage() {
   const [map, setMap] = useState(null);
   const [markerPos, setMarkerPos] = useState(centerPosition);
   const [isMapSidebarOpen, setIsMapSidebarOpen] = useState(false);
   const [shouldRenderMarker, setShouldRenderMarker] = useState(false); // Variable to control when the marker will be loaded in.
-  const [heatMapData, setHeatMapData] = useState([]); // Move heatMapData to state
+  const [shouldRenderHeatMap, setShouldRenderHeatMap] = useState(false); // Variable to control when the heatmap will be loaded in.
+  const [heatMapData, setHeatMapData] = useState(null); // Move heatMapData to state
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [lastFetchTime, setLastFetchTime] = useState(0); // State to store the last fetch time
 
@@ -43,9 +47,20 @@ export default function MapPage() {
     libraries: libs
   });
 
-    // useEffect(() => {
-  //   console.log("Marker position updated:", markerPos);
-  // }, [markerPos]);
+  const GetheatData = () =>{
+    const newHeatMapData = predictedData.map(result => {
+      let wt = 6;
+      if (result.predicted_aqi <= 50) wt = 1;
+      else if (result.predicted_aqi <= 100) wt = 2;
+      else if (result.predicted_aqi <= 150) wt = 3;
+      else if (result.predicted_aqi <= 200) wt = 4;
+      else if (result.predicted_aqi <= 300) wt = 5;
+
+      return { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt };
+    });
+
+    return newHeatMapData;
+  }
 
   const fetchAQIData = useCallback(async () => {
     const locationInput = {
@@ -63,26 +78,38 @@ export default function MapPage() {
 
     try {
       const response = await axiosInstance.post('/map/getAllAQIValues', locationInput);
-      predictedData = response.data;
-      const newHeatMapData = response.data.map(result => {
-        let wt = 6;
-        if (result.predicted_aqi <= 50) wt = 1;
-        else if (result.predicted_aqi <= 100) wt = 2;
-        else if (result.predicted_aqi <= 150) wt = 3;
-        else if (result.predicted_aqi <= 200) wt = 4;
-        else if (result.predicted_aqi <= 300) wt = 5;
-
-        return { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt };
-      });
-      setHeatMapData(newHeatMapData);
-      console.log("Location data sent successfully!", response);
-      setLoading(false); // Set loading to false once data is fetched
-      setLastFetchTime(Date.now()); // Update the last fetch time
+      if(response.data.length > 0)
+      {
+        predictedData = response.data;
+        const newHeatMapData = response.data.map(result => {
+          let wt = 6;
+          if (result.predicted_aqi <= 50) wt = 1;
+          else if (result.predicted_aqi <= 100) wt = 2;
+          else if (result.predicted_aqi <= 150) wt = 3;
+          else if (result.predicted_aqi <= 200) wt = 4;
+          else if (result.predicted_aqi <= 300) wt = 5;
+  
+          return { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt };
+        });
+        setHeatMapData(newHeatMapData);
+        console.log("Location data sent successfully!", response);
+        setLoading(false); // Set loading to false once data is fetched
+        setLastFetchTime(Date.now()); // Update the last fetch time
+      }
+      else
+      {
+        predictedData = heatData;
+        setHeatMapData(GetheatData())
+        setLoading(false); // Set loading to false once data is fetched
+        setLastFetchTime(Date.now()); // Update the last fetch time
+      }
     } catch (error) {
       console.error("There was an error sending the location data!", error);
       setLoading(false); // Set loading to false in case of an error
     }
   }, []);
+
+  
 
   useEffect(() => {
     // Fetch data immediately
@@ -91,7 +118,7 @@ export default function MapPage() {
     // Set up interval to fetch data every two minutes
     const interval = setInterval(() => {
       fetchAQIData();
-    }, 120000); // Fetch data every two minutes
+    }, 1000); // Fetch data every two minutes
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [fetchAQIData]);
@@ -129,6 +156,7 @@ export default function MapPage() {
     // Set a delay of 1 second before rendering the marker for the first time (0.04 seconds lowest so far)
     const timer = setTimeout(() => {
       setShouldRenderMarker(true);
+      setShouldRenderHeatMap(true);
     }, 1000); // Adjust the delay time here as needed
     return () => clearTimeout(timer); // Clears out the delay for future marker rendering
   }, []);
@@ -151,7 +179,7 @@ export default function MapPage() {
           center={centerPosition} zoom={12} onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: { zoomControl: true, mapTypeControl: true, streetViewControl: true }, styles: mapstyle }}>
 
-          {map && !loading && heatMapData.length > 0 &&
+          {map && !loading && heatMapData.length> 0 && shouldRenderHeatMap &&
             <HeatmapLayer
               data={heatMapData.map((data) => (
                 { location: new google.maps.LatLng(data.lat, data.lng), weight: data.weight }
@@ -170,14 +198,6 @@ export default function MapPage() {
               <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
             </div>
             <MapAlertCard aqi={aqiForLocation} />
-            {/* <div className='flex items-center justify-center bg-[#0D1B2A] text-white p-2 ml-3 rounded-lg'>
-              <img src={warningImg} alt="Warning Icon" />
-              <div className='break-words whitespace-normal'>
-                <h2 className="font-bold text-lg">Air Quality Hazardous In This Area</h2>
-                <p className="text-sm mt-1">AQI: 90-100</p>
-                <p className="text-sm mt-1">Unhealthy for all groups.</p>
-              </div> */}
-            {/* </div> */}
 
             <div className="text-sm mt-2">
               Last fetch time: {formatLastFetchTime(lastFetchTime)}
