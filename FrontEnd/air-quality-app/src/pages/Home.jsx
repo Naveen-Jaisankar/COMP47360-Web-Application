@@ -3,6 +3,7 @@ import Infocard from "../components/infocard";
 import ReactPlayer from "react-player";
 import constants from "./../constant";
 import { styled } from "@mui/system";
+import Footer from "../components/footer";
 
 const image1 = "../src/static/proxy-image.png";
 const image2 = "../src/static/face-mask2.png";
@@ -52,7 +53,7 @@ const GetStartedBox = styled(Box)({
 
 const CreamBackgroundBox = styled(Box)({
   backgroundColor: "#F7F7F2",
-  height: "150vh",
+  height: "180vh",
   paddingBottom: "2rem"
 });
 
@@ -67,7 +68,6 @@ const SmallerHeadingBox = styled(Box)({
 const InfoCardBox = styled(Box)({
   backgroundColor: "white",
   marginTop: "2rem",
-
   padding: 5,
 });
 
@@ -100,8 +100,6 @@ const Home = () => {
           </BannerBox>
         </header>
       </section>
-
-      <CreamBackgroundBox>
         <Container
           sx={{
             maxWidth: { xs: "100%", md: "90%", lg: "70%" },
@@ -132,17 +130,24 @@ const Home = () => {
 
         {/* Info-card Section */}
         <section>
-          <InfoCardBox>
+          <InfoCardBox
+          sx={{
+            border: "1px",
+            backgroundColor: "#F7F7F2"
+          }}>
             <Container
               maxWidth={false}
               sx={{
                 marginTop: 4,
                 marginBottom: 4,
                 width: { xs: "100%", md: "90%", lg: "80%" },
-                backgroundColor: "white",
+                backgroundColor: "#F7F7F2"
               }}
             >
-              <SmallerHeadingBox>
+              <SmallerHeadingBox
+              sx={{
+                backgroundColor: "#F7F7F2"
+              }}>
                 <Typography variant="h2" component="h2" sx={{
                   fontWeight: 'medium',
                   fontSize: '4rem'
@@ -162,6 +167,8 @@ const Home = () => {
                   gridTemplateColumns: { md: "repeat(3, 1fr)" },
                   gap: 4,
                   margin: { xs: 6 },
+                  marginBottom: 2,
+                  backgroundColor: "#F7F7F2"
                 }}
               >
                 <Infocard
@@ -201,7 +208,11 @@ const Home = () => {
             </Container>
           </InfoCardBox>
         </section>
-      </CreamBackgroundBox>
+      <Container>
+    
+      <Footer/>
+      </Container>
+
     </>
   );
 };
