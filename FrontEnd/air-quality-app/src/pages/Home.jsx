@@ -1,22 +1,33 @@
-import { Container, Typography, Box, Grid, } from "@mui/material";
+import { Container, Typography, Box, Grid } from "@mui/material";
 import Infocard from "../components/infocard";
-import ReactPlayer from "react-player"
-import constants from './../constant';
+import ReactPlayer from "react-player";
+import constants from "./../constant";
 import { styled } from "@mui/system";
+import Footer from "../components/footer";
 
 const image1 = "../src/static/proxy-image.png";
-const videoUrl= "https://www.youtube.com/watch?v=FKBVwX8dVhI";
+const image2 = "../src/static/face-mask2.png";
+const image3 = "../src/static/heart.png";
+const bannerImage = "../src/static/newyorktest8.jpg"
+const videoUrl = "https://www.youtube.com/watch?v=FKBVwX8dVhI";
 
 const BannerBox = styled(Box)({
   backgroundColor: "#2E6095",
   display: "flex",
   alignItems: "center",
+  paddingBottom: "2rem",
+  position: "relative", 
+  backgroundImage: `url(${bannerImage})`,
+  backgroundSize: "cover",
+  // background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)), url(${bannerImage})`,
+
 });
 
 const QuoteBox = styled(Box)({
   display: "flex",
   flexDirection: "column",
   marginLeft: "4rem",
+
 });
 
 const ThickHeadingTypography = styled(Typography)({
@@ -24,7 +35,8 @@ const ThickHeadingTypography = styled(Typography)({
   fontSize: "4rem",
   fontWeight: 700,
   color: "white",
-})
+  borderColor: "black",
+});
 
 const GetStartedBox = styled(Box)({
   height: "80vh",
@@ -34,19 +46,15 @@ const GetStartedBox = styled(Box)({
   backgroundColor: "white",
   borderRadius: "2vh",
   border: "2px solid black",
-  padding: "1rem",
-});
-
-const TranscriptBox = styled(Box)({
-  marginTop: "2rem",
-  height: "70vh",
-  width: "100%",
-  backgroundColor: "black",
+  padding: "2rem",
+  position: "relative",
+  zIndex: 10, 
 });
 
 const CreamBackgroundBox = styled(Box)({
   backgroundColor: "#F7F7F2",
-  height: "150vh",
+  height: "180vh",
+  paddingBottom: "2rem"
 });
 
 const SmallerHeadingBox = styled(Box)({
@@ -55,18 +63,17 @@ const SmallerHeadingBox = styled(Box)({
   alignItems: "center",
   textAlign: "center",
   mb: 4,
-})
+});
 
 const InfoCardBox = styled(Box)({
   backgroundColor: "white",
-  margin: 2,
+  marginTop: "2rem",
   padding: 5,
-})
+});
 
 const Home = () => {
   return (
     <>
-
       {/* Introduction Section */}
       <section>
         <header>
@@ -76,10 +83,7 @@ const Home = () => {
             }}
           >
             <QuoteBox>
-              <ThickHeadingTypography
-                variant="h1"
-                component="h1"
-              >
+              <ThickHeadingTypography variant="h1" component="h1">
                 {constants.homePage.title1}
               </ThickHeadingTypography>
               <Typography
@@ -96,66 +100,64 @@ const Home = () => {
           </BannerBox>
         </header>
       </section>
-
-      <CreamBackgroundBox>
-        {/* Tutorial section */}
-        <section>
-          <Box>
-            <Grid
-              container
-              spacing={1}
+        <Container
+          sx={{
+            maxWidth: { xs: "100%", md: "90%", lg: "70%" },
+            marginTop: { xs: -2, md: -8 },
+          }}
+        >
+          <GetStartedBox>
+            <Typography
+              variant="h3"
+              component="h2"
               sx={{
-                paddingLeft: { xs: "0", md: 10 },
+                margin: 2,
               }}
             >
-              <Grid item xs={12} sm={12} md={8}>
-                <Box>
-                  <GetStartedBox
-                    sx={{
-                    width: { xs: "95%", md: "85%" },
-                    marginTop: { xs: -2, md: -8 },
-                    }}
-                  >
-                    <Typography
-                      variant="h3"
-                      component="h2"
-                      sx={{
-                        margin: 2,
-                      }}
-                    >
-                      {constants.homePage.getting_started}
-                    </Typography>
-                    <ReactPlayer url={videoUrl} width="100%" height="100%" style={{
-                      top: 0,
-                      left: 0
-                    }}/>
-                      
-                  </GetStartedBox>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Box>
-                  <TranscriptBox
-                    sx={{
-                      marginLeft: { xs: 5, s: 4, md: -8 },
-                    }}
-                  ></TranscriptBox>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-        </section>
+              {constants.homePage.getting_started}
+            </Typography>
+            <ReactPlayer
+              url={videoUrl}
+              width="100%"
+              height="100%"
+              style={{
+                top: 0,
+                left: 0,
+              }}
+            />
+          </GetStartedBox>
+        </Container>
 
         {/* Info-card Section */}
         <section>
-          <InfoCardBox>
-            <Container sx={{ marginTop: 4, marginBottom: 4, maxWidth: "lg" }}>
-              <SmallerHeadingBox>
-                <Typography variant="h2" component="h2">
+          <InfoCardBox
+          sx={{
+            border: "1px",
+            backgroundColor: "#F7F7F2"
+          }}>
+            <Container
+              maxWidth={false}
+              sx={{
+                marginTop: 4,
+                marginBottom: 5,
+                width: { xs: "100%", md: "90%", lg: "80%" },
+                backgroundColor: "#F7F7F2",
+              }}
+            >
+              <SmallerHeadingBox
+              sx={{
+                backgroundColor: "#F7F7F2"
+              }}>
+                <Typography variant="h2" component="h2" sx={{
+                  fontWeight: 'medium',
+                  fontSize: '4rem'
+                }}>
                   {constants.homePage.air_pollution_heading}
                 </Typography>
-                <Typography variant="body1" component="p">
-                {constants.homePage.air_pollution_heading}
+                <Typography variant="body1" component="p" sx={{
+                  fontSize: '2rem'
+                }}>
+                  {constants.homePage.air_pollution_body}
                 </Typography>
               </SmallerHeadingBox>
 
@@ -165,34 +167,54 @@ const Home = () => {
                   gridTemplateColumns: { md: "repeat(3, 1fr)" },
                   gap: 4,
                   margin: { xs: 6 },
+                  marginBottom: 2,
+                  backgroundColor: "#F7F7F2"
                 }}
               >
                 <Infocard
                   image={image1}
-                  alt="Image Alt Text"
-                  heading="Funky fact"
-                  text={constants.general.more_info}
+                  alt="An icon of lungs with branching leaves inside the lungs"
+                  heading="Life Expectancy"
+                  text={constants.homePage.more_info1}
+                  style={{
+                    maxWidth: "11rem",
+                    margin: "auto",
+                    paddingTop: "1rem",
+                  }}
                 />
                 <Infocard
-                  image={image1}
-                  alt="Image Alt Text"
-                  heading="Funky fact"
-                  text={constants.general.more_info}
+                  image={image2}
+                  alt="A mask icon"
+                  heading="Everyday Protection"
+                  text={constants.homePage.more_info2}
+                  style={{
+                    maxWidth: "14rem",
+                    margin: "auto",
+                    paddingTop: "1rem",
+                  }}
                 />
                 <Infocard
-                  image={image1}
-                  alt="Image Alt Text"
-                  heading="Funky fact"
-                  text={constants.general.more_info}
+                  image={image3}
+                  alt="A heart icon"
+                  heading="Exposure"
+                  text={constants.homePage.more_info3}
+                  style={{
+                    maxWidth: "10rem",
+                    margin: "auto",
+                    paddingTop: "1rem",
+                  }}
                 />
               </Box>
             </Container>
           </InfoCardBox>
         </section>
-      </CreamBackgroundBox>
+      <Container>
+      <Footer/>
+      </Container>
+
     </>
   );
 };
 
 export default Home;
-export {ThickHeadingTypography, CreamBackgroundBox}
+export { ThickHeadingTypography, CreamBackgroundBox, SmallerHeadingBox };
