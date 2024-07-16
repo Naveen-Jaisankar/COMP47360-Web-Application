@@ -139,9 +139,10 @@ const Home = () => {
               maxWidth={false}
               sx={{
                 marginTop: 4,
-                marginBottom: 4,
+                marginBottom: 5,
                 width: { xs: "100%", md: "90%", lg: "80%" },
-                backgroundColor: "#F7F7F2"
+                backgroundColor: "#F7F7F2",
+                paddingBottom:2
               }}
             >
               <SmallerHeadingBox
@@ -206,10 +207,28 @@ const Home = () => {
                 />
               </Box>
             </Container>
+            <Container>
+            <SmallerHeadingBox sx={{
+              paddingBottom: "2rem"
+            }}>
+            <Typography variant="h2" component="h2" sx={{
+                  fontWeight: 'medium',
+                  fontSize: '3rem',
+                  marginBottom: "1rem",
+                }}>{constants.homePage.terms_title}</Typography>
+              <Typography sx={{
+                marginBottom: "1rem"
+              }}>
+                {constants.homePage.terms}
+              </Typography>
+              <Typography>
+                {constants.homePage.terms2}
+              </Typography>
+            </SmallerHeadingBox>
+            </Container>
           </InfoCardBox>
         </section>
       <Container>
-    
       <Footer/>
       </Container>
 
