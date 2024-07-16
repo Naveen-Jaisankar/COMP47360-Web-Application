@@ -29,6 +29,7 @@ export default function DailyForm() {
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
 
+
   // Validation functions
 
   // checks if location is in Manhattan
