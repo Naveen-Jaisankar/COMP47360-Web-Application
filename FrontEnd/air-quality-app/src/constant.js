@@ -37,9 +37,6 @@ export const homePage =  {
     more_info2 : "Masks can significantly reduce pollution exposure, with filtration efficiency ranging from 30% to 90% depending on the type",
     // https://www.nejm.org/doi/full/10.1056/NEJMoa054409#:~:text=Each%20increase%20of%2010%20%CE%BCg,%3B%2095%25%20confidence%20interval%20%5BCI
     more_info3 : "Chronic exposure to air pollution is associated with an increased risk of coronary heart disease and stroke.",
-    terms_title: "Terms To Know",
-    terms: "When we talk about about air quality and air pollutants, you'll often see the term AQI. But what exactly does AQI mean? AQI, otherwise known as the Air Quality Index, is an objective measurement of the amount of pollutants within the air. AQI ranges from 0 to 500, with higher values indicating poorer air quality.",
-    terms2: "Another helpful term is PM2.5. These particles measure at 2.5 microns, about 28 times smaller than a strand of hair. As a result of their size, they can be inhaled and absorbed into the bloodstream causing harm. While this can appear frightening, it's important to know that for the majority of people can handle occasional exposure to low levels of PM2.5. By understanding these terms, we can understand more about the air that we breathe."
 }
 
 export const loginConsts = {
@@ -90,7 +87,10 @@ export const privacy = {
     l2: "Create a personalized weekly risk score",
     l3: "Offer tailored suggestions to further minimize your exposure to these air pollutants",    
     q3_sharingOfPersonalData: "Do you share my data with any third parties?",
-    content3: "We prioritize user privacy and do not share your personal data with any third parties. The data you provide is used solely for generating your personalized weekly air pollution risk score and is not used for any other purposes."
+    content3: "We prioritize user privacy and do not share your personal data with any third parties. The data you provide is used solely for generating your personalized weekly air pollution risk score and is not used for any other purposes.",
+    terms_title: "Glossary",
+    terms: "AQI, otherwise known as the Air Quality Index, is an objective measurement of the amount of pollutants within the air. AQI ranges from 0 to 500, with higher values indicating poorer air quality.",
+    terms2: "PM2.5 are particles that measure at 2.5 microns. For scale they are about 28 times smaller than a strand of hair. As a result of their size, they can be inhaled and absorbed into the bloodstream causing harm. While this can appear frightening, it's important to know that for the majority of people can handle occasional exposure to low levels of PM2.5."
 }
 
 export const userSidebar = {

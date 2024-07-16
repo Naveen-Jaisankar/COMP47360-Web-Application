@@ -2,7 +2,7 @@ import { Box, Container } from "@mui/system";
 // import { List, ListItem, Typography } from "@mui/material"
 import MainContent from "../components/maincontent";
 import { styled } from "@mui/system";
-import { CreamBackgroundBox } from "./Home";
+import { CreamBackgroundBox, SmallerHeadingBox } from "./Home";
 import constants from "./../constant";
 import {
   List,
@@ -119,6 +119,25 @@ export default function Privacy() {
                 {" "}
                 {constants.privacy.content3}
               </AnswerTypography>
+
+              {/* Glossary */}
+              <Box sx={{
+                marginBottom: "2rem"
+              }}>
+              <Typography variant="h2" component="h2" sx={{
+                  fontWeight: 'medium',
+                  fontSize: '3rem',
+                  marginBottom: "1rem",
+                }}>{constants.privacy.terms_title}</Typography>
+              <Typography sx={{
+                marginBottom: "1rem"
+              }}>
+                {constants.privacy.terms}
+              </Typography>
+              <Typography>
+                {constants.privacy.terms2}
+              </Typography>
+              </Box>
             </Box>
             <Button variant="contained"
             onClick={handleClick}
@@ -131,6 +150,7 @@ export default function Privacy() {
           </Container>
           
         </MainContent>
+
        
       </CreamBackgroundBox>
       

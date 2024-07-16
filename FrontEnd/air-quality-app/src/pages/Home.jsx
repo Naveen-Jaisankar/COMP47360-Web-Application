@@ -206,25 +206,6 @@ const Home = () => {
                 />
               </Box>
             </Container>
-            <Container>
-            <SmallerHeadingBox sx={{
-              paddingBottom: "2rem"
-            }}>
-            <Typography variant="h2" component="h2" sx={{
-                  fontWeight: 'medium',
-                  fontSize: '3rem',
-                  marginBottom: "1rem",
-                }}>{constants.homePage.terms_title}</Typography>
-              <Typography sx={{
-                marginBottom: "1rem"
-              }}>
-                {constants.homePage.terms}
-              </Typography>
-              <Typography>
-                {constants.homePage.terms2}
-              </Typography>
-            </SmallerHeadingBox>
-            </Container>
           </InfoCardBox>
         </section>
       <Container>
@@ -236,4 +217,4 @@ const Home = () => {
 };
 
 export default Home;
-export { ThickHeadingTypography, CreamBackgroundBox };
+export { ThickHeadingTypography, CreamBackgroundBox, SmallerHeadingBox };
