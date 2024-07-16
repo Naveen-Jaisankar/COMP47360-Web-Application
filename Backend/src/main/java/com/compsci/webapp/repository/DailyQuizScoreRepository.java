@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+// class for managing all Java data access 
+
 @Repository
 @Transactional
 public interface DailyQuizScoreRepository extends JpaRepository<DailyQuizScore, DailyQuizID> {

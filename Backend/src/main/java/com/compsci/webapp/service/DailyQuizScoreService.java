@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 
 public class DailyQuizScoreService {
-    
+    // api key should be placed in yml file
     @Value("${myapp.api.openweather.key}")
     private String openWeatherApiKey;
 

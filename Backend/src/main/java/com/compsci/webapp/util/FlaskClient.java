@@ -14,7 +14,7 @@ public class FlaskClient {
     private static final String PREDICT_FOR_ALL_GRIDS_URL = "http://localhost:5001/predict_for_all_grids";
 
     public static void main(String[] args) throws Exception {
-        // Example for predict_with_location
+        // predict_with_location
         JSONObject locationInput = new JSONObject();
         locationInput.put("loc_lat", 40.75838928128043);
         locationInput.put("loc_lon", -73.97503124048248);
