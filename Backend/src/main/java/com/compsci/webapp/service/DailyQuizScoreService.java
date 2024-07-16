@@ -1,6 +1,8 @@
 package com.compsci.webapp.service;
 
 import com.compsci.webapp.util.FlaskClient;
+
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -9,26 +11,27 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.compsci.webapp.entity.DailyQuizID;
 import com.compsci.webapp.entity.DailyQuizScore;
 import com.compsci.webapp.repository.DailyQuizScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.compsci.webapp.util.AQICalculator;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
+
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class DailyQuizScoreService {
 
-    private static final String OPENWEATHER_API_KEY = "73863d988ca614db6d58b25c1ff14029";
+public class DailyQuizScoreService {
+    
+    @Value("${myapp.api.openweather.key}")
+    private String openWeatherApiKey;
+
     private static final String OPENWEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
     private static final String DATA_MODEL_URL = "http://127.0.0.1:5001/getAQIValueForALocation";
 
@@ -120,7 +123,7 @@ public class DailyQuizScoreService {
     }
 
     private JSONObject fetchWeatherDetails(double locLat, double locLon) throws Exception {
-        String url = OPENWEATHER_URL + "?lat=" + locLat + "&lon=" + locLon + "&appid=" + OPENWEATHER_API_KEY;
+        String url = OPENWEATHER_URL + "?lat=" + locLat + "&lon=" + locLon + "&appid=" + openWeatherApiKey;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(url);
@@ -137,12 +140,7 @@ public class DailyQuizScoreService {
     }
 
     private double fetchAqiFromDataModel(double locLat, double locLon, long timeStamp, JSONObject weatherDetails) throws Exception {
-//        URL url = new URL(DATA_MODEL_URL);
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestMethod("POST");
-//        conn.setRequestProperty("Content-Type", "application/json; utf-8");
-//        conn.setRequestProperty("Accept", "application/json");
-//        conn.setDoOutput(true);
+
 
         JSONObject jsonInput = new JSONObject();
         jsonInput.put("loc_lat", locLat);
@@ -158,30 +156,6 @@ public class DailyQuizScoreService {
 
         return FlaskClient.predictWithLocation(jsonInput).getDouble("predicted_aqi");
 
-//        try (OutputStream os = conn.getOutputStream()) {
-//            byte[] input = jsonInput.toString().getBytes("utf-8");
-//            os.write(input, 0, input.length);
-//        }
-//
-//        StringBuilder response = new StringBuilder();
-//        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
-//            String responseLine;
-//            while ((responseLine = br.readLine()) != null) {
-//                response.append(responseLine.trim());
-//            }
-//        }
-//
-//        double aqi;
-//        try {
-//            aqi = Double.parseDouble(response.toString());
-//
-//            logger.info("AQI Model response: {}", aqi);
-//        } catch (NumberFormatException e) {
-//            logger.error("Error parsing AQI response: ", e);
-//            aqi = 0.0; //  value in case of error
-//        }
-//
-//        return aqi;
     }
 
     private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {
