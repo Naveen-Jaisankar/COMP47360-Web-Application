@@ -72,6 +72,7 @@ const DailySearchbar = ({passPlaceData}) => {
             type="text"
             className="form-control"
             placeholder="Enter Location"
+            onKeyDown={(e) => { e.key === 'Enter' && e.preventDefault(); }}
           />
         </Autocomplete>
       </LoadScript>

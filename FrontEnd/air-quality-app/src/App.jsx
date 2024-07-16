@@ -10,16 +10,26 @@ import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
 import Privacy from './pages/Privacy';
 import UserHistory from './pages/UserHistory';
+import UserDashboard from './pages/UserDashboard';
 import { SettingsContext } from './context/SettingsContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Starting from './pages/GettingStarted';
 import MainContent from './components/maincontent';
-import UserDashboard from './pages/UserDashboard';
+import { UserPanel } from './pages/UserPanel';
+import ForgotPass from './pages/ForgotPassword';
+import { AuthProvider, AuthContext } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
+  const { fontSize } = useContext(SettingsContext);
 
-  const {fontSize} = useContext(SettingsContext);
+  return (
+    <AuthProvider>
+      <AuthContext.Consumer>
+        {({ loading }) => {
+          if (loading) {
+            return <div>Loading...</div>; // pls replace this with some cool loading spinner
+          }
 
   return (
     <BrowserRouter>
@@ -37,7 +47,6 @@ function App() {
           <Route path="/user/history" element={<UserHistory/>} />
           <Route path="/privacy" element={<Privacy/>} />
           <Route path="/register" element={<Register />} />
-          <Route path= "/dashboard" element={<UserDashboard/>} />
         </Routes>
         </MainContent>
       </div>
