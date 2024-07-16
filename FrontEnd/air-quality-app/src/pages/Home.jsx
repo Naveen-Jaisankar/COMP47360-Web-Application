@@ -5,10 +5,11 @@ import constants from "./../constant";
 import { styled } from "@mui/system";
 import Footer from "../components/footer";
 
-const image1 = "../src/static/proxy-image.png";
-const image2 = "../src/static/face-mask2.png";
-const image3 = "../src/static/heart.png";
-const bannerImage = "../src/static/newyorktest8.jpg"
+
+const image1 = "/static/proxy-image.png";
+const image2 = "/static/face-mask2.png";
+const image3 = "/static/heart.png";
+const bannerImage = "/static/newyorktest8.jpg"
 const videoUrl = "https://www.youtube.com/watch?v=FKBVwX8dVhI";
 
 const BannerBox = styled(Box)({
