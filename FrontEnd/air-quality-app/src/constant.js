@@ -17,6 +17,7 @@ export const general = {
     logout:'Logout',
     save_and_continue : "Save & Continue",
     getting_started : "Getting Started",
+    user_dash:"Dashboard"
 
 }
 
