@@ -55,6 +55,7 @@ const Navbar = () => {
                 <NavbarButton to="/">{constants.general.home}</NavbarButton>
                 <NavbarButton to="/map">{constants.general.map}</NavbarButton>
                 <NavbarButton to="/settings">{constants.general.settings}</NavbarButton>
+                <NavbarButton to="/user">{constants.general.user_dash}</NavbarButton>
                 <NavbarButton to="/register">{constants.general.login_register}</NavbarButton>
             </Box>
 
@@ -67,7 +68,7 @@ const Navbar = () => {
             <MenuItem onClick={() => { handleCloseMenu(); navigate('/'); }}>{constants.general.home}</MenuItem>
             <MenuItem onClick={() => { handleCloseMenu(); navigate('/map'); }}>{constants.general.map}</MenuItem>
             <MenuItem onClick={() => { handleCloseMenu(); navigate('/settings'); }}>{constants.general.settings}</MenuItem>
-            <MenuItem onClick={() => { handleCloseMenu(); navigate('/form'); }}>{constants.general.form}</MenuItem>
+            <MenuItem onClick={() => { handleCloseMenu(); navigate('/user'); }}>{constants.general.user_dash}</MenuItem>
             <MenuItem onClick={() => { handleCloseMenu(); navigate('/register'); }}>{constants.general.login_register}</MenuItem>
           </Menu>
 
