@@ -1,9 +1,8 @@
-import { useContext } from 'react';
-import { Switch, Slider, Typography, Paper, Container } from '@mui/material';
+import { useContext, useState } from 'react';
+import { Switch, Slider, Typography, Paper, Container, Button, Menu, MenuItem } from '@mui/material';
 import { SettingsContext } from '../context/SettingsContext';
 import { styled } from '@mui/system';
 import constant from '../constant';
-
 
 const ColumnContainer = styled(Container)({
   display: 'flex',
@@ -12,7 +11,7 @@ const ColumnContainer = styled(Container)({
   justifyContent: 'center',
   height: '100vh',
   padding: 2,
-})
+});
 
 const SettingsPaper = styled(Paper)({
   display: 'flex',
@@ -20,52 +19,89 @@ const SettingsPaper = styled(Paper)({
   alignItems: 'center',
   padding: 3,
   borderRadius: 2,
- 
-})
+});
 
+const WideMenuItem = styled(MenuItem)({
+  margin: '1rem',
+  width: '30rem',
+  // backgroundColor: "black"
+});
 
-const Settings = () =>{
+const Settings = () => {
+  const { darkMode, toggleDarkMode, fontSize, changeFontSize } = useContext(SettingsContext);
 
-    //importing all features and functions from settingscontext
-    //Refer SettingsContext.jsx
-    const {darkMode, toggleDarkMode, fontSize, changeFontSize} = useContext(SettingsContext);
+  const handleFontSizeChange = (_event, newValue) => {
+    changeFontSize(newValue);
+  };
 
-    const handleFontSizeChange = (_event, newValue) => {
-        changeFontSize(newValue);
-    };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
-    return (
-        <ColumnContainer
-          component="main"
-          maxWidth="xs"
-          sx={{
-            backgroundColor: darkMode ? 'grey.900' : 'grey.100',
-            color: darkMode ? 'grey.300' : 'grey.900',
-          }}
-        >
-          <Typography variant="h4" component="h1" gutterBottom>
-            {constant.settings.title}
+  const handleClickSettings = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClickSettings}
+        sx={{
+          margin: 2,
+          fontWeight: 'bold',
+          position: 'relative',
+          color: 'inherit',
+          '&:after': {
+            content: '""',
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            width: '100%',
+            height: '2px',
+            background: 'currentColor',
+            backgroundColor: 'white',
+            transform: 'scaleX(0)',
+            transformOrigin: 'left',
+            transition: 'transform 250ms ease-in',
+          },
+          '&:hover:after': {
+            transform: 'scaleX(1)',
+          },
+        }}
+      >
+        Settings
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <WideMenuItem>
+          <Typography variant="body1" sx={{ paddingRight: '1rem' }}>
+            {constant.settings.text_size}
           </Typography>
-          <Typography variant="body1" gutterBottom>
-            {constant.settings.body}
+          <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={30} />
+        </WideMenuItem>
+        <WideMenuItem>
+          <Typography variant="body1" className="mr-2">
+            {constant.settings.dark_mode}
           </Typography>
-          <SettingsPaper elevation={3} sx={{
-            
-            backgroundColor: darkMode ? 'grey.800' : 'white',
-          }}>
-            <div className="flex flex-col items-center">
-              <div className="mb-4">
-                <Typography variant="body1">{constant.settings.text_size}</Typography>
-                <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={30} />
-              </div>
-              <div className="flex items-center">
-                <Typography variant="body1" className="mr-2">{constant.settings.dark_mode}</Typography>
-                <Switch checked={darkMode} onChange={toggleDarkMode} name="darkMode" color="primary"/>
-              </div>
-            </div>
-          </SettingsPaper>
-        </ColumnContainer>
-      );
+          <Switch checked={darkMode} onChange={toggleDarkMode} name="darkMode" color="primary" />
+        </WideMenuItem>
+      </Menu>
+    </>
+  );
 };
 
 export default Settings;
