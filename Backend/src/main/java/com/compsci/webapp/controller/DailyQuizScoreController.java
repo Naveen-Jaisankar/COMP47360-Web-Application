@@ -30,8 +30,14 @@ public class DailyQuizScoreController {
     }
 
     @PostMapping
+<<<<<<< Updated upstream
     public DailyQuizScore createDailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
         return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); 
+=======
+    public DailyQuizScore DailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
+        System.out.println(dailyQuizScore);
+        return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); // once user hits submit button - 4 
+>>>>>>> Stashed changes
     }
 
     @PutMapping("/{id}/{quizDate}")

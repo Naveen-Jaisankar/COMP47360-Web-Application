@@ -20,9 +20,12 @@ import org.springframework.stereotype.Service;
 import com.compsci.webapp.util.AQICalculator;
 
 
+<<<<<<< Updated upstream
 
 
 import java.time.LocalDate;
+=======
+>>>>>>> Stashed changes
 import java.util.List;
 
 @Service

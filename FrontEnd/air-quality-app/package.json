@@ -18,8 +18,11 @@
     "@mui/x-date-pickers": "^7.7.0",
     "@react-google-maps/api": "^2.19.3",
     "@vis.gl/react-google-maps": "^1.0.2",
+<<<<<<< Updated upstream
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
+=======
+>>>>>>> Stashed changes
     "dayjs": "^1.11.11",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-normalize": "^10.0.1",
