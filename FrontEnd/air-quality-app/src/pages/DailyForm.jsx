@@ -206,7 +206,7 @@ export default function DailyForm() {
           isSidebarOpen ? "ml-60" : "ml-0"
         } p-6`}
       >
-        <Container sx={{ marginTop: "2rem" }}>
+        <Container sx={{ marginTop: "1rem" }}>
           <ThickHeadingTypography
             variant="h1"
             component="h1"
@@ -279,16 +279,13 @@ export default function DailyForm() {
                       variant="h4"
                       component="h2"
                     >
+                      {}
                       Form Submitted
                     </Typography>
 
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       Thank you!
                     </Typography>
-
-                    
-                    
-                   
                    
                     </Box>
                     

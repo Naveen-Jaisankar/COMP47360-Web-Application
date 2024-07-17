@@ -94,6 +94,8 @@ const DailySearchbar = forwardRef(({passPlaceData}, ref) => {
   );
 });
 
+DailySearchbar.displayName = "DailySearchbar";
+
 DailySearchbar.propTypes = {
   passPlaceData: PropTypes.func,
 }
