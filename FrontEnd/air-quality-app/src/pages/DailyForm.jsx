@@ -3,7 +3,7 @@ import UserPlaceholder from "../components/userplaceholder";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { styled } from "@mui/system";
 import {ThickHeadingTypography} from "./Home"
 import constants from './../constant';
@@ -28,6 +28,9 @@ export default function DailyForm() {
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
+
+  const indoorSbarTextRef = useRef();
+  const outdoorSbarTextRef = useRef();
 
 
   // Validation functions
@@ -135,6 +138,15 @@ export default function DailyForm() {
         setOutdoorLocation("");
         setIndoorHours(0);
         setOutdoorHours(0);
+
+        if (indoorSbarTextRef.current){
+          indoorSbarTextRef.current.handleReset();
+        }
+
+        if (outdoorSbarTextRef.current){
+          outdoorSbarTextRef.current.handleReset()
+        }
+
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
@@ -182,8 +194,8 @@ export default function DailyForm() {
                 {constants.dailyForm.q1_indoorLocation}
               </QuestionTypography>
               <DailySearchbar 
-                value={indoorLocation.address || ""} 
-                passPlaceData={handleIndoorPlaceChange} />
+                passPlaceData={handleIndoorPlaceChange}
+                ref ={indoorSbarTextRef} />
 
               <QuestionTypography variant="h4" component="h2">
                 {constants.dailyForm.q2_indoorHours}
@@ -196,7 +208,8 @@ export default function DailyForm() {
               <QuestionTypography variant="h4" component="h2">
                {constants.dailyForm.q3_outdoorLocation}
               </QuestionTypography>
-              <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
+              <DailySearchbar passPlaceData={handleOutdoorPlaceChange} 
+               ref={outdoorSbarTextRef}/>
 
               <QuestionTypography variant="h4" component="h2">
                {constants.dailyForm.q4_outdoorHours}
