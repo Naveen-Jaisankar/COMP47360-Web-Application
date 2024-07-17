@@ -75,11 +75,11 @@ const Login = () => {
             <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4"> {constant.loginConsts.login_btn} </Button>
 
             <div className="flex flex-col items-center justify-center mt-3">
-                <Link href="/register" className="text-blue-500 mt-3 p-2">
+                <Link to="/register" className="text-blue-500 mt-3 p-2">
                   {constant.loginConsts.create_acnt}
                 </Link>
 
-                <Link href="/forgotpassword" className="text-blue-500 mt-3 p-2">
+                <Link to="/forgotpassword" className="text-blue-500 mt-3 p-2">
                   {constant.loginConsts.forgot_pass}
                 </Link>
             </div>
