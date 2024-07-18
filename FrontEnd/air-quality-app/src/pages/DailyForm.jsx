@@ -1,6 +1,6 @@
 import UserContent from "../components/usercontent";
 import UserPlaceholder from "../components/userplaceholder";
-import { Box, Container, Typography, Button, Modal } from "@mui/material";
+import { Box, Container, Typography, Button, Modal,IconButton } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
 import { useState, useRef } from "react";
@@ -9,6 +9,8 @@ import { ThickHeadingTypography } from "./Home";
 import constants from "./../constant";
 import Sidebar from "../components/usersidebar";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -264,8 +266,19 @@ export default function DailyForm() {
                      flexDirection: "column",
                      alignItems: "center",
                      justifyContent: "center",
-                     height: "100%"
+                     height: "100%",
+                    position: "relative"
                     }}>
+                    
+                    <IconButton onClick={handleClose}
+                    sx={{
+                      position: "absolute",
+                      top: -20,
+                      right: -20,
+
+                    }}>
+                      <CloseIcon />
+                    </IconButton>
                       <TaskAltIcon 
                     // fontSize= "large"
                     color = 'success'
@@ -279,12 +292,11 @@ export default function DailyForm() {
                       variant="h4"
                       component="h2"
                     >
-                      {}
-                      Form Submitted
+                      {constants.dailyForm.modalTitle}
                     </Typography>
 
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      Thank you!
+                      {constants.dailyForm.modalThankYou}
                     </Typography>
                    
                     </Box>
