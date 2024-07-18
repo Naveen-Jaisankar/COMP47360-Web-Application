@@ -5,6 +5,8 @@ import com.compsci.webapp.util.FlaskClient;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -154,8 +156,24 @@ public class DailyQuizScoreService {
         jsonInput.put("wind_gust", weatherDetails.getJSONObject("wind").optDouble("gust", 0.0));
         jsonInput.put("weather_id", weatherDetails.getJSONArray("weather").getJSONObject(0).getInt("id"));
 
-        return FlaskClient.predictWithLocation(jsonInput).getDouble("predicted_aqi");
 
+    try (CloseableHttpClient client = HttpClients.createDefault()) {
+        HttpPost httpPost = new HttpPost(DATA_MODEL_URL);
+        StringEntity entity = new StringEntity(jsonInput.toString());
+        httpPost.setEntity(entity);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-type", "application/json");
+
+        CloseableHttpResponse response = client.execute(httpPost);
+
+        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        JSONObject jsonResponse = new JSONObject(responseString);
+
+        // Log response
+        logger.info("Data Model API response: {}", jsonResponse.toString());
+
+        return FlaskClient.predictWithLocation(jsonInput).getDouble("predicted_aqi");
+    }
     }
 
     private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {
