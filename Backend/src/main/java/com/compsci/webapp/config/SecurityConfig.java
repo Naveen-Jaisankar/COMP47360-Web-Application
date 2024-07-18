@@ -23,7 +23,6 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
-    @SuppressWarnings("removal")
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -37,7 +36,7 @@ public class SecurityConfig {
             .requestMatchers("/swagger-ui/**").permitAll()
             .requestMatchers("/api-docs/**").permitAll()
             .requestMatchers("/api/dailyquizscores/**").permitAll()
-            
+
             .anyRequest().authenticated()
             .and()
         .sessionManagement()
@@ -52,7 +51,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(" http://localhost:5173/"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // no trailing slash
         configuration.setAllowedMethods(Arrays.asList("*")); // Allow all methods
         configuration.setAllowedHeaders(Arrays.asList("*")); // Allow all headers
         configuration.setAllowCredentials(true); // Allow credentials
