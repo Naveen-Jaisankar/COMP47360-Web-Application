@@ -7,6 +7,8 @@ import { useState } from "react";
 import { styled } from "@mui/system";
 import {ThickHeadingTypography} from "./Home"
 import constants from './../constant';
+import Sidebar from "../components/usersidebar";
+import axiosInstance from "../../src/axios";
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
