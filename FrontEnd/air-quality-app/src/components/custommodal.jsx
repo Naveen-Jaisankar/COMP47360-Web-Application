@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 import { Box, Modal, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { styled } from "@mui/system";
+import PropTypes from 'prop-types';
 
 const ModalStyle = {
   display: "flex",
@@ -74,5 +74,15 @@ const CustomModal = forwardRef((props, ref) => {
     </Modal>
   );
 });
+
+CustomModal.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  IconComponent: PropTypes.object,
+  iconColor: PropTypes.string,
+}
+
+CustomModal.displayName = "CustomModal"
+
 
 export default CustomModal;
