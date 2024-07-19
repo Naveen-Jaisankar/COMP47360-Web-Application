@@ -75,4 +75,14 @@ const CustomModal = forwardRef((props, ref) => {
   );
 });
 
+
+CustomModal.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  IconComponent: PropTypes.object,
+  iconColor: PropTypes.string,
+}
+
+CustomModal.displayName = "CustomModal"
+
 export default CustomModal;
