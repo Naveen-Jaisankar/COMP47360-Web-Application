@@ -1,0 +1,34 @@
+.question {
+    margin-bottom: 20px;
+}
+
+.options .option {
+    margin-bottom: 10px; /* Add space between options */
+}
+
+.next-button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.next-button-container button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.next-button-container button:hover {
+    background-color: #45a049; /* Darker green on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
+}
