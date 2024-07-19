@@ -1,6 +1,6 @@
 import React from 'react';
 
-function QuizQuestion({ question, currentQuestion, onChange, onNext }) {
+function QuizQuestion({ question, currentQuestion, onChange, onNext, selectedAnswers }) {
     const { id, text, options } = question;
 
     const handleOptionChange = (e) => {
@@ -19,7 +19,7 @@ function QuizQuestion({ question, currentQuestion, onChange, onNext }) {
                         value={option.value}
                         data-score={option.score}
                         onChange={handleOptionChange}
-                        checked={option.type === 'checkbox' && option.selected} // Manage checkbox selection
+                        checked={selectedAnswers.includes(option.value)} // Ensure only the selected option is checked
                     />
                     {option.value}
                 </label>

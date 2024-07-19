@@ -220,44 +220,6 @@ const questions = [
     },
 ];
 
-function Question({ question, currentQuestion, onChange, onNext }) {
-    const { id, text, options } = question;
-
-    const handleOptionChange = (e, score) => {
-        onChange(id, e.target.value, score);
-    };
-
-    let maxScore = 0;
-
-    return (
-        <div className={`question ${currentQuestion === id ? 'active' : ''}`}>
-            <p>{text}</p>
-            {options.map((option, index) => {
-                const score = parseFloat(option.score);
-                if (!isNaN(score) && option.type === 'radio') {
-                    maxScore = Math.max(maxScore, score);
-                }
-                return (
-                    <label key={index}>
-                        <input
-                            type={option.type}
-                            name={id}
-                            value={option.value}
-                            data-score={option.score}
-                            onChange={(e) => handleOptionChange(e, option.score)}
-                        />
-                        {option.value}
-                    </label>
-                );
-            })}
-            <br />
-            <button type="button" onClick={onNext}>
-                Next
-            </button>
-        </div>
-    );
-}
-
 function Quiz() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
@@ -318,14 +280,14 @@ function Quiz() {
         setIsModalOpen(false);
     };
 
-    const calculateTotalWeightedComponent = (questions, answers) => {
+    const calculateTotalWeightedComponent = () => {
         let totalPossibleScores = 0;
         let totalSelectedScores = 0;
-    
+
         questions.forEach((question) => {
             const answer = answers[question.id];
             let questionPossibleScore = 0;
-    
+
             if (question.options.every(option => option.type === 'checkbox')) {
                 // Sum the values of all options for checkbox type questions
                 questionPossibleScore = question.options
@@ -338,69 +300,96 @@ function Quiz() {
                     .filter(option => !isNaN(option.score))
                     .map(option => parseFloat(option.score)));
             }
-    
+
             totalPossibleScores += questionPossibleScore;
-    
+
             // Calculate total selected scores for this question
             if (answer && answer.scores) {
                 const selectedScores = answer.scores.reduce((a, b) => a + b, 0);
                 totalSelectedScores += parseFloat(selectedScores);
             }
         });
-    
-        console.log("Total Possible Scores (TWC)", totalPossibleScores);
-        console.log("Total Selected Scores (TWC)", totalSelectedScores);
-    
+
         return (totalSelectedScores * 100) / totalPossibleScores;
     };
-    
-    const calculateSymptomsComponent = (questions, answers) => {
+
+    const calculateSymptomsComponent = () => {
         let totalPossibleScores = 0;
         let totalSelectedScores = 0;
     
         questions.slice(0, 8).forEach((question) => {
             const answer = answers[question.id];
             if (answer) {
-                const selectedScores = answer.scores.reduce((a, b) => a + b, 0);
-                totalPossibleScores += parseFloat(selectedScores);
-                totalSelectedScores += parseFloat(selectedScores);
+                // Get the highest possible score for the question
+                const maxPossibleScore = Math.max(...question.options.map(option => option.score));
+                totalPossibleScores += parseFloat(maxPossibleScore);
+    
+                // Get the score selected by the user
+                const selectedScore = answer.scores.reduce((a, b) => a + b, 0);
+                totalSelectedScores += parseFloat(selectedScore);
             }
         });
     
         return (totalSelectedScores * 100) / totalPossibleScores;
     };
-    
-    const calculateActivityComponent = (questions, answers) => {
+
+    const calculateActivityComponent = () => {
         let totalPossibleScores = 0;
         let totalSelectedScores = 0;
     
         [11, 15].forEach((questionId) => {
+            const question = questions.find(q => q.id === `question${questionId}`);
             const answer = answers[`question${questionId}`];
+    
+            if (question) {
+                // Sum up all the values of all options for the question
+                const possibleScore = question.options.reduce((total, option) => total + option.score, 0);
+                totalPossibleScores += parseFloat(possibleScore);
+            }
+    
             if (answer) {
-                const selectedScores = answer.scores.reduce((a, b) => a + b, 0);
-                totalPossibleScores += parseFloat(selectedScores);
-                totalSelectedScores += parseFloat(selectedScores);
+                // Sum up all the values of the selected options
+                const selectedScore = answer.scores.reduce((total, score) => total + score, 0);
+                totalSelectedScores += parseFloat(selectedScore);
             }
         });
     
         return (totalSelectedScores * 100) / totalPossibleScores;
-    };
-    
-    const calculateImpactsComponent = (questions, answers) => {
+    };    
+
+    const calculateImpactsComponent = () => {
         let totalPossibleScores = 0;
         let totalSelectedScores = 0;
     
         [9, 10, 12, 13, '14.2', 16, 17].forEach((questionId) => {
+            const question = questions.find(q => q.id === `question${questionId}`);
             const answer = answers[`question${questionId}`];
+    
+            if (question) {
+                if ([9, 10, 17].includes(questionId)) {
+                    // For question IDs 9, 10, and 17, use the option with the highest value
+                    const possibleScore = Math.max(...question.options.map(option => option.score));
+                    totalPossibleScores += parseFloat(possibleScore);
+                } else if ([12, 13, '14.2', 16].includes(questionId)) {
+                    // For question IDs 12, 13, 14.2, and 16, sum up all the values of all options
+                    const possibleScore = question.options.reduce((total, option) => total + option.score, 0);
+                    totalPossibleScores += parseFloat(possibleScore);
+                }
+            }
+    
             if (answer) {
-                const selectedScores = answer.scores.reduce((a, b) => a + b, 0);
-                totalPossibleScores += parseFloat(selectedScores);
-                totalSelectedScores += parseFloat(selectedScores);
+                // Sum up all the values of the selected options
+                const selectedScore = answer.scores.reduce((total, score) => total + score, 0);
+                totalSelectedScores += parseFloat(selectedScore);
             }
         });
     
+        // Prevent division by zero
+        if (totalPossibleScores === 0) {
+            return 0;
+        }
         return (totalSelectedScores * 100) / totalPossibleScores;
-    };
+    };    
 
     return (
         <>
@@ -413,11 +402,12 @@ function Quiz() {
             >
                 <h2>Quiz</h2>
                 <form id="quiz-form">
-                    <Question
+                    <QuizQuestion
                         question={questions[currentQuestionIndex]}
                         currentQuestion={questions[currentQuestionIndex].id}
                         onChange={handleAnswerChange}
                         onNext={handleNextQuestion}
+                        selectedAnswers={answers[questions[currentQuestionIndex].id]?.answers || []} // Pass selected answers
                     />
                 </form>
             </Modal>
