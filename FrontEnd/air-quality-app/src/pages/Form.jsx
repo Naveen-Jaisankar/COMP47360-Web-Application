@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import QuizQuestion from '../QuizQuestion';
+import axios from 'axios';
 
 const questions = [
     {
@@ -277,7 +278,19 @@ function Quiz() {
         console.log('Activity Component:', activityComponent);
         console.log('Impacts Component:', impactsComponent);
 
+        handleClick(totalWeightedComponent); // Call handleClick with totalWeightedComponent
+
         setIsModalOpen(false);
+    };
+
+    const handleClick = (totalWeightedComponent) => {
+        axios.post(`/api/stgeorgesscore`, { score: totalWeightedComponent })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.error('There was an error posting the score.', error);
+        });
     };
 
     const calculateTotalWeightedComponent = () => {
@@ -404,20 +417,6 @@ function Quiz() {
     );
 }
 
-// axios.post('https://example.com/api/resource', {
-//     key1: 'value1',
-//     key2: 'value2'
-//     // Include other data to send in the body
-//   })
-//     .then(response => {
-//       console.log(response.data); // Handle the response data
-//     })
-//     .catch(error => {
-//       console.error('Error:', error); // Handle errors
-//     });  
-
-// totalWeightedComponent
-
 export default function Form() {
     return (
         <div>
@@ -426,3 +425,19 @@ export default function Form() {
         </div>
     );
 }
+
+// export default function Form() {
+//     const [stGeorgeScore, setStGeorgeScore] = useState(null);
+
+//     const getStGeorgeScore = async () => {
+//         try {
+//             const response = await axios.get('/api/stgeorgesscore');
+//             setStGeorgeScore(response.data);
+//         } catch (error) {
+//             console.error('There was an error getting the St George\'s score.', error);
+//         }
+//     };
+
+//     useEffect(() => {
+//         getStGeorgeScore();
+//     }, []);
