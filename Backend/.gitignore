@@ -42,3 +42,5 @@ application.properties
 exception/DatabaseConnectionTest.java
 DatabaseConnectionTest.java
 
+# daily quiz score service contains api keys
+DailyQuizScoreService.java
