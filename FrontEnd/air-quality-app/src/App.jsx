@@ -46,8 +46,7 @@ function App() {
                     <Route path='/forgotpassword' element={<ForgotPass />} />
                     <Route path="/map" element={<ProtectedRoute element={<Map />} />} />
                     <Route path="/user" element={<UserPanel />} />
-                    <Route path="/user/dailyform" element={<DailyForm /> } />
-                    {/*<Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />*/}
+                  <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
                   </Routes>
                 </MainContent>
