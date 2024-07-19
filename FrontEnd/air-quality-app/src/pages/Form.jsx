@@ -404,6 +404,20 @@ function Quiz() {
     );
 }
 
+// axios.post('https://example.com/api/resource', {
+//     key1: 'value1',
+//     key2: 'value2'
+//     // Include other data to send in the body
+//   })
+//     .then(response => {
+//       console.log(response.data); // Handle the response data
+//     })
+//     .catch(error => {
+//       console.error('Error:', error); // Handle errors
+//     });  
+
+// totalWeightedComponent
+
 export default function Form() {
     return (
         <div>
