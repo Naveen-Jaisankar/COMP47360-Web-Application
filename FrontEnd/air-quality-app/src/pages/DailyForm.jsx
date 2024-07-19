@@ -1,72 +1,49 @@
 import UserContent from "../components/usercontent";
 import UserPlaceholder from "../components/userplaceholder";
-import { Box, Container, Typography, Button, Modal,IconButton } from "@mui/material";
+import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
 import { useState, useRef } from "react";
-import { borderRadius, display, styled } from "@mui/system";
+import { styled } from "@mui/system";
 import { ThickHeadingTypography } from "./Home";
 import constants from "./../constant";
 import Sidebar from "../components/usersidebar";
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import CloseIcon from '@mui/icons-material/Close';
-
+import CustomModal from "../components/custommodal";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
   fontWeight: "bold",
   fontSize: "1.5rem",
-  color: theme.palette.text.primary,
+  color: theme.palette.text.primary
 }));
 
 const GreyBackgroundBox = styled(Box)({
   backgroundColor: "#F1F3F2",
   margin: "1rem",
   padding: "2rem",
-  borderRadius: "20px",
-});
-
-const style = {
-  display: 'flex',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-  justifyContent: "center",
   borderRadius: "20px"
-};
+});
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const modalRef = useRef(); // Create a ref for the modal
 
   const indoorSbarTextRef = useRef();
   const outdoorSbarTextRef = useRef();
 
   // Validation functions
 
-  // checks if location is in Manhattan
   const checkValidLocation = (indoorLocation, outdoorLocation) => {
     let isValid = false;
     let indoorCheck = false;
     let outdoorCheck = false;
 
-    // If the location has loaded, check each component within the array if they match with the word "Manhattan"
-    // if so, the location is valid. This accounts for less detailed/more detailed addresses with more/less components within the array.
-
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
-        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -78,8 +55,6 @@ export default function DailyForm() {
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
-        console.log("outdoors:");
-        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -95,8 +70,6 @@ export default function DailyForm() {
     return isValid;
   };
 
-  // checks if the user has inputted 24 hours, if not this function will proportionately "fill" the rest of hours
-  // based of users input. If input is 0, it will take the "average day" spent indoors/outdoors i.e. 2 hours indoors/22 hours outdoors
   const check24Hours = (indoorHours, outdoorHours) => {
     let hourCheck = true;
     const totalHours = indoorHours + outdoorHours;
@@ -104,22 +77,16 @@ export default function DailyForm() {
       setIndoorHours(22);
       setOutdoorHours(2);
     } else if (totalHours < 24) {
-      var indoorHourRatio = indoorHours / totalHours;
-      var outdoorHourRatio = outdoorHours / totalHours;
+      const indoorHourRatio = indoorHours / totalHours;
+      const outdoorHourRatio = outdoorHours / totalHours;
 
-      var leftoverHours = 24 - totalHours;
+      const leftoverHours = 24 - totalHours;
 
       const newIndoorHours = Math.round(leftoverHours * indoorHourRatio);
-      console.log(newIndoorHours);
-
       const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio);
-      console.log(newOutdoorHours);
 
       const adjustedIndoorHours = indoorHours + newIndoorHours;
       const adjustedOutdoorHours = outdoorHours + newOutdoorHours;
-
-      console.log(`adjusted indoors, ${adjustedIndoorHours}`);
-      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
 
       setIndoorHours(adjustedIndoorHours);
       setOutdoorHours(adjustedOutdoorHours);
@@ -153,8 +120,7 @@ export default function DailyForm() {
         console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
         console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
 
-        handleOpen()
-        // alert("Form submitted :D");
+        modalRef.current.openModal(); // Open the modal using the ref
 
         setIndoorLocation("");
         setOutdoorLocation("");
@@ -251,61 +217,14 @@ export default function DailyForm() {
                 onChange={handleOutdoorHoursChange}
                 arialabel={"Number of Hours spent indoors"}
               />
-              <div>
-                {/* <Button onClick={handleOpen}>Open modal</Button> */}
-                <Modal
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  
-                  <Box sx={style}>
-                    <Box sx={{
-                     display: "flex",
-                     flexDirection: "column",
-                     alignItems: "center",
-                     justifyContent: "center",
-                     height: "100%",
-                    position: "relative"
-                    }}>
-                    
-                    <IconButton onClick={handleClose}
-                    sx={{
-                      position: "absolute",
-                      top: -20,
-                      right: -20,
 
-                    }}>
-                      <CloseIcon />
-                    </IconButton>
-                      <TaskAltIcon 
-                    // fontSize= "large"
-                    color = 'success'
-                    sx={{
-                      paddingBottom: "1rem",
-                      fontSize: "10rem"
-                    }}
-                    />
-                    <Typography
-                      id="modal-modal-title"
-                      variant="h4"
-                      component="h2"
-                    >
-                      {constants.dailyForm.modalTitle}
-                    </Typography>
-
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      {constants.dailyForm.modalThankYou}
-                    </Typography>
-                   
-                    </Box>
-                    
-                  
-                    
-                  </Box>
-                </Modal>
-              </div>
+              <CustomModal
+                ref={modalRef}
+                title={constants.dailyForm.modalTitle}
+                description={constants.dailyForm.modalThankYou}
+                IconComponent={TaskAltIcon} 
+                iconColor="green"
+              />
 
               <Button type="submit">Submit</Button>
             </form>
