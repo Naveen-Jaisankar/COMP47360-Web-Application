@@ -6,7 +6,7 @@ import CustomNumberInput from "../components/customnumberinput";
 import { useState, useRef } from "react";
 import { styled } from "@mui/system";
 import { ThickHeadingTypography } from "./Home";
-import constants from "./../constant";
+import constants, { dailyForm } from "./../constant";
 import Sidebar from "../components/usersidebar";
 import CustomModal from "../components/custommodal";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
@@ -27,16 +27,19 @@ const GreyBackgroundBox = styled(Box)({
   borderRadius: "20px"
 });
 
+const redirectText = constants.dailyForm.loadingText
+
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-  const modalRef = useRef(); // Create a ref for the modal
+  const [isLoading, setIsLoading] = useState(false);
+  const modalRef = useRef();
 
   const indoorSbarTextRef = useRef();
   const outdoorSbarTextRef = useRef();
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
 
   // Validation functions
 
@@ -171,10 +174,17 @@ export default function DailyForm() {
   };
 
   const handleModalClose = (redirectUrl = '/user-dashboard') => {
-    navigate(redirectUrl);
+    setIsLoading(true);
+    setTimeout(() => {
+      navigate(redirectUrl);
+    }, 1500);
   };
 
   return (
+    <>
+    {isLoading ? (
+      <LoadingScreen loadingtext={constants.dailyForm.loadingText}/>
+    ) : (
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
       <UserContent
@@ -242,5 +252,7 @@ export default function DailyForm() {
         </Container>
       </UserContent>
     </div>
+    )}
+    </>
   );
 }
