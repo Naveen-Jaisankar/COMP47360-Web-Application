@@ -5,7 +5,6 @@ import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Home from './pages/Home';
 import Map from './pages/Map'
-import Form from './pages/Form'
 import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
 import Privacy from './pages/Privacy';
