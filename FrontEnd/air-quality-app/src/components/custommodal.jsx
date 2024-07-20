@@ -65,7 +65,7 @@ const CustomModal = forwardRef((props, ref) => {
           </IconButton>
           {IconComponent && (
             <IconComponent
-              sx={{ paddingBottom: "1rem", fontSize: "10rem", color: iconColor }} // Apply the iconColor prop here
+              sx={{ paddingBottom: "1rem", fontSize: "10rem", color: iconColor }}
             />
           )}
           <Typography id="modal-modal-title" variant="h4" component="h2">
