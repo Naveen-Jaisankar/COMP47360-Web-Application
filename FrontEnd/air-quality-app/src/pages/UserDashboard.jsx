@@ -8,9 +8,14 @@ import PropTypes from 'prop-types';
 
 const image1 = "../src/static/proxy-image.png";
 const healthImages = {
-  low: "../src/static/low-exposure.png",
-  medium: "../src/static/medium-exposure.png",
-  high: "../src/static/high-exposure.png",
+  thumbs_up: "../src/static/thumbs_up.png",
+  water_bottle: "../src/static/water_bottle.png",
+  thermometer_low: "../src/static/thermometer_low.png",
+  face_mask: "../src/static/face_mask.png",
+  house: "../src/static/house.png",
+  thermometer_high: "../src/static/thermometer_high.png",
+  newspaper: "../src/static/newspaper.jpg",
+  doctor: "../src/static/doctor.png"
 };
 
 // Function to get the last 7 days with formatted dates
@@ -69,44 +74,44 @@ const UserDashboard = ({ isSidebarOpen }) => {
 
     if (personalExposure < 30) {
       recs.push({
-        image: healthImages.low,
+        image: healthImages.thumbs_up,
         title: 'Keep up the good work!',
         description: 'Your personal exposure is low. Continue maintaining your healthy habits.',
       });
       recs.push({
-        image: healthImages.low,
+        image: healthImages.water_bottle,
         title: 'Stay Hydrated!',
         description: 'Drinking plenty of water helps your body to fight off the pollutants.',
       });
     } else if (personalExposure < 70) {
       recs.push({
-        image: healthImages.medium,
+        image: healthImages.thermometer_low,
         title: 'Moderate Exposure',
         description: 'Your exposure is moderate. Try to avoid outdoor activities during peak pollution hours.',
       });
       recs.push({
-        image: healthImages.medium,
+        image: healthImages.face_mask,
         title: 'Wear a Mask',
         description: 'Consider wearing a mask if you need to go outside during high pollution times.',
       });
       recs.push({
-        image: healthImages.medium,
+        image: healthImages.house,
         title: 'Indoor Activities',
         description: 'Plan indoor activities to reduce your exposure to air pollution.',
       });
     } else {
       recs.push({
-        image: healthImages.high,
+        image: healthImages.thermometer_high,
         title: 'High Exposure Alert',
         description: 'Your exposure is high. Stay indoors and use air purifiers if possible.',
       });
       recs.push({
-        image: healthImages.high,
+        image: healthImages.newspaper,
         title: 'Check Air Quality',
         description: 'Regularly check air quality updates to plan your outdoor activities accordingly.',
       });
       recs.push({
-        image: healthImages.high,
+        image: healthImages.doctor,
         title: 'Consult a Doctor',
         description: 'If you feel unwell, consult a doctor especially if you have respiratory issues.',
       });
