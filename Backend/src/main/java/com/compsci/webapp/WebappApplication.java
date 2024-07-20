@@ -13,9 +13,4 @@ public class WebappApplication {
 		SpringApplication.run(WebappApplication.class, args);
 	
 	}
-	@Bean
-	public RestTemplate getRestTemplate() {
-		return new RestTemplate();
-	}
-
 }

@@ -25,6 +25,7 @@ import com.compsci.webapp.util.AQICalculator;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -142,6 +142,7 @@ public class AuthServiceImpl implements AuthService {
 		UserSignInResponse userSignInResponse = new UserSignInResponse();
 		userSignInResponse.setToken(jwtToken);
 		userSignInResponse.setMessage("Login Successfull!!");
+		userSignInResponse.setUserId(user.getUserId());
 		userSignInResponse.setUserEmail(user.getUserEmail());
 		userSignInResponse.setUserName(user.getUserName());
 		return userSignInResponse;

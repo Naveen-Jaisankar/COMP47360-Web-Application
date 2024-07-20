@@ -27,8 +27,18 @@ public class UserSignInResponse {
     private String userEmail;
     
     private String userName;
+    
+    private Long userId;
 
-    public String getUserName() {
+    public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
         return userName;
     }
 

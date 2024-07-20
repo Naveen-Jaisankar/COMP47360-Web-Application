@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/dailyquizscores")
+@RequestMapping("/api/v1/dailyquizscores")
 public class DailyQuizScoreController {
 
     private final DailyQuizScoreService dailyQuizScoreService;
@@ -24,7 +24,7 @@ public class DailyQuizScoreController {
         return dailyQuizScoreService.getDailyQuizScoreById(id);
     }
 
-    @PostMapping
+    @PostMapping("/createDailyQuizScore")
     public DailyQuizScore createDailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
         return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); 
     }
