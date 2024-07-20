@@ -67,7 +67,8 @@ const Navbar = () => {
         <Menu anchorEl={anchorNav} open={Boolean(anchorNav)} onClose={handleCloseMenu}>
           <MenuItem onClick={() => { handleCloseMenu(); navigate('/'); }}>{constants.general.home}</MenuItem>
           <MenuItem onClick={() => { handleCloseMenu(); navigate('/map'); }}>{constants.general.map}</MenuItem>
-          <MenuItem onClick={() => { handleCloseMenu(); navigate('/settings'); }}>{constants.general.settings}</MenuItem>
+          <Settings />
+          {/* <MenuItem onClick={() => { handleCloseMenu(); navigate('/settings'); }}>{constants.general.settings}</MenuItem> */}
           <MenuItem onClick={() => { handleCloseMenu(); navigate('/user'); }}>{constants.general.user_dash}</MenuItem>
           <MenuItem onClick={() => { handleCloseMenu(); navigate('/register'); }}>{constants.general.login_register}</MenuItem>
         </Menu>
