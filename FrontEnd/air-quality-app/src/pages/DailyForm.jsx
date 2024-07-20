@@ -12,7 +12,6 @@ import Sidebar from '../components/usersidebar';
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
   fontWeight: "bold",
-  fontSize: "1.5rem",
   color: theme.palette.text.primary,
 }));
 
@@ -171,21 +170,24 @@ export default function DailyForm() {
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
       <UserContent className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
-        <Container sx={{marginTop: "2rem",}}>
-          <ThickHeadingTypography variant="h1" component="h1" sx={{color: "black", paddingLeft: "1rem"}}>
+        <Container sx={{
+          marginTop: "2rem",
+          marginLeft: "-3rem"
+        }}>
+          <ThickHeadingTypography variant="h2" component="h1" sx={{color: "black", paddingLeft: "1rem"}}>
             {constants.dailyForm.title}
           </ThickHeadingTypography>
 
           <GreyBackgroundBox>
             <form onSubmit={submitHandler}>
-              <QuestionTypography variant="h4" component="h2">
+              <QuestionTypography variant="h5" component="h2">
                 {constants.dailyForm.q1_indoorLocation}
               </QuestionTypography>
               <DailySearchbar 
                 value={indoorLocation.address || ""} 
                 passPlaceData={handleIndoorPlaceChange} />
 
-              <QuestionTypography variant="h4" component="h2">
+              <QuestionTypography variant="h5" component="h2">
                 {constants.dailyForm.q2_indoorHours}
               </QuestionTypography>
               <CustomNumberInput
@@ -193,12 +195,12 @@ export default function DailyForm() {
                 onChange={handleIndoorHoursChange}
                 arialabel={"Number of Hours spent indoors"}
               />
-              <QuestionTypography variant="h4" component="h2">
+              <QuestionTypography variant="h5" component="h2">
                {constants.dailyForm.q3_outdoorLocation}
               </QuestionTypography>
               <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
 
-              <QuestionTypography variant="h4" component="h2">
+              <QuestionTypography variant="h5" component="h2">
                {constants.dailyForm.q4_outdoorHours}
               </QuestionTypography>
               <CustomNumberInput
