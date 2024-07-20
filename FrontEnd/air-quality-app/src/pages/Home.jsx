@@ -15,7 +15,7 @@ const BannerBox = styled(Box)({
   backgroundColor: "#2E6095",
   display: "flex",
   alignItems: "center",
-  paddingBottom: "2rem",
+  paddingBottom: "5rem",
   position: "relative", 
   backgroundImage: `url(${bannerImage})`,
   backgroundSize: "cover",
@@ -76,7 +76,7 @@ const Home = () => {
         <header>
           <BannerBox
             sx={{
-              height: {xs: 600,md: 750,lg: 900 },
+              height: {md: 870, lg: 900 },
               maxWidth: "100%",
             }}
           >
