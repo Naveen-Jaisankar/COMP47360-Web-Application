@@ -3,12 +3,13 @@ import UserPlaceholder from "../components/userplaceholder";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState } from "react";
+import { useState, useContext } from 'react';
 import { styled } from "@mui/system";
-import {ThickHeadingTypography} from "./Home"
+import {ThickHeadingTypography} from "./Home";
 import constants from './../constant';
 import Sidebar from "../components/usersidebar";
 import axiosInstance from "../../src/axios";
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -29,7 +30,7 @@ export default function DailyForm() {
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-
+  const { userId } = useContext(AuthContext); // Get userId from AuthContext
 
   // Validation functions
 
@@ -39,12 +40,8 @@ export default function DailyForm() {
     let indoorCheck = false;
     let outdoorCheck = false;
 
-    // If the location has loaded, check each component within the array if they match with the word "Manhattan"
-    // if so, the location is valid. This accounts for less detailed/more detailed addresses with more/less components within the array.
-
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
-        // console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -56,8 +53,6 @@ export default function DailyForm() {
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
-        // console.log("outdoors:");
-        // console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -88,19 +83,13 @@ export default function DailyForm() {
       var leftoverHours = 24 - totalHours;
 
       const newIndoorHours = Math.round(leftoverHours * indoorHourRatio);
-      // console.log(newIndoorHours);
-
       const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio);
-      // console.log(newOutdoorHours);
 
       const adjustedIndoorHours = indoorHours + newIndoorHours;
       const adjustedOutdoorHours = outdoorHours + newOutdoorHours;
 
-      // console.log(`adjusted indoors, ${adjustedIndoorHours}`);
-      // console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
-
-      setIndoorHours(adjustedIndoorHours)
-      setOutdoorHours(adjustedOutdoorHours)
+      setIndoorHours(adjustedIndoorHours);
+      setOutdoorHours(adjustedOutdoorHours);
     } else if (totalHours > 24){
       hourCheck = false;
     }
@@ -108,42 +97,36 @@ export default function DailyForm() {
     return hourCheck;
   }
 
-
   // Submission function
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
     const is24Hours = check24Hours(indoorHours, outdoorHours);
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
-    // organises location data into a string
     let indoorLocationArray = [indoorLocation.lat ,indoorLocation.lng];
     let outdoorLocationArray = [outdoorLocation.lat, outdoorLocation.lng];
 
-    let indoorLocationToSend= indoorLocationArray.toString();
+    let indoorLocationToSend = indoorLocationArray.toString();
     let outdoorLocationToSend = outdoorLocationArray.toString();
 
     const data = {
-
-      id: 1,
+      userId: userId, // Use userId from AuthContext
       quizDate: new Date(),
       quizScore: 85,
       indoorLocation: indoorLocationToSend,
       outdoorLocation: outdoorLocationToSend,
       indoorHours: indoorHours,
       outdoorHours: outdoorHours,
-
     };
 
     if (!isValid) {
       alert("Please choose a location in Manhattan");
     } else if (!is24Hours) {
-      alert("24 hours exceeded, number inputs are invalid")
-    } else{
+      alert("24 hours exceeded, number inputs are invalid");
+    } else {
       try {
-
-        axiosInstance.post('/api/dailyquizscores', data)
+        axiosInstance.post('/dailyquizscores/createDailyQuizScore', data)
         .then(response => {
           console.log("Data sent successfully!", response);
         })
@@ -151,14 +134,6 @@ export default function DailyForm() {
           console.error("There was an error sending the data!", error);
         });
 
-    //     // console.log(`Indoor Hours: ${indoorHours}`);
-    //     // console.log(`Outdoor Hours: ${outdoorHours}`);
-    //     // console.log(`Indoor Location: ${indoorLocation.address}`);
-    //     // console.log(`Indoor Lat: ${indoorLocation.lat}`);
-    //     // console.log(`Indoor Lng: ${indoorLocation.lng}`);
-    //     // console.log(`Outdoor Location: ${outdoorLocation.address}`);
-    //     // console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
-    //     // console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
         alert("Form submitted");
 
         setIndoorLocation("");
@@ -171,38 +146,34 @@ export default function DailyForm() {
     }
   };
 
-  // Form input functions
+  const handleIndoorHoursChange = (event, newValue) => {
+    setIndoorHours(newValue);
+  };
 
-    const handleIndoorHoursChange = (event, newValue) => {
-      const indoorValue = newValue;
-      setIndoorHours(indoorValue);
-    };
+  const handleOutdoorHoursChange = (event, newValue) => {
+    setOutdoorHours(newValue);
+  };
 
-    const handleOutdoorHoursChange = (event, newValue) => {
-      const outdoorValue = newValue;
-      setOutdoorHours(outdoorValue);
-    };
+  const handleIndoorPlaceChange = (placeData) => {
+    setIndoorLocation(placeData);
+  };
 
-    const handleIndoorPlaceChange = (placeData) => {
-      setIndoorLocation(placeData);
-    };
+  const handleOutdoorPlaceChange = (placeData) => {
+    setOutdoorLocation(placeData);
+  };
 
-    const handleOutdoorPlaceChange = (placeData) => {
-      setOutdoorLocation(placeData);
-    };
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-    const [isSidebarOpen, setSidebarOpen] = useState(true);
-
-    const toggleDrawer = () => {
-      setSidebarOpen(!isSidebarOpen);
-    };
+  const toggleDrawer = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
       <UserContent className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
-        <Container sx={{marginTop: "2rem",}}>
-          <ThickHeadingTypography variant="h1" component="h1" sx={{color: "black", paddingLeft: "1rem"}}>
+        <Container sx={{ marginTop: "2rem" }}>
+          <ThickHeadingTypography variant="h1" component="h1" sx={{ color: "black", paddingLeft: "1rem" }}>
             {constants.dailyForm.title}
           </ThickHeadingTypography>
 
@@ -213,7 +184,8 @@ export default function DailyForm() {
               </QuestionTypography>
               <DailySearchbar 
                 value={indoorLocation.address || ""} 
-                passPlaceData={handleIndoorPlaceChange} />
+                passPlaceData={handleIndoorPlaceChange} 
+              />
 
               <QuestionTypography variant="h4" component="h2">
                 {constants.dailyForm.q2_indoorHours}
@@ -224,12 +196,12 @@ export default function DailyForm() {
                 arialabel={"Number of Hours spent indoors"}
               />
               <QuestionTypography variant="h4" component="h2">
-               {constants.dailyForm.q3_outdoorLocation}
+                {constants.dailyForm.q3_outdoorLocation}
               </QuestionTypography>
               <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
 
               <QuestionTypography variant="h4" component="h2">
-               {constants.dailyForm.q4_outdoorHours}
+                {constants.dailyForm.q4_outdoorHours}
               </QuestionTypography>
               <CustomNumberInput
                 value={outdoorHours}
