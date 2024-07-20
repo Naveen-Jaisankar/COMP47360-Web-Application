@@ -1,7 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 import { Box, Modal, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { styled } from "@mui/system";
 import PropTypes from 'prop-types';
 
 const ModalStyle = {
@@ -20,11 +19,16 @@ const ModalStyle = {
 };
 
 const CustomModal = forwardRef((props, ref) => {
-  const { title, description, IconComponent, iconColor } = props;
+  const { title, description, IconComponent, iconColor, onClose } = props;
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    if (onClose) {
+      onClose(); 
+    }
+  };
 
   useImperativeHandle(ref, () => ({
     openModal: handleOpen,
@@ -61,7 +65,7 @@ const CustomModal = forwardRef((props, ref) => {
           </IconButton>
           {IconComponent && (
             <IconComponent
-              sx={{ paddingBottom: "1rem", fontSize: "10rem", color: iconColor }} // Apply the iconColor prop here
+              sx={{ paddingBottom: "1rem", fontSize: "10rem", color: iconColor }}
             />
           )}
           <Typography id="modal-modal-title" variant="h4" component="h2">
@@ -76,14 +80,14 @@ const CustomModal = forwardRef((props, ref) => {
   );
 });
 
-
 CustomModal.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   IconComponent: PropTypes.object,
   iconColor: PropTypes.string,
-}
+  onClose: PropTypes.func,
+};
 
-CustomModal.displayName = "CustomModal"
+CustomModal.displayName = "CustomModal";
 
 export default CustomModal;
