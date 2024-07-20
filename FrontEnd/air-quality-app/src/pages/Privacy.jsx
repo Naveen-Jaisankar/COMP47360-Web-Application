@@ -14,14 +14,13 @@ import {
 } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import {useNavigate} from 'react-router-dom'
+import Footer from "../components/footer";
 
 const QuestionTypography = styled(Typography)({
-  fontSize: "3rem",
   fontWeight: 420,
 });
 
 const AnswerTypography = styled(Typography)({
-  fontSize: "2rem",
   marginBottom: "2rem",
   marginTop: "1rem"
 });
@@ -34,13 +33,11 @@ export default function Privacy() {
     }
   return (
     <>
-      <CreamBackgroundBox
-        sx={{
-          minWidth: "100vw",
-        }}
-      >
-        <MainContent
+        <Box
           sx={{
+            paddingTop: "2rem",
+            paddingBottom: "2rem",
+            minHeight:"100%",
             backgroundColor: "#f7f7f2",
           }}
         >
@@ -56,7 +53,9 @@ export default function Privacy() {
                 marginBottom: "3rem",
               }}
             >
-              <Typography variant="h2" component="h1">
+              <Typography variant="h2" component="h1" sx={{
+                fontWeight: "medium",
+              }}>
                 {constants.privacy.title}
               </Typography>
               <Box sx={{
@@ -72,14 +71,14 @@ export default function Privacy() {
 
             {/* Information section */}
             <Box>
-              <QuestionTypography variant="h3" component="h2">
+              <QuestionTypography variant="h4" component="h2">
                 {constants.privacy.q1_personalData}
               </QuestionTypography>
               <AnswerTypography variant="body1" component="p">
                 {constants.privacy.content1}
               </AnswerTypography>
 
-              <QuestionTypography variant="h3" component="h2">
+              <QuestionTypography variant="h4" component="h2">
                 {constants.privacy.q2_useOfPersonalData}
               </QuestionTypography>
               <AnswerTypography variant="body1" component="p">
@@ -112,7 +111,7 @@ export default function Privacy() {
                 </ListItem>
               </List>
 
-              <QuestionTypography variant="h3" component="h2">
+              <QuestionTypography variant="h4" component="h2">
                 {constants.privacy.q3_sharingOfPersonalData}
               </QuestionTypography>
               <AnswerTypography variant="body1" component="p">
@@ -124,9 +123,8 @@ export default function Privacy() {
               <Box sx={{
                 marginBottom: "2rem"
               }}>
-              <Typography variant="h2" component="h2" sx={{
+              <Typography variant="h3" component="h2" sx={{
                   fontWeight: 'medium',
-                  fontSize: '3rem',
                   marginBottom: "1rem",
                 }}>{constants.privacy.terms_title}</Typography>
               <Typography sx={{
@@ -149,10 +147,8 @@ export default function Privacy() {
           }}>Back to Register Page</Button>
           </Container>
           
-        </MainContent>
-
-       
-      </CreamBackgroundBox>
+        </Box>
+      <Footer />
       
       
     </>
