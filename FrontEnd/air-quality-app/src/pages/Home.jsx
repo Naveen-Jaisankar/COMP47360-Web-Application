@@ -76,7 +76,7 @@ const Home = () => {
         <header>
           <BannerBox
             sx={{
-              height: {lg: 900 },
+              height: {xs: 600,md: 750,lg: 900 },
               maxWidth: "100%",
             }}
           >
