@@ -19,11 +19,16 @@ const ModalStyle = {
 };
 
 const CustomModal = forwardRef((props, ref) => {
-  const { title, description, IconComponent, iconColor } = props;
+  const { title, description, IconComponent, iconColor, onClose } = props;
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    if (onClose) {
+      onClose(); 
+    }
+  };
 
   useImperativeHandle(ref, () => ({
     openModal: handleOpen,
@@ -80,9 +85,9 @@ CustomModal.propTypes = {
   description: PropTypes.string,
   IconComponent: PropTypes.object,
   iconColor: PropTypes.string,
-}
+  onClose: PropTypes.func,
+};
 
-CustomModal.displayName = "CustomModal"
-
+CustomModal.displayName = "CustomModal";
 
 export default CustomModal;

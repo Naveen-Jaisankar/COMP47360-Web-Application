@@ -46,10 +46,12 @@ function App() {
                     <Route path='/forgotpassword' element={<ForgotPass />} />
                     <Route path="/map" element={<ProtectedRoute element={<Map />} />} />
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
-                    <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
+                    {/* <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} /> */}
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
+                    {/* <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} /> */}
                     {/* for testing uncomment below */}
-                    {/* <Route path= "/user/dailyform" element={<DailyForm/>}/> */}
+                    <Route path= "/user/dailyform" element={<DailyForm/>}/>
+                    <Route path="/user/dashboard" element={<UserDashboard/>} />
                   </Routes>
                 </MainContent>
               </div>

@@ -10,6 +10,8 @@ import constants from "./../constant";
 import Sidebar from "../components/usersidebar";
 import CustomModal from "../components/custommodal";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import { useNavigate } from 'react-router-dom';
+import LoadingScreen from "../components/loadingscreen";
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -34,6 +36,7 @@ export default function DailyForm() {
 
   const indoorSbarTextRef = useRef();
   const outdoorSbarTextRef = useRef();
+  const navigate = useNavigate(); // Get the navigate function
 
   // Validation functions
 
@@ -134,6 +137,7 @@ export default function DailyForm() {
         if (outdoorSbarTextRef.current) {
           outdoorSbarTextRef.current.handleReset();
         }
+
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
@@ -164,6 +168,10 @@ export default function DailyForm() {
 
   const toggleDrawer = () => {
     setSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleModalClose = (redirectUrl = '/user-dashboard') => {
+    navigate(redirectUrl);
   };
 
   return (
@@ -222,8 +230,10 @@ export default function DailyForm() {
                 ref={modalRef}
                 title={constants.dailyForm.modalTitle}
                 description={constants.dailyForm.modalThankYou}
-                IconComponent={TaskAltIcon} 
+                IconComponent={TaskAltIcon}
                 iconColor="green"
+                // Comment/ uncomment below to test redirect.
+                onClose={() => handleModalClose('/user/dashboard')} 
               />
 
               <Button type="submit">Submit</Button>
