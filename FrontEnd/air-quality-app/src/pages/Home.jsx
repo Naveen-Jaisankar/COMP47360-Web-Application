@@ -19,8 +19,6 @@ const BannerBox = styled(Box)({
   position: "relative", 
   backgroundImage: `url(${bannerImage})`,
   backgroundSize: "cover",
-  // background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)), url(${bannerImage})`,
-
 });
 
 const QuoteBox = styled(Box)({
@@ -32,7 +30,6 @@ const QuoteBox = styled(Box)({
 
 const ThickHeadingTypography = styled(Typography)({
   fontFamily: "Roboto flex, Roboto, sans-serif",
-  fontSize: "4rem",
   fontWeight: 700,
   color: "white",
   borderColor: "black",
@@ -53,7 +50,7 @@ const GetStartedBox = styled(Box)({
 
 const CreamBackgroundBox = styled(Box)({
   backgroundColor: "#F7F7F2",
-  height: "180vh",
+  minHeight: "100vh",
   paddingBottom: "2rem"
 });
 
@@ -79,11 +76,12 @@ const Home = () => {
         <header>
           <BannerBox
             sx={{
-              height: { xs: 500, md: 700, lg: 900 },
+              height: {lg: 900 },
+              maxWidth: "100%",
             }}
           >
             <QuoteBox>
-              <ThickHeadingTypography variant="h1" component="h1">
+              <ThickHeadingTypography variant="h2" component="h1">
                 {constants.homePage.title1}
               </ThickHeadingTypography>
               <Typography
@@ -103,7 +101,7 @@ const Home = () => {
         <Container
           sx={{
             maxWidth: { xs: "100%", md: "90%", lg: "70%" },
-            marginTop: { xs: -2, md: -8 },
+            marginTop: { xs: -2, md: -3 },
           }}
         >
           <GetStartedBox>
@@ -150,12 +148,10 @@ const Home = () => {
               }}>
                 <Typography variant="h2" component="h2" sx={{
                   fontWeight: 'medium',
-                  fontSize: '4rem'
                 }}>
                   {constants.homePage.air_pollution_heading}
                 </Typography>
                 <Typography variant="body1" component="p" sx={{
-                  fontSize: '2rem'
                 }}>
                   {constants.homePage.air_pollution_body}
                 </Typography>
@@ -209,7 +205,7 @@ const Home = () => {
           </InfoCardBox>
         </section>
       <Container>
-      <Footer/>
+      <Footer />
       </Container>
 
     </>

@@ -48,7 +48,7 @@ export const ThemeContextProvider = ({children}) =>{
           },
           
           body1: {
-            fontSize: `${fontSize * 1.2}px`,
+            fontSize: `${fontSize * 1.5}px`,
           }
         },
       }), [darkMode, fontSize]);
