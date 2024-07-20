@@ -29,7 +29,7 @@ export default function Privacy() {
     const navigate = useNavigate();
 
     const handleClick= () => {
-        navigate('/register')
+        navigate(-1)
     }
   return (
     <>
@@ -144,7 +144,7 @@ export default function Privacy() {
             marginTop: "2rem",
             margin: "auto",
             backgroundColor: "#0D1B2A"
-          }}>Back to Register Page</Button>
+          }}>Back to Previous Page</Button>
           </Container>
           
         </Box>
