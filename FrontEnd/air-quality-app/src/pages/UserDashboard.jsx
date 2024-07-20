@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import {Typography, Box } from '@mui/material';
+import axios from 'axios';
+import { Typography, Box, Grid } from '@mui/material';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Infocard from "../components/infocard";
+import RecommendationCard from "../components/recommendationcard";
 import PropTypes from 'prop-types';
 
 const image1 = "../src/static/proxy-image.png";
+const healthImages = {
+  low: "../src/static/low-exposure.png",
+  medium: "../src/static/medium-exposure.png",
+  high: "../src/static/high-exposure.png",
+};
 
 // Function to get the last 7 days with formatted dates
 const getLastSevenDays = () => {
@@ -33,12 +40,80 @@ const getLastSevenDays = () => {
   return days;
 };
 
-const DashBoard = ({ isSidebarOpen }) => {
+const UserDashboard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
-    setData(getLastSevenDays());
+    const lastSevenDaysData = getLastSevenDays();
+    setData(lastSevenDaysData);
+    setRecommendations(getRecommendations(lastSevenDaysData));
+
+    // Uncomment this section to enable the GET request
+    // const fakeID = 1;
+    // axios.get(`/api/dailyquizscores/${fakeID}`)
+    //   .then(function (response) {
+    //     console.log(response);
+    //     // Use the response data to update the state if needed
+    //   })
+    //   .catch(function (error) {
+    //     console.error('There was an error making the GET request!', error);
+    //   });
   }, []);
+
+  const getRecommendations = (data) => {
+    // Example logic for recommendations
+    const lastDayData = data[data.length - 1];
+    const personalExposure = parseFloat(lastDayData.PersonalExposure);
+    const recs = [];
+
+    if (personalExposure < 30) {
+      recs.push({
+        image: healthImages.low,
+        title: 'Keep up the good work!',
+        description: 'Your personal exposure is low. Continue maintaining your healthy habits.',
+      });
+      recs.push({
+        image: healthImages.low,
+        title: 'Stay Hydrated!',
+        description: 'Drinking plenty of water helps your body to fight off the pollutants.',
+      });
+    } else if (personalExposure < 70) {
+      recs.push({
+        image: healthImages.medium,
+        title: 'Moderate Exposure',
+        description: 'Your exposure is moderate. Try to avoid outdoor activities during peak pollution hours.',
+      });
+      recs.push({
+        image: healthImages.medium,
+        title: 'Wear a Mask',
+        description: 'Consider wearing a mask if you need to go outside during high pollution times.',
+      });
+      recs.push({
+        image: healthImages.medium,
+        title: 'Indoor Activities',
+        description: 'Plan indoor activities to reduce your exposure to air pollution.',
+      });
+    } else {
+      recs.push({
+        image: healthImages.high,
+        title: 'High Exposure Alert',
+        description: 'Your exposure is high. Stay indoors and use air purifiers if possible.',
+      });
+      recs.push({
+        image: healthImages.high,
+        title: 'Check Air Quality',
+        description: 'Regularly check air quality updates to plan your outdoor activities accordingly.',
+      });
+      recs.push({
+        image: healthImages.high,
+        title: 'Consult a Doctor',
+        description: 'If you feel unwell, consult a doctor especially if you have respiratory issues.',
+      });
+    }
+
+    return recs.slice(0, 3);
+  };
 
   return (
     <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
@@ -101,16 +176,17 @@ const DashBoard = ({ isSidebarOpen }) => {
       </section>
       <section>
         <Typography variant="h5" className="mb-4">Suggested Actions</Typography>
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Array(3).fill().map((_, index) => (
-            <Infocard
-              image={image1}
-              alt="Image Alt Text"
-              heading="Funky fact"
-              text="More info"
-            />
+        <Grid container spacing={2}>
+          {recommendations.map((rec, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <RecommendationCard
+                image={rec.image}
+                title={rec.title}
+                description={rec.description}
+              />
+            </Grid>
           ))}
-        </div> */}
+        </Grid>
       </section>
       <section className="mt-8">
         <div className="bg-black text-white p-4 rounded shadow-md">
@@ -147,9 +223,9 @@ const CustomTooltip = ({ payload, label }) => {
   );
 };
 
-export default DashBoard;
+export default UserDashboard;
 
-DashBoard.propTypes = {
+UserDashboard.propTypes = {
   isSidebarOpen: PropTypes.bool,
 };
 

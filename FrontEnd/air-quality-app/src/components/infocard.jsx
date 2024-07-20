@@ -1,4 +1,3 @@
-
 import {Typography, Card, CardContent, CardMedia} from '@mui/material';
 import PropTypes from 'prop-types';
 
