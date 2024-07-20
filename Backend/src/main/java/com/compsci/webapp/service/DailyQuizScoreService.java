@@ -35,8 +35,7 @@ public class DailyQuizScoreService {
     private String openWeatherApiKey;
 
     private static final String OPENWEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
-    private static final String DATA_MODEL_URL = "http://127.0.0.1:5001/getAQIValueForALocation";
-
+    
     private final DailyQuizScoreRepository dailyQuizScoreRepository;
     private static final Logger logger = LoggerFactory.getLogger(DailyQuizScoreService.class);
 
@@ -45,35 +44,41 @@ public class DailyQuizScoreService {
         this.dailyQuizScoreRepository = dailyQuizScoreRepository;
     }
 
-    public List<DailyQuizScore> getAllDailyQuizScores() {
-        return dailyQuizScoreRepository.findAll();
-    }
-
     public List<DailyQuizScore> getDailyQuizScoreById(Long id) {
-        return dailyQuizScoreRepository.findById(id);
-                // .orElseThrow(() -> new RuntimeException("DailyQuizScore not found with id: " + id));
+    	List<DailyQuizScore> dailyQuizScore = new ArrayList<>();
+    	try {
+    		dailyQuizScore = dailyQuizScoreRepository.findById(id);
+    	}catch(Exception e) {
+    		System.out.println("Failed to fetch dailyscore for id : " +  id + " " );
+    	}
+    	return dailyQuizScore;
     }
 
     public DailyQuizScore createDailyQuizScore(DailyQuizScore dailyQuizScore) {
-        // fetching AQI data for indoor and outdoor locations
-        double indoorAQI = fetchAQI(dailyQuizScore.getIndoorLocation());
-        double outdoorAQI = fetchAQI(dailyQuizScore.getOutdoorLocation());
-        logger.info("Indoor AQI: {}, Outdoor AQI: {}", indoorAQI, outdoorAQI);
+    	try {
+    		//Fetching AQI data for indoor and outdoor locations
+            double indoorAQI = fetchAQIForALocation(dailyQuizScore.getIndoorLocation());
+            double outdoorAQI = fetchAQIForALocation(dailyQuizScore.getOutdoorLocation());
+            logger.info("Indoor AQI: {}, Outdoor AQI: {}", indoorAQI, outdoorAQI);
 
-        // converting AQI to PM2.5
-        double indoorPM25 = AQICalculator.aqiToPm25((int) indoorAQI);
-        double outdoorPM25 = AQICalculator.aqiToPm25((int) outdoorAQI);
-        logger.info("Indoor PM2.5: {}, Outdoor PM2.5: {}", indoorPM25, outdoorPM25);
+            // converting AQI to PM2.5
+            double indoorPM25 = AQICalculator.aqiToPm25((int) indoorAQI);
+            double outdoorPM25 = AQICalculator.aqiToPm25((int) outdoorAQI);
+            logger.info("Indoor PM2.5: {}, Outdoor PM2.5: {}", indoorPM25, outdoorPM25);
 
-        // risk score based on PM2.5 and hours
-        double riskScore = calculateRiskScore(indoorPM25, outdoorPM25, dailyQuizScore.getIndoorHours(), dailyQuizScore.getOutdoorHours());
-        logger.info("Calculated Risk Score: {}", riskScore);
+            // risk score based on PM2.5 and hours
+            double riskScore = calculateRiskScore(indoorPM25, outdoorPM25, dailyQuizScore.getIndoorHours(), dailyQuizScore.getOutdoorHours());
+            logger.info("Calculated Risk Score: {}", riskScore);
 
-        // calculated risk score
-        dailyQuizScore.setRiskScore(riskScore);
-
-        // saves score to database
-        return dailyQuizScoreRepository.save(dailyQuizScore);
+            // calculated risk score
+            dailyQuizScore.setRiskScore(riskScore);
+            
+            
+    	}catch(Exception e) {
+    		System.out.println("Failed to create a new entry in dailyQuizScore");
+    	}
+    	return dailyQuizScoreRepository.save(dailyQuizScore);
+        
     }
 
   public DailyQuizScore updateDailyQuizScore(Long id, LocalDate quizDate, DailyQuizScore quizScoreDetails) {
@@ -100,7 +105,7 @@ public class DailyQuizScoreService {
         dailyQuizScoreRepository.delete(quizScore);
     }
 
-    private double fetchAQI(String location) {
+    private double fetchAQIForALocation(String location) {
         double aqi = 0.0; // default value
         try {
             // splits location string into latitude and longitude
@@ -126,24 +131,23 @@ public class DailyQuizScoreService {
 
     private JSONObject fetchWeatherDetails(double locLat, double locLon) throws Exception {
         String url = OPENWEATHER_URL + "?lat=" + locLat + "&lon=" + locLon + "&appid=" + openWeatherApiKey;
-
+        JSONObject jsonResponse = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(url);
             CloseableHttpResponse response = client.execute(httpGet);
 
             String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-            JSONObject jsonResponse = new JSONObject(responseString);
-
-            // log  response
-            logger.info("OpenWeather API response: {}", jsonResponse.toString());
-
-            return jsonResponse;
+            jsonResponse = new JSONObject(responseString);
+            
+        }catch(Exception e) {
+        	logger.error("Error while fetching weather details");
         }
+        return jsonResponse;
     }
 
     private double fetchAqiFromDataModel(double locLat, double locLon, long timeStamp, JSONObject weatherDetails) throws Exception {
 
-
+    	double predictedAQI = 0;
         JSONObject jsonInput = new JSONObject();
         jsonInput.put("loc_lat", locLat);
         jsonInput.put("loc_lon", locLon);
@@ -156,24 +160,13 @@ public class DailyQuizScoreService {
         jsonInput.put("wind_gust", weatherDetails.getJSONObject("wind").optDouble("gust", 0.0));
         jsonInput.put("weather_id", weatherDetails.getJSONArray("weather").getJSONObject(0).getInt("id"));
 
-
-    try (CloseableHttpClient client = HttpClients.createDefault()) {
-        HttpPost httpPost = new HttpPost(DATA_MODEL_URL);
-        StringEntity entity = new StringEntity(jsonInput.toString());
-        httpPost.setEntity(entity);
-        httpPost.setHeader("Accept", "application/json");
-        httpPost.setHeader("Content-type", "application/json");
-
-        CloseableHttpResponse response = client.execute(httpPost);
-
-        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        JSONObject jsonResponse = new JSONObject(responseString);
-
-        // Log response
-        logger.info("Data Model API response: {}", jsonResponse.toString());
-
-        return FlaskClient.predictWithLocation(jsonInput).getDouble("predicted_aqi");
-    }
+	    try { 
+	    	predictedAQI = FlaskClient.predictWithLocation(jsonInput).getDouble("predicted_aqi");
+	    }catch(Exception e) {
+	    	logger.error("Error while fetching data from data model");
+	    }
+	    
+	    return predictedAQI;
     }
 
     private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {

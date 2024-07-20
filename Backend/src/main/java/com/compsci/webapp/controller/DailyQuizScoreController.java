@@ -19,12 +19,7 @@ public class DailyQuizScoreController {
         this.dailyQuizScoreService = dailyQuizScoreService;
     }
 
-    @GetMapping
-    public List<DailyQuizScore> getAllDailyQuizScores() {
-        return dailyQuizScoreService.getAllDailyQuizScores();
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping("getQuizScore/{id}")
     public List<DailyQuizScore> getDailyQuizScoreById(@PathVariable Long id) {
         return dailyQuizScoreService.getDailyQuizScoreById(id);
     }
@@ -34,12 +29,12 @@ public class DailyQuizScoreController {
         return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); 
     }
 
-    @PutMapping("/{id}/{quizDate}")
+    @PutMapping("updateQuiz/{id}/{quizDate}")
     public DailyQuizScore updateDailyQuizScore(@PathVariable Long id, @PathVariable LocalDate quizDate, @RequestBody DailyQuizScore quizScoreDetails) {
         return dailyQuizScoreService.updateDailyQuizScore(id, quizDate, quizScoreDetails);
     }
 
-    @DeleteMapping("/{id}/{quizDate}")
+    @DeleteMapping("deleteQuiz/{id}/{quizDate}")
     public void deleteDailyQuizScore(@PathVariable Long id, @PathVariable LocalDate quizDate) {
         dailyQuizScoreService.deleteDailyQuizScore(id, quizDate);
     }

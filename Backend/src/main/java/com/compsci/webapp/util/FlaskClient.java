@@ -13,37 +13,6 @@ public class FlaskClient {
     private static final String PREDICT_WITH_LOCATION_URL = "http://localhost:5001/predict_with_location";
     private static final String PREDICT_FOR_ALL_GRIDS_URL = "http://localhost:5001/predict_for_all_grids";
 
-    public static void main(String[] args) throws Exception {
-        // predict_with_location
-        JSONObject locationInput = new JSONObject();
-        locationInput.put("loc_lat", 40.75838928128043);
-        locationInput.put("loc_lon", -73.97503124048248);
-        locationInput.put("time_stamp", 1780310800);
-        locationInput.put("humidity", 62);
-        locationInput.put("wind_deg", 259);
-        locationInput.put("temp", 286.59444444444443);
-        locationInput.put("wind_speed", 5.4704);
-        locationInput.put("wind_gust", 0.0);
-        locationInput.put("pressure", 1009.482859);
-        locationInput.put("weather_id", 502);
-
-        JSONObject locationResult = predictWithLocation(locationInput);
-        System.out.println("Location Prediction: " + locationResult);
-
-        // Example for predict_for_all_grids
-        JSONObject generalInput = new JSONObject();
-        generalInput.put("time_stamp", 1780310800);
-        generalInput.put("humidity", 62);
-        generalInput.put("wind_deg", 259);
-        generalInput.put("temp", 286.59444444444443);
-        generalInput.put("wind_speed", 5.4704);
-        generalInput.put("wind_gust", 0.0);
-        generalInput.put("pressure", 1009.482859);
-        generalInput.put("weather_id", 502);
-
-        JSONArray allGridsResult = predictForAllGrids(generalInput);
-        System.out.println("All Grids Prediction: " + allGridsResult);
-    }
 
     public static JSONObject predictWithLocation(JSONObject input) throws Exception {
         CloseableHttpClient client = HttpClients.createDefault();
