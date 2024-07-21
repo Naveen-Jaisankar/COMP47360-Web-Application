@@ -16,7 +16,7 @@ const MapAlertCard = ({aqi}) => {
         ml={3}
         borderRadius="8px"
         maxWidth="md"
-        width="35%"
+        width="20%"
       >
         {/* <img src={warningImg} alt="Warning Icon" /> */}
         <Box
