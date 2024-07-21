@@ -20,9 +20,13 @@ const GreyBackgroundBox = styled(Box) (({theme}) => ({
   margin: "1rem",
   padding: "2rem",
   borderRadius: "20px",
+  borderColor: theme.palette.mode === 'dark' ? '#F7F7F2' : "black",
+  borderStyle: 'solid',
+  borderWidth: 4,
 }));
 
-
+// image from https://fearlesstravels.com/the-streets-of-new-york/
+const bannerImage = "../src/static/backgroundDaily.jpg"
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
@@ -169,16 +173,25 @@ export default function DailyForm() {
     };
 
   return (
-
+    <>
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
+      <Box
+    sx={{
+      backgroundImage:`url(${bannerImage})`,
+      backgroundSize: "cover",
+      width: '100%',
+      height: '100%',
+      minHeight: "95vh"
+
+    }}>
       <UserContent className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
         <Container sx={{
           marginTop: "2rem",
           marginLeft: "-3rem",
         }}>
           <ThickHeadingTypography variant="h2" component="h1" sx={{ 
-            color:theme.palette.mode === 'dark' ? "#F1F3F2" : "black",
+            color:theme.palette.mode === 'dark' ? "#F1F3F2" : "white",
             paddingLeft: "1rem"}}>
             {constants.dailyForm.title}
           </ThickHeadingTypography>
@@ -213,12 +226,24 @@ export default function DailyForm() {
                 onChange={handleOutdoorHoursChange}
                 arialabel={"Number of Hours spent indoors"}
               />
-
-              <Button type="submit">Submit</Button>
+               <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      width: "200px", // Set a fixed width for the button
+                    }}
+                  >
+                    {constants.dailyForm.submitButton}
+                  </Button>
+                </Box>
             </form>
           </GreyBackgroundBox>
         </Container>
       </UserContent>
+      </Box>
     </div>
+  
+  </>
   );
 }
