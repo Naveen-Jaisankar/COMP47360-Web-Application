@@ -1,11 +1,9 @@
-import { Container, Typography, Box, Grid } from "@mui/material";
+import { Container, Typography, Box} from "@mui/material";
 import Infocard from "../components/infocard";
 import ReactPlayer from "react-player";
 import constants from "./../constant";
 import { styled, useTheme } from "@mui/system";
 import Footer from "../components/footer";
-import { SettingsContext } from "../context/SettingsContext";
-import { useContext } from "react";
 
 const image1 = "../src/static/proxy-image.png";
 const image2 = "../src/static/face-mask2.png";
@@ -51,7 +49,6 @@ const GetStartedBox = styled(Box) (({theme}) => ({
 }));
 
 const CreamBackgroundBox = styled(Box) (({theme}) => ({
-  backgroundColor: "blue",
   backgroundColor: theme.palette.mode === 'dark' ? 'blue' : "#F7F7F2",
   minHeight: "100vh",
   paddingBottom: "2rem"

@@ -1,5 +1,4 @@
 import UserContent from "../components/usercontent";
-import UserPlaceholder from "../components/userplaceholder";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";

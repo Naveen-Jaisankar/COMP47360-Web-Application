@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react';
-import { Switch, Slider, Typography, Paper, Container, Button, Menu, MenuItem } from '@mui/material';
+import { Switch, Slider, Typography, Button, Menu, MenuItem } from '@mui/material';
 import { SettingsContext } from '../context/SettingsContext';
 import { styled } from '@mui/system';
 import constant from '../constant';
+import PropTypes from 'prop-types';
 
 const WideMenuItem = styled(MenuItem)({
   margin: '1rem',
@@ -67,3 +68,6 @@ const Settings = ( {sx} ) => {
 };
 
 export default Settings;
+
+Settings.propTypes = {
+  sx: PropTypes.object}

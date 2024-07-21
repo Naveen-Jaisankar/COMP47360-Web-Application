@@ -1,8 +1,6 @@
 import { Box, Container } from "@mui/system";
 // import { List, ListItem, Typography } from "@mui/material"
-import MainContent from "../components/maincontent";
 import { styled, useTheme } from "@mui/system";
-import { CreamBackgroundBox, SmallerHeadingBox } from "./Home";
 import constants from "./../constant";
 import {
   List,
