@@ -144,7 +144,7 @@ export default function Privacy() {
           sx={{
             marginTop: "2rem",
             margin: "auto",
-            backgroundColor:  theme.palette.mode === 'dark' ? 'lightgrey' : "#F7F7F2",
+            backgroundColor:  theme.palette.mode === 'dark' ? 'lightgrey' : "black",
           }}>Back to Previous Page</Button>
           </Container>
           
