@@ -4,7 +4,7 @@ import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
 import { useState } from "react";
-import { styled } from "@mui/system";
+import { styled, useTheme } from "@mui/system";
 import {ThickHeadingTypography} from "./Home"
 import constants from './../constant';
 import Sidebar from '../components/usersidebar';
@@ -15,19 +15,21 @@ const QuestionTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-const GreyBackgroundBox = styled(Box) ({
-  backgroundColor: "#F1F3F2",
+const GreyBackgroundBox = styled(Box) (({theme}) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#0D1B2A' : "#F1F3F2",
   margin: "1rem",
   padding: "2rem",
   borderRadius: "20px",
-});
+}));
+
+
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-
+  const theme = useTheme();
 
   // Validation functions
 
@@ -167,14 +169,17 @@ export default function DailyForm() {
     };
 
   return (
+
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
       <UserContent className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
         <Container sx={{
           marginTop: "2rem",
-          marginLeft: "-3rem"
+          marginLeft: "-3rem",
         }}>
-          <ThickHeadingTypography variant="h2" component="h1" sx={{color: "black", paddingLeft: "1rem"}}>
+          <ThickHeadingTypography variant="h2" component="h1" sx={{ 
+            color:theme.palette.mode === 'dark' ? "#F1F3F2" : "black",
+            paddingLeft: "1rem"}}>
             {constants.dailyForm.title}
           </ThickHeadingTypography>
 

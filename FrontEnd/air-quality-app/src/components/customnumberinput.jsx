@@ -77,8 +77,7 @@ const StyledInputRoot = styled('div')(
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 400;
   border-radius: 8px;
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+
   border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
   box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
   display: grid;
@@ -112,8 +111,7 @@ const StyledInputElement = styled('input')(
   line-height: 1.5;
   grid-column: 1/2;
   grid-row: 1/3;
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-  background: inherit;
+  color: ${theme.palette.mode === 'dark' ? grey[900] : grey[900]};
   border: none;
   border-radius: inherit;
   padding: 8px 12px;
@@ -135,9 +133,9 @@ const StyledButton = styled('button')(
   font-size: 0.875rem;
   line-height: 1;
   box-sizing: border-box;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+
   border: 0;
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 120ms;
@@ -161,9 +159,7 @@ const StyledButton = styled('button')(
       color: ${grey[50]};
     }
 
-  border-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
-  background: ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
-  color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
+
   }
 
   &.${numberInputClasses.decrementButton} {
@@ -178,9 +174,6 @@ const StyledButton = styled('button')(
       color: ${grey[50]};
     }
 
-  border-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
-  background: ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
-  color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
   }
   & .arrow {
     transform: translateY(-1px);
