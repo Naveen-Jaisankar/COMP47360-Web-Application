@@ -2,8 +2,10 @@ import { Container, Typography, Box, Grid } from "@mui/material";
 import Infocard from "../components/infocard";
 import ReactPlayer from "react-player";
 import constants from "./../constant";
-import { styled } from "@mui/system";
+import { styled, useTheme } from "@mui/system";
 import Footer from "../components/footer";
+import { SettingsContext } from "../context/SettingsContext";
+import { useContext } from "react";
 
 const image1 = "../src/static/proxy-image.png";
 const image2 = "../src/static/face-mask2.png";
@@ -32,43 +34,50 @@ const ThickHeadingTypography = styled(Typography)({
   fontFamily: "Roboto flex, Roboto, sans-serif",
   fontWeight: 700,
   color: "white",
-  borderColor: "black",
 });
 
-const GetStartedBox = styled(Box)({
+const GetStartedBox = styled(Box) (({theme}) => ({
   height: "80vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  backgroundColor: "white",
+  backgroundColor: theme.palette.mode === 'dark' ? '#0D1B2A' : "white",
   borderRadius: "2vh",
-  border: "2px solid black",
+  borderColor: theme.palette.mode === 'dark' ? '#F7F7F2' : "black",
+  borderStyle: 'solid',
+  borderWidth: 1,
+ 
   padding: "2rem",
   position: "relative",
   zIndex: 10, 
-});
+}));
 
-const CreamBackgroundBox = styled(Box)({
-  backgroundColor: "#F7F7F2",
+const CreamBackgroundBox = styled(Box) (({theme}) => ({
+  backgroundColor: "blue",
+  backgroundColor: theme.palette.mode === 'dark' ? 'blue' : "#F7F7F2",
   minHeight: "100vh",
   paddingBottom: "2rem"
-});
+}));
 
 const SmallerHeadingBox = styled(Box)({
   display: "flex",
+  
   flexDirection: "column",
   alignItems: "center",
   textAlign: "center",
   mb: 4,
 });
 
-const InfoCardBox = styled(Box)({
-  backgroundColor: "white",
+const InfoCardBox = styled(Box) (({theme}) => ({
+  backgroundColor:  theme.palette.mode === 'dark' ? '#151515' : "#F7F7F2",
   marginTop: "2rem",
   padding: 5,
-});
+}));
 
 const Home = () => {
+
+  const theme = useTheme();
+  
   return (
     <>
       {/* Introduction Section */}
@@ -102,6 +111,7 @@ const Home = () => {
           sx={{
             maxWidth: { xs: "100%", md: "90%", lg: "70%" },
             marginTop: { xs: -2, md: -3 },
+            
           }}
         >
           <GetStartedBox>
@@ -131,7 +141,6 @@ const Home = () => {
           <InfoCardBox
           sx={{
             border: "1px",
-            backgroundColor: "#F7F7F2"
           }}>
             <Container
               maxWidth={false}
@@ -139,12 +148,12 @@ const Home = () => {
                 marginTop: 4,
                 marginBottom: 5,
                 width: { xs: "100%", md: "90%", lg: "80%" },
-                backgroundColor: "#F7F7F2",
+                backgroundColor:  theme.palette.mode === 'dark' ? '#151515' : "#F7F7F2",
               }}
             >
               <SmallerHeadingBox
               sx={{
-                backgroundColor: "#F7F7F2"
+                backgroundColor:  theme.palette.mode === 'dark' ? '#151515' : "#F7F7F2",
               }}>
                 <Typography variant="h2" component="h2" sx={{
                   fontWeight: 'medium',
@@ -164,7 +173,7 @@ const Home = () => {
                   gap: 4,
                   margin: { xs: 6 },
                   marginBottom: 2,
-                  backgroundColor: "#F7F7F2"
+                  backgroundColor:  theme.palette.mode === 'dark' ? '#151515' : "#F7F7F2",
                 }}
               >
                 <Infocard
@@ -176,6 +185,7 @@ const Home = () => {
                     maxWidth: "11rem",
                     margin: "auto",
                     paddingTop: "1rem",
+                    filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
                   }}
                 />
                 <Infocard
@@ -187,6 +197,7 @@ const Home = () => {
                     maxWidth: "14rem",
                     margin: "auto",
                     paddingTop: "1rem",
+                    filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
                   }}
                 />
                 <Infocard
@@ -198,6 +209,7 @@ const Home = () => {
                     maxWidth: "10rem",
                     margin: "auto",
                     paddingTop: "1rem",
+                    filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
                   }}
                 />
               </Box>

@@ -1,7 +1,7 @@
 import { Box, Container } from "@mui/system";
 // import { List, ListItem, Typography } from "@mui/material"
 import MainContent from "../components/maincontent";
-import { styled } from "@mui/system";
+import { styled, useTheme } from "@mui/system";
 import { CreamBackgroundBox, SmallerHeadingBox } from "./Home";
 import constants from "./../constant";
 import {
@@ -31,6 +31,7 @@ export default function Privacy() {
     const handleClick= () => {
         navigate(-1)
     }
+    const theme = useTheme();
   return (
     <>
         <Box
@@ -38,13 +39,13 @@ export default function Privacy() {
             paddingTop: "2rem",
             paddingBottom: "2rem",
             minHeight:"100%",
-            backgroundColor: "#f7f7f2",
+            backgroundColor:  theme.palette.mode === 'dark' ? 'black' : "#F7F7F2",
           }}
         >
           <Container
             sx={{
               padding: 0,
-              backgroundColor: "#f7f7f2",
+              backgroundColor:  theme.palette.mode === 'dark' ? 'black' : "#F7F7F2",
             }}
           >
             {/* Header section */}
@@ -143,7 +144,7 @@ export default function Privacy() {
           sx={{
             marginTop: "2rem",
             margin: "auto",
-            backgroundColor: "#0D1B2A"
+            backgroundColor:  theme.palette.mode === 'dark' ? 'lightgrey' : "#F7F7F2",
           }}>Back to Previous Page</Button>
           </Container>
           
