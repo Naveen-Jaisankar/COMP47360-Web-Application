@@ -4,30 +4,13 @@ import { SettingsContext } from '../context/SettingsContext';
 import { styled } from '@mui/system';
 import constant from '../constant';
 
-const ColumnContainer = styled(Container)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100vh',
-  padding: 2,
-});
-
-const SettingsPaper = styled(Paper)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: 3,
-  borderRadius: 2,
-});
-
 const WideMenuItem = styled(MenuItem)({
   margin: '1rem',
   width: '30rem',
   // backgroundColor: "black"
 });
 
-const Settings = () => {
+const Settings = ( {sx} ) => {
   const { darkMode, toggleDarkMode, fontSize, changeFontSize } = useContext(SettingsContext);
 
   const handleFontSizeChange = (_event, newValue) => {
@@ -53,28 +36,7 @@ const Settings = () => {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClickSettings}
-        sx={{
-          margin: 2,
-          fontWeight: 'bold',
-          position: 'relative',
-          color: 'inherit',
-          '&:after': {
-            content: '""',
-            position: 'absolute',
-            left: 0,
-            bottom: 0,
-            width: '100%',
-            height: '2px',
-            background: 'currentColor',
-            backgroundColor: 'white',
-            transform: 'scaleX(0)',
-            transformOrigin: 'left',
-            transition: 'transform 250ms ease-in',
-          },
-          '&:hover:after': {
-            transform: 'scaleX(1)',
-          },
-        }}
+        sx={sx}
       >
         Settings
       </Button>
