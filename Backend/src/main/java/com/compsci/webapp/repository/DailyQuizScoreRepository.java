@@ -2,6 +2,7 @@ package com.compsci.webapp.repository;
 
 import com.compsci.webapp.entity.DailyQuizID;
 import com.compsci.webapp.entity.DailyQuizScore;
+import com.compsci.webapp.entity.UserEntity;
 
 import jakarta.transaction.Transactional;
 
@@ -12,12 +13,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-// class for managing all Java data access 
-
 @Repository
 @Transactional
 public interface DailyQuizScoreRepository extends JpaRepository<DailyQuizScore, DailyQuizID> {
-    List <DailyQuizScore> findById(Long id);
-    List <DailyQuizScore> findByUserId(Long userId);
-    Optional<DailyQuizScore> findByUserIdAndQuizDate(Long userId, LocalDate quizDate);
+    
+    List<DailyQuizScore> findByUserId(UserEntity userEntity);
+
+    List<DailyQuizScore> findByUserId_UserId(Long userId);
+
 }

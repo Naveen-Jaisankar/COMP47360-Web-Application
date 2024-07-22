@@ -15,7 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.compsci.webapp.entity.DailyQuizID;
 import com.compsci.webapp.entity.DailyQuizScore;
+import com.compsci.webapp.entity.UserEntity;
 import com.compsci.webapp.repository.DailyQuizScoreRepository;
+import com.compsci.webapp.repository.UserRepository;
+import com.compsci.webapp.request.DailyQuizScoreRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ import com.compsci.webapp.util.AQICalculator;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -44,22 +49,26 @@ public class DailyQuizScoreService {
     public DailyQuizScoreService(DailyQuizScoreRepository dailyQuizScoreRepository) {
         this.dailyQuizScoreRepository = dailyQuizScoreRepository;
     }
+    
+    @Autowired
+    private UserRepository userRepository;
 
     public List<DailyQuizScore> getDailyQuizScoreById(Long id) {
     	List<DailyQuizScore> dailyQuizScore = new ArrayList<>();
     	try {
-    		dailyQuizScore = dailyQuizScoreRepository.findByUserId(id);
+    		dailyQuizScore = dailyQuizScoreRepository.findByUserId_UserId(id);
     	}catch(Exception e) {
     		System.out.println("Failed to fetch dailyscore for id : " +  id + " " );
     	}
     	return dailyQuizScore;
     }
 
-    public DailyQuizScore createDailyQuizScore(DailyQuizScore dailyQuizScore) {
+    public DailyQuizScore createDailyQuizScore(DailyQuizScoreRequest dailyQuizScoreRequest) {
+    	DailyQuizScore dailyQuizScoreEntity = new DailyQuizScore();
     	try {
     		//Fetching AQI data for indoor and outdoor locations
-            double indoorAQI = fetchAQIForALocation(dailyQuizScore.getIndoorLocation());
-            double outdoorAQI = fetchAQIForALocation(dailyQuizScore.getOutdoorLocation());
+            double indoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getIndoorLocation());
+            double outdoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getOutdoorLocation());
             logger.info("Indoor AQI: {}, Outdoor AQI: {}", indoorAQI, outdoorAQI);
 
             // converting AQI to PM2.5
@@ -68,17 +77,26 @@ public class DailyQuizScoreService {
             logger.info("Indoor PM2.5: {}, Outdoor PM2.5: {}", indoorPM25, outdoorPM25);
 
             // risk score based on PM2.5 and hours
-            double riskScore = calculateRiskScore(indoorPM25, outdoorPM25, dailyQuizScore.getIndoorHours(), dailyQuizScore.getOutdoorHours());
+            double riskScore = calculateRiskScore(indoorPM25, outdoorPM25, dailyQuizScoreRequest.getIndoorHours(), dailyQuizScoreRequest.getOutdoorHours());
             logger.info("Calculated Risk Score: {}", riskScore);
 
             // calculated risk score
-            dailyQuizScore.setRiskScore(riskScore);
+            UserEntity user = userRepository.getUserById(dailyQuizScoreRequest.getUserId());
+            
+            
+            dailyQuizScoreEntity.setUserId(user);
+            dailyQuizScoreEntity.setQuizDate(dailyQuizScoreRequest.getQuizDate());
+            dailyQuizScoreEntity.setQuizScore(riskScore);
+            dailyQuizScoreEntity.setIndoorLocation(dailyQuizScoreRequest.getIndoorLocation());
+            dailyQuizScoreEntity.setOutdoorLocation(dailyQuizScoreRequest.getOutdoorLocation());
+            dailyQuizScoreEntity.setIndoorHours(dailyQuizScoreRequest.getIndoorHours());
+            dailyQuizScoreEntity.setOutdoorHours(dailyQuizScoreRequest.getOutdoorHours());
             
             
     	}catch(Exception e) {
     		System.out.println("Failed to create a new entry in dailyQuizScore");
     	}
-    	return dailyQuizScoreRepository.save(dailyQuizScore);
+     	return dailyQuizScoreRepository.save(dailyQuizScoreEntity);
         
     }
 
@@ -97,7 +115,7 @@ public class DailyQuizScoreService {
 
     public void deleteDailyQuizScore(Long id, LocalDate quizDate) {
         DailyQuizID dailyQuizID = new DailyQuizID();
-        dailyQuizID.setId(id);
+        dailyQuizID.setUserId(id);
         dailyQuizID.setQuizDate(quizDate);
 
         DailyQuizScore quizScore = dailyQuizScoreRepository.findById(dailyQuizID)

@@ -1,6 +1,7 @@
 package com.compsci.webapp.controller;
 
 import com.compsci.webapp.entity.DailyQuizScore;
+import com.compsci.webapp.request.DailyQuizScoreRequest;
 import com.compsci.webapp.service.DailyQuizScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class DailyQuizScoreController {
     }
 
     @PostMapping("/createDailyQuizScore")
-    public DailyQuizScore createDailyQuizScore(@RequestBody DailyQuizScore dailyQuizScore) {
-        return dailyQuizScoreService.createDailyQuizScore(dailyQuizScore); 
+    public DailyQuizScore createDailyQuizScore(@RequestBody DailyQuizScoreRequest dailyQuizScoreRequest) {
+        return dailyQuizScoreService.createDailyQuizScore(dailyQuizScoreRequest); 
     }
 
     @PutMapping("updateQuiz/{id}/{quizDate}")

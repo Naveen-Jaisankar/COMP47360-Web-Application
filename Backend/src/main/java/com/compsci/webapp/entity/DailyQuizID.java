@@ -2,42 +2,52 @@ package com.compsci.webapp.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
+public class DailyQuizID implements Serializable {
 
-import lombok.Data;
-
-@Data
-public class DailyQuizID implements Serializable{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Long id;
+    private static final long serialVersionUID = 1L;
+    private Long userId;
     private LocalDate quizDate;
 
+    // Default constructor
     public DailyQuizID() {}
 
-    public DailyQuizID(Long id, LocalDate quizDate) {
-        this.id = id;
+    // Parameterized constructor
+    public DailyQuizID(Long userId, LocalDate quizDate) {
+        this.userId = userId;
         this.quizDate = quizDate;
     }
 
-	public Long getId() {
-		return id;
-	}
+    // Getters and setters
+    public Long getUserId() {
+        return userId;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public LocalDate getQuizDate() {
-		return quizDate;
-	}
+    public LocalDate getQuizDate() {
+        return quizDate;
+    }
 
-	public void setQuizDate(LocalDate quizDate) {
-		this.quizDate = quizDate;
-	}
+    public void setQuizDate(LocalDate quizDate) {
+        this.quizDate = quizDate;
+    }
 
-     
+    // hashCode and equals
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, quizDate);
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        DailyQuizID that = (DailyQuizID) obj;
+        return Objects.equals(userId, that.userId) &&
+               Objects.equals(quizDate, that.quizDate);
+    }
 }
