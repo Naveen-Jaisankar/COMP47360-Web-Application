@@ -35,6 +35,14 @@ jobs:
                 docker build -t naveenjaisankar1999/fairclient .
             - name: Publish image to docker hub
               run: docker push naveenjaisankar1999/fairclient:latest
+            - name: Build Docker image for Flask App
+              run: |
+                cd DataAnalytics
+                docker build -t naveenjaisankar1999/flask-app .
+      
+            - name: Publish Flask App image to Docker Hub
+              run: |
+                docker push naveenjaisankar1999/flask-app:latest
 
     deploy:
         needs: build
@@ -74,6 +82,12 @@ jobs:
               run: sudo docker rm -f fair-client-container || true
             - name: Run docker container client app
               run: sudo docker run -d -p 3000:80 --name fair-client-container naveenjaisankar1999/fairclient:latest
+            - name: Delete old Flask App container
+              run: |
+                sudo docker rm -f flask-app-container || true
+            - name: Run Flask App container
+              run: |
+                sudo docker run -d -p 5001:5001 --name flask-app-container naveenjaisankar1999/flask-app:latest
             # - name: Run docker container
             #   env:
             #       VITE_GOOGLEMAP_KEY: ${{secrets.VITE_GOOGLEMAP_KEY }}
