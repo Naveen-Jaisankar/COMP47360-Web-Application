@@ -86,11 +86,11 @@ print("Grid info path:", grid_info_path)
 
 
 # Load models
-taxi_density_model = joblib.load('D:/College/Sem 3/Research Practicum/Data Analytics/taxi_density_model.pkl')
-aqi_model = joblib.load('aqi_model.pkl')
+taxi_density_model = joblib.load(taxi_density_model_path)
+aqi_model = joblib.load(aqi_model_path)
 
 # Load grid information
-grid_info = pd.read_csv('grid_info_full_ver.csv')
+grid_info = pd.read_csv(grid_info_path)
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
