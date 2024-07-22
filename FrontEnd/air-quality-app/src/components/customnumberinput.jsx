@@ -14,8 +14,8 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
       slots={{
         root: StyledInputRoot,
         input: StyledInputElement,
-        incrementButton: StyledButton,
-        decrementButton: StyledButton,
+        incrementButton: (props) => <StyledButton type="button" {...props} />, // Set type here
+        decrementButton: (props) => <StyledButton type="button" {...props} />, // Set type here
       }}
       slotProps={{
         incrementButton: {
@@ -88,6 +88,7 @@ const StyledInputRoot = styled('div')(
   column-gap: 8px;
   padding: 4px;
 
+
   &.${numberInputClasses.focused} {
     border-color: ${blue[400]};
     box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[600] : blue[200]};
@@ -141,6 +142,7 @@ const StyledButton = styled('button')(
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 120ms;
+  type: button;
 
   &:hover {
     background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
