@@ -1,6 +1,7 @@
+#spring.application.name=profile-service
+
 server:
   port: 8080
-
 springdoc:
   api-docs:
     path: /api-docs
@@ -8,10 +9,9 @@ springdoc:
     path: /swagger-ui.html
     enabled: true
 
-myapp:
-  api:
-    openweather:
-      key: 73863d988ca614db6d58b25c1ff14029
+logging:
+  file:
+    name: logs/app.log
 
 spring:
   datasource:
@@ -43,3 +43,4 @@ spring:
 
   application:
     name: webapp
+

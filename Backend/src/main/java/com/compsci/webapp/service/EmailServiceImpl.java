@@ -9,7 +9,7 @@ package com.compsci.webapp.service;
  * This class handles ...
  */
 
-
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 

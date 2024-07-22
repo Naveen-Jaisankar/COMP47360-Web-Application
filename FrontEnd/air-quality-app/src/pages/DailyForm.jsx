@@ -7,7 +7,7 @@ import { useState, useContext } from 'react';
 import { styled } from "@mui/system";
 import {ThickHeadingTypography} from "./Home";
 import constants from './../constant';
-import Sidebar from "../components/usersidebar";
+import Sidebar from '../components/usersidebar';
 import axiosInstance from "../../src/axios";
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
@@ -42,6 +42,7 @@ export default function DailyForm() {
 
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
+        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -53,6 +54,8 @@ export default function DailyForm() {
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
+        console.log("outdoors:");
+        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -83,13 +86,19 @@ export default function DailyForm() {
       var leftoverHours = 24 - totalHours;
 
       const newIndoorHours = Math.round(leftoverHours * indoorHourRatio);
+      console.log(newIndoorHours);
+
       const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio);
+      console.log(newOutdoorHours);
 
       const adjustedIndoorHours = indoorHours + newIndoorHours;
       const adjustedOutdoorHours = outdoorHours + newOutdoorHours;
 
-      setIndoorHours(adjustedIndoorHours);
-      setOutdoorHours(adjustedOutdoorHours);
+      console.log(`adjusted indoors, ${adjustedIndoorHours}`);
+      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
+
+      setIndoorHours(adjustedIndoorHours)
+      setOutdoorHours(adjustedOutdoorHours)
     } else if (totalHours > 24){
       hourCheck = false;
     }
