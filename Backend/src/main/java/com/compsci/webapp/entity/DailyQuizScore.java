@@ -2,6 +2,8 @@ package com.compsci.webapp.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
@@ -22,6 +24,7 @@ public class DailyQuizScore {
     private Integer outdoorHours; // Assuming outdoor hours is of type Integer
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private Long id;
 

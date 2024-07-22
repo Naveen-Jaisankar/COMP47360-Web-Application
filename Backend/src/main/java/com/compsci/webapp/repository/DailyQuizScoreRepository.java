@@ -18,5 +18,6 @@ import java.util.Optional;
 @Transactional
 public interface DailyQuizScoreRepository extends JpaRepository<DailyQuizScore, DailyQuizID> {
     List <DailyQuizScore> findById(Long id);
+    List <DailyQuizScore> findByUserId(Long userId);
     Optional<DailyQuizScore> findByUserIdAndQuizDate(Long userId, LocalDate quizDate);
 }
