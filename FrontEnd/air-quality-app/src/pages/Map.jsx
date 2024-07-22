@@ -1,13 +1,16 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+/*global google*/
+import { useState, useEffect, useCallback, useMemo, useContext } from 'react';
 import { GoogleMap, HeatmapLayer, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 import PlaceAutocomplete from '../components/mapautocomplete';
 import axiosInstance from '../axios';
 import mapstyle from '../components/mapstyles';
+import darkmapstyle from '../components/darkmapstyles';
 import { MapSidebar } from '../components/mapsidebar';
 import MapAlertCard from '../components/mapalertcard';
 import Legend from '../components/maplegend';
 import { heatData } from './heatdata';
+import { SettingsContext } from '../context/SettingsContext';
 
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
 const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
@@ -26,6 +29,9 @@ export default function MapPage() {
   const [heatMapData, setHeatMapData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastFetchTime, setLastFetchTime] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(11.7);
+  
+  const {darkMode} = useContext(SettingsContext);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: googleMapsKey,
@@ -44,23 +50,23 @@ export default function MapPage() {
 
   const GetheatData = (predictedData) => {
     const newHeatMapData = predictedData.flatMap(result => {
-      var wt = 0.3;
-      if (2 * result.predicted_aqi <= 50) wt = 0.05;
-      else if (2 * result.predicted_aqi <= 100) wt = 0.1;
-      else if (2 * result.predicted_aqi <= 150) wt = 0.15;
-      else if (2 * result.predicted_aqi <= 200) wt = 0.2;
-      else if (2 * result.predicted_aqi <= 300) wt = 0.25;
+      var wt = 0.6 / 9;
+      if (result.predicted_aqi <= 50) wt = 0.1 / 9;
+      else if (result.predicted_aqi <= 100) wt = 0.2 / 9;
+      else if (result.predicted_aqi <= 150) wt = 0.3 / 9;
+      else if (result.predicted_aqi <= 200) wt = 0.4 / 9;
+      else if (result.predicted_aqi <= 300) wt = 0.5 / 9;
   
       return [
-        // { lat: result.max_lat, lng: result.max_lon, weight: wt },
-        // { lat: result.max_lat, lng: result.min_lon, weight: wt },
-        // { lat: result.min_lat, lng: result.max_lon, weight: wt },
-        // { lat: result.min_lat, lng: result.min_lon, weight: wt },
+        { lat: result.max_lat, lng: result.max_lon, weight: wt },
+        { lat: result.max_lat, lng: result.min_lon, weight: wt },
+        { lat: result.min_lat, lng: result.max_lon, weight: wt },
+        { lat: result.min_lat, lng: result.min_lon, weight: wt },
         { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
-        // {lat: (result.max_lat + result.min_lat) / 2, lng: result.max_lon, weight: wt},
-        // {lat: (result.max_lat + result.min_lat) / 2, lng: result.min_lon, weight: wt},
-        // {lat: result.max_lat, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
-        // {lat: result.min_lat, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
+        {lat: (result.max_lat + result.min_lat) / 2, lng: result.max_lon, weight: wt},
+        {lat: (result.max_lat + result.min_lat) / 2, lng: result.min_lon, weight: wt},
+        {lat: result.max_lat, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
+        {lat: result.min_lat, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
       ];
     });
     return newHeatMapData;
@@ -124,7 +130,7 @@ export default function MapPage() {
   const handlePlaceSelected = useCallback((location) => {
     if (map) {
       map.panTo(new google.maps.LatLng(location.lat(), location.lng()));
-      map.zoom = 13;
+      map.zoom = 12;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
       aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() });
     }
@@ -154,22 +160,46 @@ export default function MapPage() {
     return date.toLocaleString();
   };
 
+  const handleZoomChanged = () => {
+    if (map) {
+      const newZoomLevel = map.getZoom();
+      setZoomLevel(newZoomLevel);
+    }
+  };
+
+  const getHeatmapRadius = () => {
+    console.log(zoomLevel);
+    if (zoomLevel < 13) return 20;
+    if (zoomLevel < 14) return 40;
+    if(zoomLevel < 15) return 80;
+    if(zoomLevel < 16) return 150;
+    return 300;
+  };
+
+  const getHeatmapOpacity = () => {
+    if (zoomLevel < 13) return 0.2;
+    return 0.4;
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       <MapSidebar isOpen={isMapSidebarOpen} />
       <div style={{ width: '100vw', height: '100vh' }} className='flex-1 ml-0'>
 
       <GoogleMap
-        mapContainerStyle={mapContainerStyle} center={centerPosition} zoom={11.7} onLoad={(map) => setMap(map)}
+        mapContainerStyle={mapContainerStyle} center={centerPosition} 
+        zoom={zoomLevel} onZoomChanged = {handleZoomChanged} onLoad={(map) => setMap(map)}
         options={{
           disableDefaultUI: {
             zoomControl: true,
             mapTypeControl: true,
             streetViewControl: true,
           },
-          styles: mapstyle,
-          gestureHandling: 'none',
-          zoomControl:true // Add this line to prevent zooming
+          styles: darkMode ? darkmapstyle : mapstyle,
+          gestureHandling: 'greedy',
+          zoomControl:true,
+          minZoom: 8,
+          maxZoom: 16
         }}
       >
           {map && !loading && heatMapData.length > 0 && shouldRenderHeatMap &&
@@ -177,7 +207,7 @@ export default function MapPage() {
               data={heatMapData.map((data) => (
                 { location: new google.maps.LatLng(data.lat, data.lng), weight: data.weight }
               ))}
-              options={{radius: 20, dissipating: true, opacity: 0.2, gradient: airQualityGradient}}
+              options={{radius: getHeatmapRadius(), dissipating: true, opacity: getHeatmapOpacity(), gradient: airQualityGradient}}
             />
           }
 
