@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.11.7-slim
 
 WORKDIR /app
 
@@ -8,5 +8,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5001
 
-# Run app.py when the container launches
+ENV FLASK_APP=app.py
+
 CMD ["python", "app.py"]
