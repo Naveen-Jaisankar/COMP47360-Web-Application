@@ -48,7 +48,7 @@ public class DailyQuizScoreService {
     public List<DailyQuizScore> getDailyQuizScoreById(Long id) {
     	List<DailyQuizScore> dailyQuizScore = new ArrayList<>();
     	try {
-    		dailyQuizScore = dailyQuizScoreRepository.findById(id);
+    		dailyQuizScore = dailyQuizScoreRepository.findByUserId(id);
     	}catch(Exception e) {
     		System.out.println("Failed to fetch dailyscore for id : " +  id + " " );
     	}

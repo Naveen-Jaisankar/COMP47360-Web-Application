@@ -1,6 +1,7 @@
  package com.compsci.webapp.controller;
 
  import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.compsci.webapp.response.ResendVerificationEmailResponse;
 import com.compsci.webapp.response.UserRegisterResponse;
 import com.compsci.webapp.response.UserSignInResponse;
 import com.compsci.webapp.service.AuthService;
+import com.compsci.webapp.util.Constants;
 
 import jakarta.validation.Valid;
 
@@ -28,8 +30,10 @@ import jakarta.validation.Valid;
 
      @PostMapping("/registerUser")
      public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
-         UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
-         userRegisterResponse = authService.registerUser(userRegisterRequest);
+    	 UserRegisterResponse userRegisterResponse = authService.registerUser(userRegisterRequest);
+         if (Constants.EMAIL_ALREADY_IN_USE.getMessage().equals(userRegisterResponse.getMessage())) {
+             return ResponseEntity.status(HttpStatus.CONFLICT).body(userRegisterResponse);
+         }
          return ResponseEntity.ok(userRegisterResponse);
 
      }
