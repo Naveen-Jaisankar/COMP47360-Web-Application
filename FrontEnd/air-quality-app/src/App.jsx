@@ -49,7 +49,8 @@ function App() {
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
-                    <Route path= "/theme" element={<TypographyTest />}/>
+                    {/* uncomment below for theme testing */}
+                    {/* <Route path= "/theme" element={<TypographyTest />}/> */}
                   </Routes>
                 </MainContent>
               </div>
