@@ -26,7 +26,7 @@ public class DailyQuizScoreController {
     }
 
     @PostMapping("/createDailyQuizScore")
-    public DailyQuizScore createDailyQuizScore(@RequestBody DailyQuizScoreRequest dailyQuizScoreRequest) {
+    public String createDailyQuizScore(@RequestBody DailyQuizScoreRequest dailyQuizScoreRequest) {
         return dailyQuizScoreService.createDailyQuizScore(dailyQuizScoreRequest); 
     }
 

@@ -16,7 +16,8 @@ public enum Constants {
 	USER_NOT_FOUND("User not found"),
 	LOGIN_SUCCESSFULL("Login Successfull"),
 	REGISTERED_SUCCESSFULL("User registered successfully! "),
-	EMAIL_ALREADY_VERIFIED("Email already Confirmed");
+	EMAIL_ALREADY_VERIFIED("Email already Confirmed"),
+	SUBMITTED_SUCCESSFULLY("Submitted Successfully");
 	
 	
     private final String message;

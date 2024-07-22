@@ -24,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.compsci.webapp.util.AQICalculator;
-
-
-
+import com.compsci.webapp.util.Constants;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ public class DailyQuizScoreService {
     	return dailyQuizScore;
     }
 
-    public DailyQuizScore createDailyQuizScore(DailyQuizScoreRequest dailyQuizScoreRequest) {
+    public String createDailyQuizScore(DailyQuizScoreRequest dailyQuizScoreRequest) {
     	DailyQuizScore dailyQuizScoreEntity = new DailyQuizScore();
     	try {
     		//Fetching AQI data for indoor and outdoor locations
@@ -96,7 +94,8 @@ public class DailyQuizScoreService {
     	}catch(Exception e) {
     		System.out.println("Failed to create a new entry in dailyQuizScore");
     	}
-     	return dailyQuizScoreRepository.save(dailyQuizScoreEntity);
+     	dailyQuizScoreRepository.save(dailyQuizScoreEntity);
+     	return Constants.SUBMITTED_SUCCESSFULLY.getMessage();
         
     }
 
