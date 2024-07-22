@@ -3,17 +3,15 @@ import axios from 'axios';
 import { Typography, Box, Grid } from '@mui/material';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Infocard from "../components/infocard";
-import RecommendationCard from "../components/recommendationcard";
 import PropTypes from 'prop-types';
 
-const image1 = "../src/static/proxy-image.png";
 const healthImages = {
   thumbs_up: "../src/static/thumbs_up.png",
   water_bottle: "../src/static/water_bottle.png",
-  thermometer_low: "../src/static/thermometer_low.png",
+  park: "../src/static/park.png",
+  warning: "../src/static/warning.png",
   face_mask: "../src/static/face_mask.png",
   house: "../src/static/house.png",
-  thermometer_high: "../src/static/thermometer_high.png",
   newspaper: "../src/static/newspaper.jpg",
   doctor: "../src/static/doctor.png"
 };
@@ -75,45 +73,50 @@ const UserDashboard = ({ isSidebarOpen }) => {
     if (personalExposure < 30) {
       recs.push({
         image: healthImages.thumbs_up,
-        title: 'Keep up the good work!',
-        description: 'Your personal exposure is low. Continue maintaining your healthy habits.',
+        heading: 'Keep Up the Good Work!',
+        text: 'Your personal exposure is low. Continue maintaining your healthy habits.',
       });
       recs.push({
         image: healthImages.water_bottle,
-        title: 'Stay Hydrated!',
-        description: 'Drinking plenty of water helps your body to fight off the pollutants.',
+        heading: 'Stay Hydrated!',
+        text: 'Drinking plenty of water helps your body fight off pollutants.',
       });
+      recs.push({
+        image: healthImages.park,
+        heading: 'Enjoy the Fresh Air!',
+        text: 'Make sure to relax and/or exercise in nature, preferably away from roads.'
+      })
     } else if (personalExposure < 70) {
       recs.push({
-        image: healthImages.thermometer_low,
-        title: 'Moderate Exposure',
-        description: 'Your exposure is moderate. Try to avoid outdoor activities during peak pollution hours.',
+        image: healthImages.warning,
+        heading: 'Moderate Exposure',
+        text: 'Your exposure is moderate. Try to avoid outdoor activities during peak pollution hours.',
       });
       recs.push({
         image: healthImages.face_mask,
-        title: 'Wear a Mask',
-        description: 'Consider wearing a mask if you need to go outside during high pollution times.',
+        heading: 'Wear a Mask',
+        text: 'Consider wearing a mask if you need to go outside during peak pollution times.',
       });
       recs.push({
         image: healthImages.house,
-        title: 'Indoor Activities',
-        description: 'Plan indoor activities to reduce your exposure to air pollution.',
+        heading: 'Indoor Activities',
+        text: 'Plan indoor activities to reduce your exposure to air pollution.',
       });
     } else {
       recs.push({
-        image: healthImages.thermometer_high,
-        title: 'High Exposure Alert',
-        description: 'Your exposure is high. Stay indoors and use air purifiers if possible.',
+        image: healthImages.warning,
+        heading: 'High Exposure Alert',
+        text: 'Your exposure is high. Stay indoors and use air purifiers if possible.',
       });
       recs.push({
         image: healthImages.newspaper,
-        title: 'Check Air Quality',
-        description: 'Regularly check air quality updates to plan your outdoor activities accordingly.',
+        heading: 'Check Air Quality',
+        text: 'Regularly check air quality updates to plan your outdoor activities accordingly.',
       });
       recs.push({
         image: healthImages.doctor,
-        title: 'Consult a Doctor',
-        description: 'If you feel unwell, consult a doctor especially if you have respiratory issues.',
+        heading: 'Consult a Doctor',
+        text: 'If you feel unwell, consult a doctor, especially if you have respiratory issues.',
       });
     }
 
@@ -184,10 +187,10 @@ const UserDashboard = ({ isSidebarOpen }) => {
         <Grid container spacing={2}>
           {recommendations.map((rec, index) => (
             <Grid item xs={12} md={4} key={index}>
-              <RecommendationCard
+              <Infocard
                 image={rec.image}
-                title={rec.title}
-                description={rec.description}
+                heading={rec.heading}
+                text={rec.text}
               />
             </Grid>
           ))}
