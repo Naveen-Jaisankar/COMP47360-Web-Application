@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import './static/QuizQuestion.css'; // Import the CSS file for styling
 
 function QuizQuestion({ question, currentQuestion, onChange, onNext, selectedAnswers }) {
@@ -49,5 +50,21 @@ function QuizQuestion({ question, currentQuestion, onChange, onNext, selectedAns
         </div>
     );
 }
+
+QuizQuestion.propTypes = {
+    question: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        text: PropTypes.string.isRequired,
+        options: PropTypes.arrayOf(PropTypes.shape({
+            type: PropTypes.string.isRequired,
+            value: PropTypes.string.isRequired,
+            score: PropTypes.number.isRequired,
+        })).isRequired,
+    }).isRequired,
+    currentQuestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onChange: PropTypes.func.isRequired,
+    onNext: PropTypes.func.isRequired,
+    selectedAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default QuizQuestion;
