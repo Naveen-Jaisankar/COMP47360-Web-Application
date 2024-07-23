@@ -92,25 +92,58 @@ function createQuizScoreWeek(response) {
   return quizScoreWeekArray;
 }
 
-// Compares the data from the database to the our range of "valid" dates
+// Compares the data from the database to the our range of "valid" dates & ignore todays date as missing
 function compareLatestWeek(validWeekArray, quizScoreWeekArray) {
   let validDates = [];
+  let datesMissing = [];
+  let todaysDate = formatJavascriptDate(new Date())
 
     for (let i = 0; i < validWeekArray.length; i++) {
+        let found = false; 
         for (let j = 0; j < quizScoreWeekArray.length; j++) {
             if (validWeekArray[i].date === quizScoreWeekArray[j].date) {
                 validDates.push(quizScoreWeekArray[j]);
+                found = true;
+                break;
             }
         }
+        if (!found && validWeekArray[i].date != todaysDate) {
+          datesMissing.push({date: validWeekArray[i].date});
+        }
     }
-    console.log("in compareLatestWeek", validDates)
-    return validDates
+
+    console.log("in compareLatestWeek, datesMissing", datesMissing)
+    console.log("in compareLatestWeek, valid dates", validDates)
+    return {
+      validDates: validDates,
+      datesMissing: datesMissing,
+    }
 }
 
+function populateDates(latestWeek){
+  if (latestWeek.datesMissing) {
+    let datesFilled = latestWeek.datesMissing.map(dateInfo => ({
+      date: dateInfo.date,
+      quizScore: 12
+    }));
 
-// function populateAverage(validDates){
-//   dates to 
-// }
+    console.log("Dates filled", datesFilled)
+    return datesFilled
+  }
+
+}
+
+function renderDates (validDates, datesFilled) {
+ const combineDates = validDates.concat(datesFilled)
+
+  combineDates.sort(function(a,b) {
+  return new Date(a.date) - new Date(b.date);
+  });
+  
+  return combineDates
+
+}
+
 
 
 function testDateObject(value) {
@@ -138,8 +171,15 @@ const getLastSevenDays = (userId) => {
       let quizScoreWeekArray = createQuizScoreWeek(response);
       console.log("this is quizScore Week", quizScoreWeekArray);
 
-      let validDates = compareLatestWeek(validWeekArray, quizScoreWeekArray)
-      console.log("this is the valid Dates", validDates)
+      let latestWeek = compareLatestWeek(validWeekArray, quizScoreWeekArray)
+      console.log("this is the valid Dates", latestWeek)
+
+      let filledDates = populateDates(latestWeek)
+      console.log("this is the filled Dates", filledDates)
+
+      let combineDates = renderDates(latestWeek.validDates,filledDates)
+      console.log("this is combined dates", combineDates)
+
 
      
       
