@@ -2,11 +2,13 @@ import UserContent from "../components/usercontent";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState } from "react";
+import { useState, useContext } from 'react';
 import { styled, useTheme } from "@mui/system";
-import {ThickHeadingTypography} from "./Home"
+import {ThickHeadingTypography} from "./Home";
 import constants from './../constant';
 import Sidebar from '../components/usersidebar';
+import axiosInstance from "../../src/axios";
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -32,6 +34,7 @@ export default function DailyForm() {
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
+  const { userId } = useContext(AuthContext); // Get userId from AuthContext  const theme = useTheme();
   const theme = useTheme();
 
   // Validation functions
@@ -41,9 +44,6 @@ export default function DailyForm() {
     let isValid = false;
     let indoorCheck = false;
     let outdoorCheck = false;
-
-    // If the location has loaded, check each component within the array if they match with the word "Manhattan"
-    // if so, the location is valid. This accounts for less detailed/more detailed addresses with more/less components within the array.
 
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
@@ -112,28 +112,42 @@ export default function DailyForm() {
   }
 
   // Submission function
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
     const is24Hours = check24Hours(indoorHours, outdoorHours);
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
+    let indoorLocationArray = [indoorLocation.lat ,indoorLocation.lng];
+    let outdoorLocationArray = [outdoorLocation.lat, outdoorLocation.lng];
+
+    let indoorLocationToSend = indoorLocationArray.toString();
+    let outdoorLocationToSend = outdoorLocationArray.toString();
+
+    const data = {
+      user_id: userId, // Use userId from AuthContext
+      quiz_date: new Date(),
+      indoor_location: indoorLocationToSend,
+      outdoor_location: outdoorLocationToSend,
+      indoor_hours: indoorHours,
+      outdoor_hours: outdoorHours,
+    };
+
     if (!isValid) {
       alert("Please choose a location in Manhattan");
     } else if (!is24Hours) {
-      alert("24 hours exceeded, number inputs are invalid")
-    } else{
+      alert("24 hours exceeded, number inputs are invalid");
+    } else {
       try {
-        console.log(`Indoor Hours: ${indoorHours}`);
-        console.log(`Outdoor Hours: ${outdoorHours}`);
-        console.log(`Indoor Location: ${indoorLocation.address}`);
-        console.log(`Indoor Lat: ${indoorLocation.lat}`);
-        console.log(`Indoor Lng: ${indoorLocation.lng}`);
-        console.log(`Outdoor Location: ${outdoorLocation.address}`);
-        console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
-        console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
-        alert("Form submitted :D");
+        axiosInstance.post('/dailyquizscores/createDailyQuizScore', data)
+        .then(response => {
+          console.log("Data sent successfully!", response);
+        })
+        .catch(error => {
+          console.error("There was an error sending the data!", error);
+        });
+
+        alert("Form submitted");
 
         setIndoorLocation("");
         setOutdoorLocation("");
@@ -145,31 +159,27 @@ export default function DailyForm() {
     }
   };
 
-  // Form input functions
+  const handleIndoorHoursChange = (event, newValue) => {
+    setIndoorHours(newValue);
+  };
 
-    const handleIndoorHoursChange = (event, newValue) => {
-      const indoorValue = newValue;
-      setIndoorHours(indoorValue);
-    };
+  const handleOutdoorHoursChange = (event, newValue) => {
+    setOutdoorHours(newValue);
+  };
 
-    const handleOutdoorHoursChange = (event, newValue) => {
-      const outdoorValue = newValue;
-      setOutdoorHours(outdoorValue);
-    };
+  const handleIndoorPlaceChange = (placeData) => {
+    setIndoorLocation(placeData);
+  };
 
-    const handleIndoorPlaceChange = (placeData) => {
-      setIndoorLocation(placeData);
-    };
+  const handleOutdoorPlaceChange = (placeData) => {
+    setOutdoorLocation(placeData);
+  };
 
-    const handleOutdoorPlaceChange = (placeData) => {
-      setOutdoorLocation(placeData);
-    };
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-    const [isSidebarOpen, setSidebarOpen] = useState(true);
-
-    const toggleDrawer = () => {
-      setSidebarOpen(!isSidebarOpen);
-    };
+  const toggleDrawer = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <>
@@ -202,7 +212,8 @@ export default function DailyForm() {
               </QuestionTypography>
               <DailySearchbar 
                 value={indoorLocation.address || ""} 
-                passPlaceData={handleIndoorPlaceChange} />
+                passPlaceData={handleIndoorPlaceChange} 
+              />
 
               <QuestionTypography variant="h5" component="h2">
                 {constants.dailyForm.q2_indoorHours}

@@ -24,7 +24,7 @@ import com.compsci.webapp.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     
     Optional<UserEntity> findByUserEmail(String userEmail);
-    
+    Optional<UserEntity> findByUserId(Long userId);
     Boolean existsByUserEmail(String email);
     
     @Transactional
@@ -32,4 +32,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query("UPDATE UserEntity u " +
             "SET u.userStatus = TRUE WHERE u.userEmail = ?1")
     int enableUserEntity(String email);
+    
+    @Query("SELECT u FROM UserEntity u WHERE u.userId = ?1")
+    UserEntity getUserById(Long userId);
 }
