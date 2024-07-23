@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './static/QuizQuestion.css'; // Import the CSS file for styling
+import '../static/QuizQuestion.css'; // Import the CSS file for styling
 
 function QuizQuestion({ question, currentQuestion, onChange, onNext, onPrevious, selectedAnswers }) {
     const { id, text, options } = question;

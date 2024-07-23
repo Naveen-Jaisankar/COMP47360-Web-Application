@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import QuizQuestion from '../QuizQuestion';
+import QuizQuestion from '../components/QuizQuestion';
 import axios from 'axios';
 
 const questions = [
@@ -290,7 +290,7 @@ function Quiz() {
     };
 
     const handleClick = (totalWeightedComponent) => {
-        axios.post('/api/stgeorgesscore', { score: totalWeightedComponent })
+        axios.post('/api/v1/StGeorgeQuiz', { score: totalWeightedComponent })
             .then(response => {
                 console.log(response);
             })
@@ -413,6 +413,7 @@ function Quiz() {
                     }
                 }}
             >
+                <button className="close-button" onClick={() => setIsModalOpen(false)}>X</button>
                 <h2>Quiz</h2>
                 <form id="quiz-form">
                     <QuizQuestion
