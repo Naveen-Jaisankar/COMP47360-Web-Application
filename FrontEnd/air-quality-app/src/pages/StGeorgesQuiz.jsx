@@ -267,6 +267,12 @@ function Quiz() {
         }
     };
 
+    const handlePreviousQuestion = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+        }
+    };
+
     const handleSubmit = () => {
         const totalWeightedComponent = calculateTotalWeightedComponent();
         const symptomsComponent = calculateSymptomsComponent();
@@ -284,13 +290,13 @@ function Quiz() {
     };
 
     const handleClick = (totalWeightedComponent) => {
-        axios.post(`/api/stgeorgesscore`, { score: totalWeightedComponent })
-        .then(response => {
-            console.log(response);
-        })
-        .catch(error => {
-            console.error('There was an error posting the score.', error);
-        });
+        axios.post('/api/stgeorgesscore', { score: totalWeightedComponent })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error('There was an error posting the score.', error);
+            });
     };
 
     const calculateTotalWeightedComponent = () => {
@@ -414,6 +420,7 @@ function Quiz() {
                         currentQuestion={questions[currentQuestionIndex].id}
                         onChange={handleAnswerChange}
                         onNext={handleNextQuestion}
+                        onPrevious={handlePreviousQuestion}
                         selectedAnswers={answers[questions[currentQuestionIndex].id]?.answers || []}
                     />
                 </form>
@@ -430,19 +437,3 @@ export default function Form() {
         </div>
     );
 }
-
-// export default function Form() {
-//     const [stGeorgeScore, setStGeorgeScore] = useState(null);
-
-//     const getStGeorgeScore = async () => {
-//         try {
-//             const response = await axios.get('/api/stgeorgesscore');
-//             setStGeorgeScore(response.data);
-//         } catch (error) {
-//             console.error('There was an error getting the St George\'s score.', error);
-//         }
-//     };
-
-//     useEffect(() => {
-//         getStGeorgeScore();
-//     }, []);

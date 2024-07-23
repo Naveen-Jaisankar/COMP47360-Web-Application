@@ -2,33 +2,45 @@
     margin-bottom: 20px;
 }
 
-.options .option {
-    margin-bottom: 10px; /* Add space between options */
+.options {
+    margin-bottom: 10px;
 }
 
-.next-button-container {
-    margin-top: 20px;
+.option {
+    margin-bottom: 5px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.navigation-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
-.next-button-container button {
-    background-color: #4CAF50; /* Green background */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+.navigation-buttons button {
+    padding: 10px 20px;
     font-size: 16px;
-    margin: 4px 2px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    color: white;
 }
 
-.next-button-container button:hover {
-    background-color: #45a049; /* Darker green on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
+.navigation-buttons button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.navigation-buttons .previous {
+    background-color: red;
+}
+
+.navigation-buttons .next {
+    background-color: green;
 }

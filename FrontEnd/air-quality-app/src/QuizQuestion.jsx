@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './static/QuizQuestion.css'; // Import the CSS file for styling
 
-function QuizQuestion({ question, currentQuestion, onChange, onNext, selectedAnswers }) {
+function QuizQuestion({ question, currentQuestion, onChange, onNext, onPrevious, selectedAnswers }) {
     const { id, text, options } = question;
     const [error, setError] = useState('');
 
@@ -21,6 +21,11 @@ function QuizQuestion({ question, currentQuestion, onChange, onNext, selectedAns
         }
     };
 
+    const handlePrevious = () => {
+        setError('');
+        onPrevious();
+    };
+
     return (
         <div className={`question ${currentQuestion === id ? 'active' : ''}`}>
             <p>{text}</p>
@@ -32,18 +37,29 @@ function QuizQuestion({ question, currentQuestion, onChange, onNext, selectedAns
                                 type={option.type}
                                 name={id}
                                 value={option.value}
-                                data-score={option.score}
-                                onChange={handleOptionChange}
                                 checked={selectedAnswers.includes(option.value)}
+                                onChange={handleOptionChange}
                             />
                             {option.value}
                         </label>
                     </div>
                 ))}
             </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <div className="next-button-container">
-                <button type="button" onClick={handleNext} disabled={currentQuestion !== id}>
+            {error && <p className="error-message">{error}</p>}
+            <div className="navigation-buttons">
+                <button
+                    type="button"
+                    className="previous"
+                    onClick={handlePrevious}
+                    disabled={currentQuestion === 'question1'}
+                >
+                    Previous
+                </button>
+                <button
+                    type="button"
+                    className="next"
+                    onClick={handleNext}
+                >
                     Next
                 </button>
             </div>
@@ -52,19 +68,12 @@ function QuizQuestion({ question, currentQuestion, onChange, onNext, selectedAns
 }
 
 QuizQuestion.propTypes = {
-    question: PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        text: PropTypes.string.isRequired,
-        options: PropTypes.arrayOf(PropTypes.shape({
-            type: PropTypes.string.isRequired,
-            value: PropTypes.string.isRequired,
-            score: PropTypes.number.isRequired,
-        })).isRequired,
-    }).isRequired,
-    currentQuestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    question: PropTypes.object.isRequired,
+    currentQuestion: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onNext: PropTypes.func.isRequired,
-    selectedAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onPrevious: PropTypes.func.isRequired,
+    selectedAnswers: PropTypes.array.isRequired,
 };
 
 export default QuizQuestion;
