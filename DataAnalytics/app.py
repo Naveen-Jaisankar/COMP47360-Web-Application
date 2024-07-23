@@ -93,7 +93,7 @@ aqi_model = joblib.load(aqi_model_path)
 grid_info = pd.read_csv(grid_info_path)
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
+CORS(app, resources={r"/*": {"origins": "http://3.255.116.89:3000", "methods": ["GET", "POST"]}})
 
 
 
