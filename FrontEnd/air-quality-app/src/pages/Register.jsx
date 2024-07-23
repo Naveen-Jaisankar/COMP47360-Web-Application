@@ -33,6 +33,9 @@ const Register = () => {
       })
       .catch(error =>{
         console.log(error);
+        if (error.response && error.response.status === 409) {
+          console.log('Email is already in use!')
+        }
       })
       
     }
