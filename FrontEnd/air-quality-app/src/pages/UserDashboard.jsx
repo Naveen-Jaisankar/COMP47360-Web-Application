@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import {Typography, Box } from '@mui/material';
+import {Typography, Box, Grid } from '@mui/material';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Infocard from "../components/infocard";
 import PropTypes from 'prop-types';
 import { AuthContext } from '../context/AuthContext';
 import axiosInstance from "../../src/axios";
 import { useContext } from 'react';
-const image1 = "../src/static/proxy-image.png";
+
+const healthImages = {
+  thumbs_up: "../src/static/thumbs_up.png",
+  water_bottle: "../src/static/water_bottle.png",
+  park: "../src/static/park.png",
+  warning: "../src/static/warning.png",
+  face_mask: "../src/static/face_mask.png",
+  house: "../src/static/house.png",
+  newspaper: "../src/static/newspaper.jpg",
+  doctor: "../src/static/doctor.png"
+};
 
 // Function to get the last 7 days with formatted dates
 const getLastSevenDays = (userId) => {
@@ -43,11 +53,73 @@ const getLastSevenDays = (userId) => {
 
 const DashBoard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
+  const [recommendations, setRecommendations] = useState([]); // PHR
   const { userId } = useContext(AuthContext); 
 
   useEffect(() => {
+    const lastSevenDaysData = getLastSevenDays(); // PHR
     setData(getLastSevenDays(userId));
+    setRecommendations(getRecommendations(lastSevenDaysData)); // PHR
   }, []);
+
+  const getRecommendations = (data) => {
+    // Example logic for recommendations
+    const lastDayData = data[data.length - 1];
+    const personalExposure = parseFloat(lastDayData.PersonalExposure);
+    const recs = [];
+
+    if (personalExposure < 30) {
+      recs.push({
+        image: healthImages.thumbs_up,
+        heading: 'Keep Up the Good Work!',
+        text: 'Your personal exposure is low. Continue maintaining your healthy habits.',
+      });
+      recs.push({
+        image: healthImages.water_bottle,
+        heading: 'Stay Hydrated!',
+        text: 'Drinking plenty of water helps your body fight off pollutants.',
+      });
+      recs.push({
+        image: healthImages.park,
+        heading: 'Enjoy the Fresh Air!',
+        text: 'Make sure to relax and/or exercise in nature, preferably away from roads.'
+      })
+    } else if (personalExposure < 70) {
+      recs.push({
+        image: healthImages.warning,
+        heading: 'Moderate Exposure',
+        text: 'Your exposure is moderate. Try to avoid outdoor activities during peak pollution hours.',
+      });
+      recs.push({
+        image: healthImages.face_mask,
+        heading: 'Wear a Mask',
+        text: 'Consider wearing a mask if you need to go outside during peak pollution times.',
+      });
+      recs.push({
+        image: healthImages.house,
+        heading: 'Indoor Activities',
+        text: 'Plan indoor activities to reduce your exposure to air pollution.',
+      });
+    } else {
+      recs.push({
+        image: healthImages.warning,
+        heading: 'High Exposure Alert',
+        text: 'Your exposure is high. Stay indoors and use air purifiers if possible.',
+      });
+      recs.push({
+        image: healthImages.newspaper,
+        heading: 'Check Air Quality',
+        text: 'Regularly check air quality updates to plan your outdoor activities accordingly.',
+      });
+      recs.push({
+        image: healthImages.doctor,
+        heading: 'Consult a Doctor',
+        text: 'If you feel unwell, consult a doctor, especially if you have respiratory issues.',
+      });
+    }
+
+    return recs.slice(0, 3);
+  };
 
   return (
     <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
@@ -110,16 +182,17 @@ const DashBoard = ({ isSidebarOpen }) => {
       </section>
       <section>
         <Typography variant="h5" className="mb-4">Suggested Actions</Typography>
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Array(3).fill().map((_, index) => (
-            <Infocard
-              image={image1}
-              alt="Image Alt Text"
-              heading="Funky fact"
-              text="More info"
-            />
+        <Grid container spacing={2}>
+          {recommendations.map((rec, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Infocard
+                image={rec.image}
+                heading={rec.heading}
+                text={rec.text}
+              />
+            </Grid>
           ))}
-        </div> */}
+        </Grid>
       </section>
       <section className="mt-8">
         <div className="bg-black text-white p-4 rounded shadow-md">

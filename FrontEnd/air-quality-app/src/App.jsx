@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Map from './pages/Map'
 import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
+import George from './pages/StGeorgesQuiz';
 import Privacy from './pages/Privacy';
 import UserHistory from './pages/UserHistory';
 import UserDashboard from './pages/UserDashboard';
@@ -42,10 +43,11 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register/>} />
                     <Route path="/privacy" element={<Privacy />} />
-                    <Route path='/forgotpassword' element={<ForgotPass />} />
+                    <Route path="/forgotpassword" element={<ForgotPass />} />
                     <Route path="/map" element={<ProtectedRoute element={<Map />} />} />
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
+                    <Route path="/user/stgeorgesquiz" element={<ProtectedRoute element={<George />} />} />
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
                   </Routes>
                 </MainContent>
