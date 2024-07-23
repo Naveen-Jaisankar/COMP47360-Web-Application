@@ -1,112 +1,179 @@
-import React, { useState, useEffect } from 'react';
-import {Typography, Box } from '@mui/material';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React, { useState, useEffect } from "react";
+import { Typography, Box } from "@mui/material";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import Infocard from "../components/infocard";
-import PropTypes from 'prop-types';
-import { AuthContext } from '../context/AuthContext';
+import PropTypes from "prop-types";
+import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
-import { useContext } from 'react';
+import { useContext } from "react";
 const image1 = "../src/static/proxy-image.png";
-
-
-
-// Get all information
-// set up today + set up ideal scenario
-// get a static average.
-
-// Either the first entry is today or it is not.
 
 // Get the data
 // Generate an array of week based of today's date to compare our values with.
 
 // CheckLatestWeek(response)
 // On a week by week basis, should not accept data that is greater than a week old.
-// if null portray NULL 
+// if null portray NULL
 // compare and grab valid dates and return validDates
 // pass onto
 // PopulateWeekWithMock(response)
 // Filling in the average value AQI value save for values of TODAY reject it.
-// pass onto 
+// pass onto
 // CheckToday(response)
 // compare new Date() === response.data.quizDate at the latest then render from there on in//
 // RenderData
 
-function formatJavascriptDate(dateObject)  {
-  let year = dateObject.getFullYear();
-  let month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
-  let date = dateObject.getDate().toString().padStart(2, '0');
+let noData = false;
 
-  return `${year}-${month}-${date}`
+function formatJavascriptDate(dateObject) {
+  let year = dateObject.getFullYear();
+  let month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+  let date = dateObject.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${date}`;
 }
 
-function createValidWeek(){
-  let today = new Date()
-  console.log("date without formatting",today)
+function createValidWeek() {
+  let today = new Date();
   let validWeekArray = [];
 
-  for (let i = 6; i >= 0; i--){
+  for (let i = 6; i >= 0; i--) {
     let pastDate = new Date();
     pastDate.setDate(today.getDate() - i);
     let formattedDate = formatJavascriptDate(pastDate);
-    console.log(formattedDate)
-    // validWeekArray.push(formattedDate)
-
-    // validWeekArray.push(pastDate.toDateString());
+    // console.log(formattedDate)
+    validWeekArray.push({ date: formattedDate });
   }
-  console.log("valid week", validWeekArray)
+  console.log("valid week", validWeekArray);
   return validWeekArray;
 }
 
-function testDateObject(value){
-  return typeof value === 'string'
+// Grabs 7 entries from the database regardless of the gap between entries.
+// Creates a tuple only has the date + the quizscore.
+function createQuizScoreWeek(response) {
+  let quizScoreWeekArray = [];
+
+  // essentially grab as much data as possible
+  // validation check if data.length is greater than 7 then collect 7
+  // if data.length is less than 7 entries then collect till max amount of length
+
+  if (response.data.length == 0) {
+    noData = true;
+  //  if we do not have enough information to populate this will only iterate through the available dates
+  } else if (response.data.length < 6) {
+
+    for (let i = response.data.length - 1; i >= 0; i--) {
+      let date = response.data[i].quizDate;
+      let quizScore = response.data[i].quizScore;
+      quizScoreWeekArray.push({date: date, quizScore: quizScore});
+    }
+     // if we have more entries than 7, this only grab 7
+  } else {
+
+    for (let i = 6; i >= 0; i--) {
+      if (response.data[i]) {
+        let date = response.data[i].quizDate;
+        let quizScore = response.data[i].quizScore;
+        quizScoreWeekArray.push({ date: date, quizScore: quizScore });
+      }
+    }
+  }
+
+  console.log("this is quizScore week in function", quizScoreWeekArray);
+  return quizScoreWeekArray;
+}
+
+// Compares the data from the database to the our range of "valid" dates
+function compareLatestWeek(validWeekArray, quizScoreWeekArray) {
+  let validDates = [];
+
+    for (let i = 0; i < validWeekArray.length; i++) {
+        for (let j = 0; j < quizScoreWeekArray.length; j++) {
+            if (validWeekArray[i].date === quizScoreWeekArray[j].date) {
+                validDates.push(quizScoreWeekArray[j]);
+            }
+        }
+    }
+    console.log("in compareLatestWeek", validDates)
+    return validDates
 }
 
 
+// function populateAverage(validDates){
+//   dates to 
+// }
 
-function CheckLatestWeek(data) {
-  
 
+function testDateObject(value) {
+  return typeof value === "string";
 }
-
-
-
-
-
 
 // Function to get the last 7 days with formatted dates
 const getLastSevenDays = (userId) => {
-  createValidWeek()
   
-  axiosInstance.get('dailyquizscores/getQuizScore/'+userId)
-  .then(function (response) {
-      console.log(response)
-      let date
-      date = response.data[0].quizDate
-      console.log(date)
-      let result = testDateObject(date)
-      console.log(result)
-  });
+
+  axiosInstance
+    .get("dailyquizscores/getQuizScore/" + userId)
+    .then(function (response) {
+      console.log(response);
+      console.log("length", response.data.length);
+      // let date;
+      // date = response.data[0].quizDate;
+      // console.log(date);
+      // let result = testDateObject(date);
+      // console.log(result);
+
+      let validWeekArray = createValidWeek();
+      console.log("this is valid week dates", validWeekArray)
+
+      let quizScoreWeekArray = createQuizScoreWeek(response);
+      console.log("this is quizScore Week", quizScoreWeekArray);
+
+      let validDates = compareLatestWeek(validWeekArray, quizScoreWeekArray)
+      console.log("this is the valid Dates", validDates)
+
+     
+      
+
+
+    });
 
   const today = new Date();
   const days = [];
-  
+
   for (let i = 6; i >= 0; i--) {
     const date = new Date();
     date.setDate(today.getDate() - i);
-    
+
     // Determine if it's today or yesterday
     let label;
     if (i === 0) {
-      label = 'Today';
+      label = "Today";
     } else if (i === 1) {
-      label = 'Yesterday';
+      label = "Yesterday";
     } else {
-      const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
-      const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' });
+      const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+      const formattedDate = date.toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+      });
       label = `${dayName} - ${formattedDate}`;
     }
     // User input from daily quiz and model input needs to be put in here!
-    days.push({ day: label, PersonalExposure: (Math.random() * 100).toFixed(2), AQI: (Math.random() * 100).toFixed(2) });
+    days.push({
+      day: label,
+      PersonalExposure: (Math.random() * 100).toFixed(2),
+      AQI: (Math.random() * 100).toFixed(2),
+    });
   }
 
   return days;
@@ -114,14 +181,18 @@ const getLastSevenDays = (userId) => {
 
 const DashBoard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
-  const { userId } = useContext(AuthContext); 
+  const { userId } = useContext(AuthContext);
 
   useEffect(() => {
     setData(getLastSevenDays(userId));
   }, []);
 
   return (
-    <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
+    <div
+      className={`transition-all duration-300 ${
+        isSidebarOpen ? "ml-60" : "ml-0"
+      } p-6`}
+    >
       <header className="flex justify-between items-center mb-8">
         <Typography variant="h4">Your Dashboard</Typography>
       </header>
@@ -129,7 +200,10 @@ const DashBoard = ({ isSidebarOpen }) => {
         <div className="p-4 rounded shadow-md">
           <Box className="w-full h-96">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <AreaChart
+                data={data}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
                 <defs>
                   {/* Gradient for AQI */}
                   <linearGradient id="colorAQI" x1="0" y1="0" x2="0" y2="1">
@@ -137,20 +211,35 @@ const DashBoard = ({ isSidebarOpen }) => {
                     <stop offset="95%" stopColor="#ff7300" stopOpacity={0} />
                   </linearGradient>
                   {/* Gradient for PersonalExposure */}
-                  <linearGradient id="colorPersonalExposure" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient
+                    id="colorPersonalExposure"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
                     <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
                     <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="day" 
-                  label={{position: 'bottom', offset: 0, style: { textAnchor: 'middle' } }}
+                <XAxis
+                  dataKey="day"
+                  label={{
+                    position: "bottom",
+                    offset: 0,
+                    style: { textAnchor: "middle" },
+                  }}
                   angle={0}
                   textAnchor="middle"
                 />
-                <YAxis 
-                  label={{ value: 'Air Quality Index (AQI)', angle: -90, position: 'left', style: { textAnchor: 'middle' } }}
+                <YAxis
+                  label={{
+                    value: "Air Quality Index (AQI)",
+                    angle: -90,
+                    position: "left",
+                    style: { textAnchor: "middle" },
+                  }}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
@@ -175,12 +264,15 @@ const DashBoard = ({ isSidebarOpen }) => {
           </Box>
           <Typography variant="h6">Summary:</Typography>
           <Typography variant="body1">
-            • Spent x minutes in low to medium pollution, spent x minutes in high pollution.
+            • Spent x minutes in low to medium pollution, spent x minutes in
+            high pollution.
           </Typography>
         </div>
       </section>
       <section>
-        <Typography variant="h5" className="mb-4">Suggested Actions</Typography>
+        <Typography variant="h5" className="mb-4">
+          Suggested Actions
+        </Typography>
         {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Array(3).fill().map((_, index) => (
             <Infocard
@@ -195,7 +287,12 @@ const DashBoard = ({ isSidebarOpen }) => {
       <section className="mt-8">
         <div className="bg-black text-white p-4 rounded shadow-md">
           <Typography variant="body1">
-            Looking for more personalised suggestions? Try our additional assessment <a href="#" className="text-blue-400">here</a>.
+            Looking for more personalised suggestions? Try our additional
+            assessment{" "}
+            <a href="#" className="text-blue-400">
+              here
+            </a>
+            .
           </Typography>
         </div>
       </section>
@@ -239,8 +336,8 @@ CustomTooltip.propTypes = {
       payload: PropTypes.shape({
         PersonalExposure: PropTypes.number.isRequired,
         AQI: PropTypes.number.isRequired,
-      }).isRequired,
+      }),
     })
   ).isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
 };
