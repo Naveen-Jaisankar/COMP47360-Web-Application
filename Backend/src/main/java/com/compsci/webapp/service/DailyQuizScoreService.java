@@ -27,6 +27,7 @@ import com.compsci.webapp.util.AQICalculator;
 import com.compsci.webapp.util.Constants;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,7 +124,7 @@ public class DailyQuizScoreService {
         dailyQuizScoreRepository.delete(quizScore);
     }
 
-    private double fetchAQIForALocation(String location) {
+    private double fetchAQIForALocation(String location, long timestamp) {
         double aqi = 0.0; // default value
         try {
             // splits location string into latitude and longitude
@@ -161,6 +162,26 @@ public class DailyQuizScoreService {
         	logger.error("Error while fetching weather details");
         }
         return jsonResponse;
+    }
+
+    public List<Double> getAqiForPast7Days(String location) {
+        List<Double> aqiList = new ArrayList<>();
+        //  get the current date
+        LocalDate currentDate = LocalDate.now();
+        
+        for (int i = 0; i < 7; i++) {
+            // Calculate the date for each of the past 7 days
+            LocalDate date = currentDate.minusDays(i);
+
+            // Convert LocalDate to Unix timestamp (seconds since epoch)
+            long timestamp = date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+            
+            // reteieve AQI for the specific date
+            double aqi = fetchAQIForALocation(location, timestamp);
+            aqiList.add(aqi);
+        }
+        
+        return aqiList;
     }
 
     private double fetchAqiFromDataModel(double locLat, double locLon, long timeStamp, JSONObject weatherDetails) throws Exception {
