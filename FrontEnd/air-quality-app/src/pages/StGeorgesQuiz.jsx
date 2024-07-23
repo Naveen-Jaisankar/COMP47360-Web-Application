@@ -401,6 +401,11 @@ function Quiz() {
                 onRequestClose={() => setIsModalOpen(false)}
                 ariaHideApp={false}
                 contentLabel="Quiz Modal"
+                style={{
+                    content: {
+                        top: "20vh"
+                    }
+                }}
             >
                 <h2>Quiz</h2>
                 <form id="quiz-form">
