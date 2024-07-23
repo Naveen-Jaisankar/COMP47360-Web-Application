@@ -8,12 +8,83 @@ import axiosInstance from "../../src/axios";
 import { useContext } from 'react';
 const image1 = "../src/static/proxy-image.png";
 
+
+
+// Get all information
+// set up today + set up ideal scenario
+// get a static average.
+
+// Either the first entry is today or it is not.
+
+// Get the data
+// Generate an array of week based of today's date to compare our values with.
+
+// CheckLatestWeek(response)
+// On a week by week basis, should not accept data that is greater than a week old.
+// if null portray NULL 
+// compare and grab valid dates and return validDates
+// pass onto
+// PopulateWeekWithMock(response)
+// Filling in the average value AQI value save for values of TODAY reject it.
+// pass onto 
+// CheckToday(response)
+// compare new Date() === response.data.quizDate at the latest then render from there on in//
+// RenderData
+
+function formatJavascriptDate(dateObject)  {
+  let year = dateObject.getFullYear();
+  let month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  let date = dateObject.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${date}`
+}
+
+function createValidWeek(){
+  let today = new Date()
+  console.log("date without formatting",today)
+  let validWeekArray = [];
+
+  for (let i = 6; i >= 0; i--){
+    let pastDate = new Date();
+    pastDate.setDate(today.getDate() - i);
+    let formattedDate = formatJavascriptDate(pastDate);
+    console.log(formattedDate)
+    // validWeekArray.push(formattedDate)
+
+    // validWeekArray.push(pastDate.toDateString());
+  }
+  console.log("valid week", validWeekArray)
+  return validWeekArray;
+}
+
+function testDateObject(value){
+  return typeof value === 'string'
+}
+
+
+
+function CheckLatestWeek(data) {
+  
+
+}
+
+
+
+
+
+
 // Function to get the last 7 days with formatted dates
 const getLastSevenDays = (userId) => {
-
+  createValidWeek()
+  
   axiosInstance.get('dailyquizscores/getQuizScore/'+userId)
   .then(function (response) {
       console.log(response)
+      let date
+      date = response.data[0].quizDate
+      console.log(date)
+      let result = testDateObject(date)
+      console.log(result)
   });
 
   const today = new Date();
