@@ -3,11 +3,19 @@ import {Typography, Box } from '@mui/material';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Infocard from "../components/infocard";
 import PropTypes from 'prop-types';
-
+import { AuthContext } from '../context/AuthContext';
+import axiosInstance from "../../src/axios";
+import { useContext } from 'react';
 const image1 = "../src/static/proxy-image.png";
 
 // Function to get the last 7 days with formatted dates
-const getLastSevenDays = () => {
+const getLastSevenDays = (userId) => {
+
+  axiosInstance.get('dailyquizscores/getQuizScore/'+userId)
+  .then(function (response) {
+      console.log(response)
+  });
+
   const today = new Date();
   const days = [];
   
@@ -35,9 +43,10 @@ const getLastSevenDays = () => {
 
 const DashBoard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
+  const { userId } = useContext(AuthContext); 
 
   useEffect(() => {
-    setData(getLastSevenDays());
+    setData(getLastSevenDays(userId));
   }, []);
 
   return (

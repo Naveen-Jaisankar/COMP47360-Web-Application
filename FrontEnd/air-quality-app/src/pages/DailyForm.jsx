@@ -3,15 +3,17 @@ import UserPlaceholder from "../components/userplaceholder";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState, useRef } from "react";
+import { useState, useContext, useRef } from 'react';
 import { styled } from "@mui/system";
-import { ThickHeadingTypography } from "./Home";
+import { ThickHeadingTypography } from "./Home";;
 import constants, { dailyForm } from "./../constant";
 import Sidebar from "../components/usersidebar";
 import CustomModal from "../components/custommodal";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { useNavigate } from 'react-router-dom';
 import LoadingScreen from "../components/loadingscreen";
+import axiosInstance from "../../src/axios";
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
@@ -34,7 +36,7 @@ export default function DailyForm() {
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const { userId } = useContext(AuthContext); // Get userId from AuthContext  const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef();
 
   const indoorSbarTextRef = useRef();
@@ -104,19 +106,42 @@ export default function DailyForm() {
   };
 
   // Submission function
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
     const is24Hours = check24Hours(indoorHours, outdoorHours);
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
 
+    let indoorLocationArray = [indoorLocation.lat ,indoorLocation.lng];
+    let outdoorLocationArray = [outdoorLocation.lat, outdoorLocation.lng];
+
+    let indoorLocationToSend = indoorLocationArray.toString();
+    let outdoorLocationToSend = outdoorLocationArray.toString();
+
+    const data = {
+      user_id: userId, // Use userId from AuthContext
+      quiz_date: new Date(),
+      indoor_location: indoorLocationToSend,
+      outdoor_location: outdoorLocationToSend,
+      indoor_hours: indoorHours,
+      outdoor_hours: outdoorHours,
+    };
+
     if (!isValid) {
       alert("Please choose a location in Manhattan");
     } else if (!is24Hours) {
-      alert("24 hours exceeded, number inputs are invalid");
-    } else {
+      alert("24 hours exceeded, number inputs are invalid");;
+    } else  {
       try {
+        axiosInstance.post('/dailyquizscores/createDailyQuizScore', data)
+        .then(response => {
+          console.log("Data sent successfully!", response);
+        })
+        .catch(error => {
+          console.error("There was an error sending the data!", error);
+        });
+
+        alert("Form submitted");
         console.log(`Indoor Hours: ${indoorHours}`);
         console.log(`Outdoor Hours: ${outdoorHours}`);
         console.log(`Indoor Location: ${indoorLocation.address}`);
@@ -147,8 +172,6 @@ export default function DailyForm() {
     }
   };
 
-  // Form input functions
-
   const handleIndoorHoursChange = (event, newValue) => {
     const indoorValue = newValue;
     setIndoorHours(indoorValue);
@@ -162,13 +185,23 @@ export default function DailyForm() {
   const handleIndoorPlaceChange = (placeData) => {
     setIndoorLocation(placeData);
   };
+  const handleIndoorPlaceChange = (placeData) => {
+    setIndoorLocation(placeData);
+  };
 
+  const handleOutdoorPlaceChange = (placeData) => {
+    setOutdoorLocation(placeData);
+  };
   const handleOutdoorPlaceChange = (placeData) => {
     setOutdoorLocation(placeData);
   };
 
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
 
+  const toggleDrawer = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   const toggleDrawer = () => {
     setSidebarOpen(!isSidebarOpen);
   };
