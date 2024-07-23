@@ -6,7 +6,7 @@ import CustomNumberInput from "../components/customnumberinput";
 import { letterSpacing, styled } from "@mui/system";
 import { ThickHeadingTypography } from "./Home";
 import constants from './../constant';
-import Sidebar from "../components/usersidebar";
+import Sidebar from '../components/usersidebar';
 import axiosInstance from "../../src/axios";
 import { AuthContext } from '../context/AuthContext';
 
@@ -134,13 +134,12 @@ export default function DailyForm() {
     let outdoorLocationToSend = outdoorLocationArray.toString();
 
     const data = {
-      userId: userId,
-      quizDate: new Date(),
-      quizScore: 85,
-      indoorLocation: indoorLocationToSend,
-      outdoorLocation: outdoorLocationToSend,
-      indoorHours: indoorHours,
-      outdoorHours: outdoorHours,
+      user_id: userId, // Use userId from AuthContext
+      quiz_date: new Date(),
+      indoor_location: indoorLocationToSend,
+      outdoor_location: outdoorLocationToSend,
+      indoor_hours: indoorHours,
+      outdoor_hours: outdoorHours,
     };
 
     if (!isValid) {

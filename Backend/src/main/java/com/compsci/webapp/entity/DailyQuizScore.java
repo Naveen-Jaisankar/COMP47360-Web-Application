@@ -1,113 +1,93 @@
 package com.compsci.webapp.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
-
-// class contains all crud operations
 
 @Entity
 @IdClass(DailyQuizID.class)
 @Table(name = "dailyquizscore")
-public class DailyQuizScore {
-
-    private Double riskScore; // Assuming risk score is of type Double
-    private String indoorLocation; // Assuming indoor location is of type String
-    private String outdoorLocation; // Assuming outdoor location is of type String
-    private Integer indoorHours; // Assuming indoor hours is of type Integer
-    private Integer outdoorHours; // Assuming outdoor hours is of type Integer
-
+public class DailyQuizScore {   
+	
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
-    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity userId;
 
     @Id
     @Column(name = "quiz_date")
     private LocalDate quizDate;
 
-    @Column(name = "user_id")
-    private Long userId;
-
     @Column(name = "quiz_score")
-    private Integer quizScore;
+    private Double quizScore;
+        
+    @Column(name = "indoor_location")
+    private String indoorLocation;
+    
+    @Column(name = "outdoor_location")
+    private String outdoorLocation;
+    
+    @Column(name = "indoor_hours")
+    private Integer indoorHours;
+    
+    @Column(name = "outdoor_hours")
+    private Integer outdoorHours;
+    
+    public UserEntity getUserId() {
+		return userId;
+	}
 
-    // Getters and setters
+	public void setUserId(UserEntity userId) {
+		this.userId = userId;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public LocalDate getQuizDate() {
+		return quizDate;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setQuizDate(LocalDate quizDate) {
+		this.quizDate = quizDate;
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
+	public Double getQuizScore() {
+		return quizScore;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public void setQuizScore(Double quizScore) {
+		this.quizScore = quizScore;
+	}
 
-    public LocalDate getQuizDate() {
-        return quizDate;
-    }
+	public String getIndoorLocation() {
+		return indoorLocation;
+	}
 
-    public void setQuizDate(LocalDate quizDate) {
-        this.quizDate = quizDate;
-    }
+	public void setIndoorLocation(String indoorLocation) {
+		this.indoorLocation = indoorLocation;
+	}
 
-    public Integer getQuizScore() {
-        return quizScore;
-    }
+	public String getOutdoorLocation() {
+		return outdoorLocation;
+	}
 
-    public void setQuizScore(Integer quizScore) {
-            this.quizScore = quizScore; }
+	public void setOutdoorLocation(String outdoorLocation) {
+		this.outdoorLocation = outdoorLocation;
+	}
+
+	public Integer getIndoorHours() {
+		return indoorHours;
+	}
+
+	public void setIndoorHours(Integer indoorHours) {
+		this.indoorHours = indoorHours;
+	}
+
+	public Integer getOutdoorHours() {
+		return outdoorHours;
+	}
+
+	public void setOutdoorHours(Integer outdoorHours) {
+		this.outdoorHours = outdoorHours;
+	}
+
+	
     
-        public Double getRiskScore() {
-            return riskScore;
-        }
-    
-        public void setRiskScore(Double riskScore) {
-            this.riskScore = riskScore;
-        }
-    
-        public String getIndoorLocation() {
-            return indoorLocation;
-        }
-    
-        public void setIndoorLocation(String indoorLocation) {
-            this.indoorLocation = indoorLocation;
-        }
-    
-        public String getOutdoorLocation() {
-            return outdoorLocation;
-        }
-    
-        public void setOutdoorLocation(String outdoorLocation) {
-            this.outdoorLocation = outdoorLocation;
-        }
-    
-        public Integer getIndoorHours() {
-            return indoorHours;
-        }
-    
-        public void setIndoorHours(Integer indoorHours) {
-            this.indoorHours = indoorHours;
-        }
-    
-        public Integer getOutdoorHours() {
-            return outdoorHours;
-        }
-    
-        public void setOutdoorHours(Integer outdoorHours) {
-            this.outdoorHours = outdoorHours;
-        }
-    }
+}
