@@ -10,6 +10,10 @@ jobs:
         steps:
             - name: Checkout source
               uses: actions/checkout@v3
+            - name: Cleanup Docker Environment
+              run: |
+                docker system prune -a -f
+                docker volume prune -f
             - name: Setup Java
               uses: actions/setup-java@v3
               with:
