@@ -48,7 +48,7 @@
             <p>Thank you for choosing our service!</p>
         </div>
         <div style="text-align: center;">
-            <a class="button" href="http://3.255.116.89:8080/signup">Go to Website</a>
+            <a class="button" href="http://3.255.91.2:8080/signup">Go to Website</a>
         </div>
     </div>
 </body>
