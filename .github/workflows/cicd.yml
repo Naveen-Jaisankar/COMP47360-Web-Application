@@ -82,14 +82,13 @@ jobs:
               run: sudo docker rm -f fair-client-container || true
             - name: Run docker container client app
               run: sudo docker run -d -p 3000:80 --name fair-client-container naveenjaisankar1999/fairclient:latest
+            - name: Pull Flask App image from Docker Hub
+              run: |
+                sudo docker pull naveenjaisankar1999/flask-app:latest
             - name: Delete old Flask App container
               run: |
                 sudo docker rm -f flask-app-container || true
             - name: Run Flask App container
               run: |
                 sudo docker run -d -p 5001:5001 --name flask-app-container naveenjaisankar1999/flask-app:latest
-            # - name: Run docker container
-            #   env:
-            #       VITE_GOOGLEMAP_KEY: ${{secrets.VITE_GOOGLEMAP_KEY }}
-            #       VITE_NPS_API_KEY: ${{secrets.VITE_NPS_API_KEY }}
-            #   run: docker run -d -p 3000:80 --env VITE_GOOGLEMAP_KEY=$VITE_GOOGLEMAP_KEY --env VITE_NPS_API_KEY=$VITE_NPS_API_KEY --name parkfinder-client-container shalineraghupathy/parkfinder-client:latest
+            
