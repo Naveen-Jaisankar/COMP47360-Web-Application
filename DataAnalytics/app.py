@@ -1,10 +1,12 @@
+# app.py
 import joblib
 import pandas as pd
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS # type: ignore
 from sklearn.base import BaseEstimator, TransformerMixin
-import pickle
+
+
 
 class WindDirectionEncoder(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -70,18 +72,8 @@ class GridCodeEncoder(BaseEstimator, TransformerMixin):
         X = X.copy()
         X[['grid_x', 'grid_y']] = X['grid_code'].str.split('@', expand=True).astype(int)
         return X.drop(columns=['grid_code'])
-
-class CustomUnpickler(pickle.Unpickler):
-    def find_class(self, module, name):
-        if name == 'GridCodeEncoder':
-            return GridCodeEncoder
-        return super().find_class(module, name)
-
-def custom_load(filename):
-    with open(filename, 'rb') as f:
-        return CustomUnpickler(f).load()
     
-# Construct absolute paths
+    # Construct absolute paths
 base_dir = os.path.dirname(os.path.abspath(__file__))
 taxi_density_model_path = os.path.join(base_dir, 'taxi_density_model.pkl')
 aqi_model_path = os.path.join(base_dir, 'aqi_model.pkl')
@@ -92,8 +84,9 @@ print("Taxi density model path:", taxi_density_model_path)
 print("AQI model path:", aqi_model_path)
 print("Grid info path:", grid_info_path)
 
+
 # Load models
-taxi_density_model = custom_load(taxi_density_model_path)
+taxi_density_model = joblib.load(taxi_density_model_path)
 aqi_model = joblib.load(aqi_model_path)
 
 # Load grid information
@@ -102,6 +95,9 @@ grid_info = pd.read_csv(grid_info_path)
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://34.244.238.140:3000", "methods": ["GET", "POST"]}})
 
+
+
+
 # Helper function to find grid based on latitude and longitude
 def find_grid(lat, lon):
     for index, row in grid_info.iterrows():
@@ -109,11 +105,13 @@ def find_grid(lat, lon):
             return row
     return None
 
+
 # Helper function to convert wind_deg to wind_direction
 def wind_deg_to_direction(deg):
     directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
     idx = int((deg + 11.25) / 22.5) % 16
     return directions[idx]
+
 
 @app.route('/predict_with_location', methods=['POST'])
 def predict_with_location():
@@ -139,6 +137,7 @@ def predict_with_location():
     aqi_prediction = aqi_model.predict(aqi_input)[0]
 
     return jsonify({"predicted_aqi": aqi_prediction})
+
 
 @app.route('/predict_for_all_grids', methods=['POST'])
 def predict_for_all_grids():
@@ -170,6 +169,7 @@ def predict_for_all_grids():
             })
 
     return jsonify(results)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
