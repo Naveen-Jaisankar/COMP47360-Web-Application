@@ -45,6 +45,8 @@ function createQuizScoreWeek(response) {
   if (response.data.length == 0) {
     noData = true;
   } else if (response.data.length < 6) {
+    response.data = response.data.reverse();
+    // console.log("reversed data", response.data)
     for (let i = response.data.length - 1; i >= 0; i--) {
       let date = response.data[i].quizDate;
       let quizScore = response.data[i].quizScore;
@@ -52,6 +54,8 @@ function createQuizScoreWeek(response) {
     }
   } else {
     for (let i = 6; i >= 0; i--) {
+      response.data = response.data.reverse();
+      // console.log("reversed data", response.data)
       if (response.data[i]) {
         let date = response.data[i].quizDate;
         let quizScore = response.data[i].quizScore;
@@ -108,32 +112,40 @@ function combineDates(validDates, datesFilled) {
 }
 
 function renderUserFriendlyDate(combinedDatesToChange) {
-  let verboseDates = [];
+  // let verboseDates = [];
 
-  // let combinedDatesToChange = combinedDatesToChange.date
+  console.log("here's the date data", combinedDatesToChange.date)
 
-  // combinedDatesToChange.forEach((combinedDate) => {
-  //   let toConvertDate = new Date(combinedDate);
-  //   let convertedDate = toConvertDate.toDateString();
-  //   verboseDates.push(convertedDate);
-  // }
-  // )
-  // console.log(verboseDates);
-  // return verboseDates
+  combinedDatesToChange.forEach((combinedDate) => {
+    // console.log("this is the combinedDate", combinedDate.date)
+    let toConvertDate = new Date(combinedDate.date);
+    // console.log("toConvertDate", toConvertDate);
+    let convertedDate = toConvertDate.toDateString();
+    combinedDate.date = convertedDate
+  }
+  )
+
+  return combinedDatesToChange
 }
 
 const getLastSevenDays = async (userId) => {
   try {
     const response = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
     let validWeekArray = createValidWeek();
+    console.log("this is valid week", validWeekArray)
     let quizScoreWeekArray = createQuizScoreWeek(response);
+    console.log("quizScore week", quizScoreWeekArray)
     let latestWeek = compareLatestWeek(validWeekArray, quizScoreWeekArray);
+    console.log("latest week", latestWeek)
     let filledDates = populateDates(latestWeek);
+    console.log("filled dates", filledDates)
     let combinedDates = combineDates(latestWeek.validDates, filledDates);
+    console.log("combined final", combinedDates)
 
-    // let verboseDays = renderUserFriendlyDate(combinedDates)
+    console.log("right before verbose", combinedDates)
+    let verboseDays = renderUserFriendlyDate(combinedDates)
 
-    const daysToRender =combinedDates.map((dateEntry) => ({
+    const daysToRender = verboseDays.map((dateEntry) => ({
       day: dateEntry.date,
       PersonalExposure: Math.round(dateEntry.quizScore),
     }));
