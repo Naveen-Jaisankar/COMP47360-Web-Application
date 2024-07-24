@@ -41,10 +41,10 @@ public class DailyQuizScoreController {
         dailyQuizScoreService.deleteDailyQuizScore(id, quizDate);
     }
 
-    @GetMapping("/getaqi/past7days")
-    public List<Double> getAqiForPast7Days(@RequestParam String location) {
+    @GetMapping("/getaqi/past7days/{location}")
+    public List<Double> getAqiForPast7Days(@PathVariable String location) {
         return dailyQuizScoreService.getAqiForPast7Days(location);
-
     }
+
     
 }

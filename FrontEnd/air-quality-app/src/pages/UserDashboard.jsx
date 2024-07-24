@@ -119,8 +119,6 @@ function combineDates(validDates, datesFilled) {
 // renders the date information is user friendly way.
 function renderUserFriendlyDate(combinedDatesToChange) {
 
-  console.log("here's the date data", combinedDatesToChange.date)
-
   combinedDatesToChange.forEach((combinedDate) => {
 
     let toConvertDate = new Date(combinedDate.date);
@@ -195,6 +193,16 @@ const DashBoard = ({ isSidebarOpen }) => {
     };
     fetchData();
   }, [userId]);
+
+
+  useEffect(() => {
+    let location = [40.776676, -73.971321]
+    let locationToSend = location.toString()
+    console.log('locationToSend', locationToSend)
+    const responseAQIData = axiosInstance.get(`dailyquizscores/getaqi/past7days/${locationToSend}`)
+    console.log(responseAQIData)
+
+  }, []);
 
   return (
     <div
