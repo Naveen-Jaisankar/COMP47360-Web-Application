@@ -66,8 +66,8 @@ public class DailyQuizScoreService {
     	DailyQuizScore dailyQuizScoreEntity = new DailyQuizScore();
     	try {
     		//Fetching AQI data for indoor and outdoor locations
-            double indoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getIndoorLocation());
-            double outdoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getOutdoorLocation());
+            double indoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getIndoorLocation(), 0);
+            double outdoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getOutdoorLocation(), 0);
             logger.info("Indoor AQI: {}, Outdoor AQI: {}", indoorAQI, outdoorAQI);
 
             // converting AQI to PM2.5
