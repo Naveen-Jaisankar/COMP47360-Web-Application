@@ -3,6 +3,8 @@ import Modal from 'react-modal';
 import QuizQuestion from '../components/QuizQuestion';
 import axios from 'axios';
 import axiosInstance from '../axios.jsx';
+import { AuthContext } from '../context/AuthContext';
+import {useContext} from 'react'
 
 const questions = [
     {
@@ -226,6 +228,7 @@ function Quiz() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { userId } = useContext(AuthContext);
 
     const handleAnswerChange = (questionId, answer, score) => {
         setAnswers(prevAnswers => {
@@ -286,10 +289,9 @@ function Quiz() {
         console.log('Impacts Component:', impactsComponent);
     
         const data = {
-            totalWeightedComponent,
-            symptomsComponent,
-            activityComponent,
-            impactsComponent
+            userId: userId,
+            quizDate: new Date(),
+            score: totalWeightedComponent,
         };
     
         handleClick(data); 
@@ -297,7 +299,7 @@ function Quiz() {
         setIsModalOpen(false);
     };
     const handleClick = (data) => {
-        axiosInstance.post('http://localhost:8080/api/v1/StGeorgeQuiz', data)
+        axiosInstance.post('/stgeorgequiz/saveScore', data)
             .then(response => {
                 console.log(response);
     

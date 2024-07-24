@@ -11,7 +11,7 @@ import java.sql.Date;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/StGeorgeQuiz")
+@RequestMapping("/api/v1/stgeorgequiz")
 public class StGeorgeQuizController {
 
     @Autowired
@@ -20,7 +20,6 @@ public class StGeorgeQuizController {
    
     @PostMapping("/saveScore")
     public ResponseEntity<StGeorgeQuiz> saveScore(@RequestParam Long userId,
-                                                   @RequestParam Date quizDate,
                                                    @RequestParam Double score) {
         StGeorgeQuiz stGeorgeQuiz = stGeorgeQuizService.saveScore(userId, quizDate, score);
         return ResponseEntity.ok(stGeorgeQuiz);
