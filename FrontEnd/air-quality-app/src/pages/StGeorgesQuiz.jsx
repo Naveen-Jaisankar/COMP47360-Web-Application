@@ -287,9 +287,10 @@ function Quiz() {
         console.log('Symptoms Component:', symptomsComponent);
         console.log('Activity Component:', activityComponent);
         console.log('Impacts Component:', impactsComponent);
+        console.log(userId)
     
         const data = {
-            userId: userId,
+            userId: Number(userId),
             quizDate: new Date(),
             score: totalWeightedComponent,
         };

@@ -20,6 +20,7 @@ public class StGeorgeQuizController {
    
     @PostMapping("/saveScore")
     public ResponseEntity<StGeorgeQuiz> saveScore(@RequestParam Long userId,
+                                                @RequestParam Date quizDate,
                                                    @RequestParam Double score) {
         StGeorgeQuiz stGeorgeQuiz = stGeorgeQuizService.saveScore(userId, quizDate, score);
         return ResponseEntity.ok(stGeorgeQuiz);
