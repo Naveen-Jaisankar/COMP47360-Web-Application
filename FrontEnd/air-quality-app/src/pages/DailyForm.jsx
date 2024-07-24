@@ -5,7 +5,7 @@ import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
 import { useState, useContext, useRef } from 'react';
 import { styled } from "@mui/system";
-import { ThickHeadingTypography } from "./Home";;
+import { ThickHeadingTypography } from "./Home";
 import constants, { dailyForm } from "./../constant";
 import Sidebar from "../components/usersidebar";
 import CustomModal from "../components/custommodal";
