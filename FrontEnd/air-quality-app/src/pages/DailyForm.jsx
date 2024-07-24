@@ -36,6 +36,7 @@ export default function DailyForm() {
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
+  const [isLoading, setIsLoading]= useState(false)
   const { userId } = useContext(AuthContext); // Get userId from AuthContext  const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef();
 
@@ -130,7 +131,7 @@ export default function DailyForm() {
     if (!isValid) {
       alert("Please choose a location in Manhattan");
     } else if (!is24Hours) {
-      alert("24 hours exceeded, number inputs are invalid");;
+      alert("24 hours exceeded, number inputs are invalid");
     } else  {
       try {
         axiosInstance.post('/dailyquizscores/createDailyQuizScore', data)
