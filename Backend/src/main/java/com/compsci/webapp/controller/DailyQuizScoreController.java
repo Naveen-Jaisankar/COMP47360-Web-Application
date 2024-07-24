@@ -39,4 +39,6 @@ public class DailyQuizScoreController {
     public void deleteDailyQuizScore(@PathVariable Long id, @PathVariable LocalDate quizDate) {
         dailyQuizScoreService.deleteDailyQuizScore(id, quizDate);
     }
+    
+    
 }
