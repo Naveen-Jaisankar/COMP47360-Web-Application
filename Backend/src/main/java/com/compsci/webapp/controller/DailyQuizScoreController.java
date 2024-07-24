@@ -15,6 +15,7 @@ public class DailyQuizScoreController {
 
     private final DailyQuizScoreService dailyQuizScoreService;
 
+
     @Autowired
     public DailyQuizScoreController(DailyQuizScoreService dailyQuizScoreService) {
         this.dailyQuizScoreService = dailyQuizScoreService;
@@ -39,6 +40,11 @@ public class DailyQuizScoreController {
     public void deleteDailyQuizScore(@PathVariable Long id, @PathVariable LocalDate quizDate) {
         dailyQuizScoreService.deleteDailyQuizScore(id, quizDate);
     }
-    
+
+    @GetMapping("/getaqi/past7days")
+    public List<Double> getAqiForPast7Days(@RequestParam String location) {
+        return dailyQuizScoreService.getAqiForPast7Days(location);
+
+    }
     
 }
