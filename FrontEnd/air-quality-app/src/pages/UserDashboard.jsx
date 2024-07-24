@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { AuthContext } from '../context/AuthContext';
 import axiosInstance from "../../src/axios";
 import { useContext } from 'react';
+import { maxWidth } from '@mui/system';
 
 const healthImages = {
   thumbs_up: "../src/static/thumbs_up.png",
@@ -174,21 +175,43 @@ const DashBoard = ({ isSidebarOpen }) => {
               </AreaChart>
             </ResponsiveContainer>
           </Box>
-          <Typography variant="h6">Summary:</Typography>
-          <Typography variant="body1">
-            • Spent x minutes in low to medium pollution, spent x minutes in high pollution.
-          </Typography>
+
         </div>
       </section>
       <section>
-        <Typography variant="h5" className="mb-4">Suggested Actions</Typography>
-        <Grid container spacing={2}>
+        <Typography variant="h5" className="mb-4" sx={{
+          paddingBottom: "0.8rem"
+        }}>Suggested Actions</Typography>
+        <Box sx={{
+          marginLeft: "2rem",
+          padding: "2rem",
+          backgroundColor: "#F7F7F2",
+          borderRadius: "2vh",
+          // border: "1px solid grey",
+        }}>
+        <Typography variant="h6" sx={{
+          fontWeight: "light"
+        }}>Your Summary</Typography>
+          <Typography variant="body1">
+            • Spent x minutes in low to medium pollution, spent x minutes in high pollution.
+          </Typography>
+          </Box>
+        
+        <Grid container spacing={2} sx={{
+          padding: "2rem"
+        }}>
           {recommendations.map((rec, index) => (
             <Grid item xs={12} md={4} key={index}>
               <Infocard
                 image={rec.image}
                 heading={rec.heading}
                 text={rec.text}
+                style={{
+                  maxWidth: "12rem",
+                  margin: "auto",
+                  paddingTop: "1rem",
+                  
+                }}
               />
             </Grid>
           ))}
