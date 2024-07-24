@@ -185,23 +185,13 @@ export default function DailyForm() {
   const handleIndoorPlaceChange = (placeData) => {
     setIndoorLocation(placeData);
   };
-  const handleIndoorPlaceChange = (placeData) => {
-    setIndoorLocation(placeData);
-  };
 
   const handleOutdoorPlaceChange = (placeData) => {
     setOutdoorLocation(placeData);
-  };
-  const handleOutdoorPlaceChange = (placeData) => {
-    setOutdoorLocation(placeData);
-  };
+  }
 
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-  const toggleDrawer = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
   const toggleDrawer = () => {
     setSidebarOpen(!isSidebarOpen);
   };
