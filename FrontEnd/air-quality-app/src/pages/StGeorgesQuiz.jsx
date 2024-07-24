@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import QuizQuestion from '../components/QuizQuestion';
 import axios from 'axios';
+import axiosInstance from '../axios.jsx';
 
 const questions = [
     {
@@ -278,24 +279,37 @@ function Quiz() {
         const symptomsComponent = calculateSymptomsComponent();
         const activityComponent = calculateActivityComponent();
         const impactsComponent = calculateImpactsComponent();
-
+    
         console.log('Total Weighted Score:', totalWeightedComponent);
         console.log('Symptoms Component:', symptomsComponent);
         console.log('Activity Component:', activityComponent);
         console.log('Impacts Component:', impactsComponent);
-
-        handleClick(totalWeightedComponent); // Call handleClick with totalWeightedComponent
-
+    
+        const data = {
+            totalWeightedComponent,
+            symptomsComponent,
+            activityComponent,
+            impactsComponent
+        };
+    
+        handleClick(data); 
+    
         setIsModalOpen(false);
     };
-
-    const handleClick = (totalWeightedComponent) => {
-        axios.post('/api/v1/StGeorgeQuiz', { score: totalWeightedComponent })
+    const handleClick = (data) => {
+        axiosInstance.post('http://localhost:8080/api/v1/StGeorgeQuiz', data)
             .then(response => {
                 console.log(response);
+    
             })
             .catch(error => {
-                console.error('There was an error posting the score.', error);
+                if (error.response) {
+                    console.error('Error data:', error.response.data);
+                    console.error('Error status:', error.response.status);
+                    console.error('Error headers:', error.response.headers);
+                } else {
+                    console.error('There was an error posting the score.', error.message);
+                }
             });
     };
 
