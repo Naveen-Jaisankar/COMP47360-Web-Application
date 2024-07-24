@@ -12,7 +12,7 @@ const CustomCalendar = () => {
   // set it as the variable completedDailies
   }
 
-  // mock data for completed quiz
+  // TODO: Just need to add the dates to this array
   const completedDailies = [
     new Date("2024-06-13"),
     new Date("2024-06-14")

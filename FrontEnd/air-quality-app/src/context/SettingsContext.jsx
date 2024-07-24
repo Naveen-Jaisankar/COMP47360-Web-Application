@@ -15,7 +15,7 @@ export const ThemeContextProvider = ({children}) =>{
     //storing font size in a state
     const[fontSize, setFontSize] = useState( () =>{
         const savedFontSize = localStorage.getItem('fontSize');
-        return savedFontSize ? parseInt(savedFontSize, 10) : 16;
+        return savedFontSize ? parseInt(savedFontSize, 10) : 13;
     });
 
     //useEffect hook here tracks user activity, and whenever user changes the theme or font size, this hook gets activated

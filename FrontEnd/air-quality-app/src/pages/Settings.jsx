@@ -56,7 +56,7 @@ const Settings = () =>{
             <div className="flex flex-col items-center">
               <div className="mb-4">
                 <Typography variant="body1">{constant.settings.text_size}</Typography>
-                <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={30} />
+                <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={25} />
               </div>
               <div className="flex items-center">
                 <Typography variant="body1" className="mr-2">{constant.settings.dark_mode}</Typography>

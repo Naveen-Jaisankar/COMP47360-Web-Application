@@ -39,8 +39,9 @@ export default function MapPage() {
   });
 
   const airQualityGradient = [
-    "rgba(32, 205, 50, 0)",
+    "rgba(32,205, 50,0)",
     "rgba(0, 228, 0, 1)",
+    "rgba(32, 205, 50, 1)",
     "rgba(255, 255, 0, 1)",
     "rgba(255, 126, 0, 1)",
     "rgba(255, 0, 0, 1)",

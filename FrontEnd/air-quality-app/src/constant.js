@@ -41,17 +41,16 @@ export const homePage =  {
 }
 
 export const loginConsts = {
-    login : "Log-In",
-    login_body : "Breathe easier with Fair",
+    login : "Welcome back!",
     login_btn : "Login",
     create_acnt : " Not a member? Create an account here",
     forgot_pass:"Forgot Password? Click here!"
 }
 
 export const register = {
-    title : "Create an account",
-    body : "Enter your details to sign up",
-    btn : "Register",
+    title : "Sign Up",
+    body : "Breathe easier with Fair",
+    btn : "Sign Up",
     create_my_acnt : "Create my account",
 }
 

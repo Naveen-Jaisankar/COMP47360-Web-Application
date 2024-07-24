@@ -102,12 +102,6 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                     Privacy
                   </Button>
                 </li>
-                <li>
-                  <Button className='block py-2 px-4 bg-black rounded' component ={Link} to="#"
-                   sx={{ color: 'white', bgcolor:'black', '&:hover': {bgcolor:'black'} }}>
-                    Edit Profile
-                  </Button>
-                </li>
               </ul>
               </div>
             </div>
