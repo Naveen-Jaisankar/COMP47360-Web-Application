@@ -287,23 +287,25 @@ function Quiz() {
         console.log('Symptoms Component:', symptomsComponent);
         console.log('Activity Component:', activityComponent);
         console.log('Impacts Component:', impactsComponent);
-        console.log(userId)
+        console.log(userId);
     
         const data = {
             userId: Number(userId),
-            quizDate: new Date(),
-            score: totalWeightedComponent,
+            quizDate: new Date().toISOString(), // Ensure date is in ISO format
+            score: totalWeightedComponent, // Assuming this is the quiz score
+            symptomsComponent,
+            activityComponent,
+            impactsComponent
         };
-    
-        handleClick(data); 
-    
+        handleClick(data);
+
         setIsModalOpen(false);
     };
+
     const handleClick = (data) => {
         axiosInstance.post('/stgeorgequiz/saveScore', data)
             .then(response => {
                 console.log(response);
-    
             })
             .catch(error => {
                 if (error.response) {
@@ -315,6 +317,46 @@ function Quiz() {
                 }
             });
     };
+    
+
+    // const handleSubmit = () => {
+    //     const totalWeightedComponent = calculateTotalWeightedComponent();
+    //     const symptomsComponent = calculateSymptomsComponent();
+    //     const activityComponent = calculateActivityComponent();
+    //     const impactsComponent = calculateImpactsComponent();
+    
+    //     console.log('Total Weighted Score:', totalWeightedComponent);
+    //     console.log('Symptoms Component:', symptomsComponent);
+    //     console.log('Activity Component:', activityComponent);
+    //     console.log('Impacts Component:', impactsComponent);
+    //     console.log(userId)
+    
+    //     const data = {
+    //         userId: Number(userId),
+    //         quizDate: new Date(),
+    //         score: totalWeightedComponent,
+    //     };
+    
+    //     handleClick(data); 
+    
+    //     setIsModalOpen(false);
+    // };
+    // const handleClick = (data) => {
+    //     axiosInstance.post('/stgeorgequiz/saveScore', data)
+    //         .then(response => {
+    //             console.log(response);
+    
+    //         })
+    //         .catch(error => {
+    //             if (error.response) {
+    //                 console.error('Error data:', error.response.data);
+    //                 console.error('Error status:', error.response.status);
+    //                 console.error('Error headers:', error.response.headers);
+    //             } else {
+    //                 console.error('There was an error posting the score.', error.message);
+    //             }
+    //         });
+    // };
 
     const calculateTotalWeightedComponent = () => {
         let totalPossibleScores = 0;
