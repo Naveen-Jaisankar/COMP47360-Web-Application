@@ -134,7 +134,7 @@ public class DailyQuizScoreService {
             long timeStamp = System.currentTimeMillis() / 1000L;
 
             // fetching weather details from OpenWeather 
-            JSONObject weatherDetails = fetchWeatherDetails(locLat, locLon);
+            JSONObject weatherDetails = fetchWeatherDetails(locLat, locLon,timeStamp);
             logger.info("Weather details: {}", weatherDetails.toString());
 
             //  HTTP call to the data model to get the AQI value
@@ -148,8 +148,8 @@ public class DailyQuizScoreService {
         return aqi;
     }
 
-    private JSONObject fetchWeatherDetails(double locLat, double locLon) throws Exception {
-        String url = OPENWEATHER_URL + "?lat=" + locLat + "&lon=" + locLon + "&appid=" + openWeatherApiKey;
+    private JSONObject fetchWeatherDetails(double locLat, double locLon, long timestamp) throws Exception {
+        String url = OPENWEATHER_URL + "?lat=" + locLat + "&lon=" + locLon + "&dt=" + timestamp + "&appid=" + openWeatherApiKey;
         JSONObject jsonResponse = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(url);
@@ -164,25 +164,6 @@ public class DailyQuizScoreService {
         return jsonResponse;
     }
 
-    public List<Double> getAqiForPast7Days(String location) {
-        List<Double> aqiList = new ArrayList<>();
-        //  get the current date
-        LocalDate currentDate = LocalDate.now();
-        
-        for (int i = 0; i < 7; i++) {
-            // Calculate the date for each of the past 7 days
-            LocalDate date = currentDate.minusDays(i);
-
-            // Convert LocalDate to Unix timestamp (seconds since epoch)
-            long timestamp = date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
-            
-            // reteieve AQI for the specific date
-            double aqi = fetchAQIForALocation(location, timestamp);
-            aqiList.add(aqi);
-        }
-        
-        return aqiList;
-    }
 
     private double fetchAqiFromDataModel(double locLat, double locLon, long timeStamp, JSONObject weatherDetails) throws Exception {
 
@@ -207,6 +188,27 @@ public class DailyQuizScoreService {
 	    
 	    return predictedAQI;
     }
+
+    public List<Double> getAqiForPast7Days(String location) {
+        List<Double> aqiList = new ArrayList<>();
+        // fetch current date
+        LocalDate currentDate = LocalDate.now();
+    
+        for (int i = 0; i < 7; i++) {
+            // fetch previous 7 days
+            LocalDate date = currentDate.minusDays(i);
+    
+            // local data converted to unix
+            long timestamp = date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+    
+            
+            double aqi = fetchAQIForALocation(location, timestamp);
+            aqiList.add(aqi);
+        }
+    
+        return aqiList;
+    }
+    
 
     private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {
         double maskFactor = 1.0;
