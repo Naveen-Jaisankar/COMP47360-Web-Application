@@ -307,7 +307,7 @@ function Quiz() {
         // Convert the data object to a URL-encoded string
         const formData = new URLSearchParams(data).toString();
     
-        axiosInstance.post('/StGeorgeQuiz/saveScore', formData, {
+        axiosInstance.post('http://localhost:8080/api/v1/stgeorgequiz/saveScore', formData, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
