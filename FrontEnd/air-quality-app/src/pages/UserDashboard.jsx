@@ -30,75 +30,165 @@ function formatJavascriptDate(dateObject) {
 
 // creates an array filled with latest last 7 days, this is used to compare entries in the database to see if they are "valid"
 // valid meaning occuring in the last 7 days
-function createValidWeek() {
+function createIdealWeek() {
   let today = new Date();
-  let validWeekArray = [];
+  let idealWeekArray = [];
 
   for (let i = 6; i >= 0; i--) {
     let pastDate = new Date();
     pastDate.setDate(today.getDate() - i);
     let formattedDate = formatJavascriptDate(pastDate);
-    validWeekArray.push({ date: formattedDate });
+    idealWeekArray.push({ quizDate: formattedDate });
   }
-  return validWeekArray;
+  return idealWeekArray;
 }
 
 // this grabs the latest entries in the database, if the data is less than a week, it will grab max amount of entries. 
 function createQuizScoreWeek(response) {
+
+
   let quizScoreWeekArray = [];
-  if (response.data.length == 0) {
-    // do something? 
-  } else if (response.data.length < 6) {
-    response.data = response.data.reverse();
-    for (let i = response.data.length - 1; i >= 0; i--) {
-      let date = response.data[i].quizDate;
-      let quizScore = response.data[i].quizScore;
-      quizScoreWeekArray.push({ date: date, quizScore: quizScore });
+
+  let latestResponse = response.data.reverse();
+  let responseDate = ""
+  let quizScore = ""
+
+  console.log("latest Response",latestResponse)
+
+  if (latestResponse.length < 6) {
+
+    for (let i = latestResponse.length-1 ; i >= 0; i-- ) {
+      responseDate= latestResponse[i].quizDate;
+      quizScore = latestResponse[i].quizScore;
+      // console.log("am in the loop", responseDate, quizScore)
+      quizScoreWeekArray.push ({quizDate: responseDate, quizScore: quizScore})
     }
-  } else {
-    for (let i = 6; i >= 0; i--) {
-      response.data = response.data.reverse();
-      if (response.data[i]) {
-        let date = response.data[i].quizDate;
-        let quizScore = response.data[i].quizScore;
-        quizScoreWeekArray.push({ date: date, quizScore: quizScore });
-      }
+  } else if (latestResponse.length >= 6){
+    for (let i = 6; i>=0; i--) {
+      responseDate= latestResponse[i].quizDate;
+      quizScore = latestResponse[i].quizScore;
+      // console.log("am in the loop", responseDate, quizScore)
+      quizScoreWeekArray.push ({quizDate: responseDate, quizScore: quizScore})
     }
+
   }
-  return quizScoreWeekArray;
+  // console.log("am out of loop", quizScoreWeekArray)
+  return quizScoreWeekArray
+
 }
+  // let quizScoreWeekArray = [];
+  // if (response.data.length == 0) {
+  //   // do something? 
+  // } else if (response.data.length < 6) {
+  //   response.data = response.data.reverse();
+  //   for (let i = response.data.length - 1; i >= 0; i--) {
+  //     let responseDate = response.data[i].quizDate;
+  //     let quizScore = response.data[i].quizScore;
+  //     quizScoreWeekArray.push({ quizDate: responseDate, quizScore: quizScore });
+  //   }
+  // } else {
+  //   for (let i = 6; i >= 0; i--) {
+  //     let latestResponse = response.data.reverse();
+  //     console.log(latestResponse[i])
+  //     // console.log("checking out reversed response!", latestResponse)
+  //     // console.log (latestResponse[0].quizDate)
+  //     if (latestResponse[i]) {
+  //       console.log("here in quizscore loop, why making weird formatting?", latestResponse[i].quizDate)
+  //       let responseDate = latestResponse[i].quizDate;
+  //       let quizScore = latestResponse[i].quizScore;
+  //       quizScoreWeekArray.push({ quizDate: responseDate, quizScore: quizScore });
+  //     }
+  //   }
+  // }
+//   console.log("am here after the for loop", quizScoreWeekArray)
+//   return quizScoreWeekArray;
+// }
 
 // compares the quiz entries to valid week, and stores both days where daily quiz was done (validDates)& days where daily quiz was not done (datesMissing)
-function compareLatestWeek(validWeekArray, quizScoreWeekArray) {
+function compareLatestWeek(idealWeekArray, quizScoreWeekArray) {
+  console.log("ideal", idealWeekArray);
+  console.log("quiz", quizScoreWeekArray);
+
   let validDates = [];
   let datesMissing = [];
   let todaysDate = formatJavascriptDate(new Date());
 
-  for (let i = 0; i < validWeekArray.length; i++) {
-    let found = false;
-    for (let j = 0; j < quizScoreWeekArray.length; j++) {
-      if (validWeekArray[i].date === quizScoreWeekArray[j].date) {
-        validDates.push(quizScoreWeekArray[j]);
-        found = true;
-        break;
-      }
+  idealWeekArray.forEach(idealWeekObject => {
+    let date = idealWeekObject.quizDate; // Use 'date' key as per the initial example
+    console.log("new date variable", date);
+
+    // Find the matching quizScoreWeekObject
+    let matchingQuizObject = quizScoreWeekArray.find(quizScoreWeekObject => quizScoreWeekObject.quizDate === date);
+    console.log("match found!", matchingQuizObject);
+
+    if (matchingQuizObject) {
+      validDates.push(matchingQuizObject);
+    } else if (date !== todaysDate) {
+      datesMissing.push({ date: date }); // Push the missing date as an object for consistency
     }
-    if (!found && validWeekArray[i].date != todaysDate) {
-      datesMissing.push({ date: validWeekArray[i].date });
-    }
-  }
+  });
+
+  console.log('Valid Dates:', validDates);
+  console.log('Dates Missing:', datesMissing);
 
   return {
     validDates: validDates,
-    datesMissing: datesMissing,
+    datesMissing: datesMissing
   };
 }
+
+  // for (let i = 0; i < idealWeekArray.length; i++) {
+  //   let found = false;
+  //   for (let j = 0; j < quizScoreWeekArray.length; j++) {
+  //     if (idealWeekArray[i].date === quizScoreWeekArray[j].date) {
+  //       validDates.push(quizScoreWeekArray[j]);
+  //       found = true;
+  //       break;
+  //     }
+  //   }
+  //   if (!found && idealWeekArray[i].date != todaysDate) {
+  //     datesMissing.push({ date: idealWeekArray[i].date });
+  //   }
+  // }
+
+  // return {
+  //   validDates: validDates,
+  //   datesMissing: datesMissing
+  // };
+// }
+
+// }
+
+
+  // let validDates = [];
+  // let datesMissing = [];
+  // let todaysDate = formatJavascriptDate(new Date());
+
+  // for (let i = 0; i < idealWeekArray.length; i++) {
+  //   let found = false;
+  //   for (let j = 0; j < quizScoreWeekArray.length; j++) {
+  //     if (idealWeekArray[i].date === quizScoreWeekArray[j].date) {
+  //       validDates.push(quizScoreWeekArray[j]);
+  //       found = true;
+  //       break;
+  //     }
+  //   }
+  //   if (!found && idealWeekArray[i].date != todaysDate) {
+  //     datesMissing.push({ date: idealWeekArray[i].date });
+  //   }
+  // }
+
+  // return {
+  //   validDates: validDates,
+  //   datesMissing: datesMissing,
+  // };
+// }
 
 // populates dates missing with mock information
 function populateDates(latestWeek) {
   if (latestWeek.datesMissing) {
     let datesFilled = latestWeek.datesMissing.map((dateInfo) => ({
-      date: dateInfo.date,
+      quizDate: dateInfo.date,
       quizScore: 6,
     }));
     return datesFilled;
@@ -134,18 +224,18 @@ const getLastSevenDays = async (userId) => {
   try {
     const response = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
 
-    let validWeekArray = createValidWeek();
-    // console.log("this is valid week", validWeekArray)
+    let idealWeekArray = createIdealWeek();
+    console.log("this is ideal week", idealWeekArray)
     let quizScoreWeekArray = createQuizScoreWeek(response);
-    // console.log("quizScore week", quizScoreWeekArray)
-    let latestWeek = compareLatestWeek(validWeekArray, quizScoreWeekArray);
-    // console.log("latest week", latestWeek)
+    console.log("quizScore week", quizScoreWeekArray)
+    let latestWeek = compareLatestWeek(idealWeekArray, quizScoreWeekArray);
+    console.log("latest week", latestWeek)
     let filledDates = populateDates(latestWeek);
-    // console.log("filled dates", filledDates)
+    console.log("filled dates", filledDates)
     let combinedDates = combineDates(latestWeek.validDates, filledDates);
-    // console.log("combined final", combinedDates)
+    console.log("combined final", combinedDates)
 
-    // console.log("right before verbose", combinedDates)
+    console.log("right before verbose", combinedDates)
     let verboseDays = renderUserFriendlyDate(combinedDates)
 
     const daysToRender = verboseDays.map((dateEntry) => ({
@@ -306,7 +396,7 @@ const DashBoard = ({ isSidebarOpen }) => {
         </div>
       </section>
       <section>
-        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase}/>
+        <RiskProfileCard avgAQI={13} userAQI={userAQI} specialCase={riskProfileCase}/>
       </section>
     </div>
   );
