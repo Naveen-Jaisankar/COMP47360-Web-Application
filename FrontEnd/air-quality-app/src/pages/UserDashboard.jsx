@@ -200,7 +200,7 @@ const DashBoard = ({ isSidebarOpen }) => {
     let locationToSend = location.toString()
     console.log('locationToSend', locationToSend)
     const responseAQIData = axiosInstance.get(`dailyquizscores/getaqi/past7days/${locationToSend}`)
-    console.log(responseAQIData)
+    console.log('this is the responseAQI',responseAQIData)
 
   }, []);
 
