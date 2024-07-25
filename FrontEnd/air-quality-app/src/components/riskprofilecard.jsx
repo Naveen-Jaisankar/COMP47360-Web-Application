@@ -2,11 +2,12 @@ import { renderGrade, getGrade, renderColor } from "./riskprofilescores";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 
-const RiskProfileCard = () => {
-    let riskValue = 100
-    let grade = getGrade(riskValue)
-    let { headingText, contentText } = renderGrade(riskValue);
-    let gradeColor = renderColor(riskValue)
+const RiskProfileCard = (avgAQI, userAQI) => {
+    // let avgAQI = 20
+    // let userAQI = 20
+    let grade = getGrade(avgAQI, userAQI)
+    let { headingText, contentText } = renderGrade(avgAQI,userAQI);
+    let gradeColor = renderColor(avgAQI,userAQI)
 
     return(
     <Box sx={{
@@ -20,13 +21,13 @@ const RiskProfileCard = () => {
     <Box sx= {{
         display: "flex",
         margin: "1rem",
-        padding: "3rem",
+        padding: "2rem",
         backgroundColor: "white",
         borderRadius: 5,
         border: `solid 10px ${gradeColor}`
     }}>
-    <Typography variant="h3" component="h3" sx={{
-        color: "black", fontSize:"10rem",
+    <Typography variant="h4" component="h3" sx={{
+        color: "black", fontSize:"5rem",
     }}>
     {grade}
     </Typography>

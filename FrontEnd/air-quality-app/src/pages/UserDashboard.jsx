@@ -10,10 +10,10 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import Infocard from "../components/infocard";
 import PropTypes from "prop-types";
 import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
+import RiskProfileCard from "../components/riskprofilecard";
 
 const image1 = "../src/static/proxy-image.png";
 
@@ -133,6 +133,7 @@ function renderUserFriendlyDate(combinedDatesToChange) {
 const getLastSevenDays = async (userId) => {
   try {
     const response = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
+
     let validWeekArray = createValidWeek();
     // console.log("this is valid week", validWeekArray)
     let quizScoreWeekArray = createQuizScoreWeek(response);
@@ -159,6 +160,18 @@ const getLastSevenDays = async (userId) => {
   }
 };
 
+const getTodayAQI = async (userId) => {
+  try {
+    const rawResponse = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
+    const latestDays = rawResponse.data.reverse()
+    const latestDay = latestDays[0]
+    console.log(latestDay)
+  } catch (error) {
+    console.error("Error fetching quiz scores:", error);
+    return [];
+  }
+}
+
 const CustomTooltip = ({ payload, label }) => {
   if (!payload || payload.length === 0) return null;
 
@@ -170,20 +183,13 @@ const CustomTooltip = ({ payload, label }) => {
       <p className="desc">
         <strong>Personal Exposure:</strong> {PersonalExposure}
       </p>
-      <p className="desc">
-        <strong>AQI:</strong> {AQI}
-      </p>
-      {PersonalExposure > AQI && (
-        <p className="highlight text-red-500">
-          <strong>Alert:</strong> Personal Exposure is above AQI
-        </p>
-      )}
     </div>
   );
 };
 
 const DashBoard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
+  const [aqi, setAQI] = useState("")
   const { userId } = useContext(AuthContext);
 
   useEffect(() => {
@@ -195,12 +201,10 @@ const DashBoard = ({ isSidebarOpen }) => {
   }, [userId]);
 
   useEffect(() => {
-    // let location = [40.776676, -73.971321]
-    // let locationToSend = location.toString()
-    // console.log('locationToSend', locationToSend)
     const responseAQIData = axiosInstance.get(`dailyquizscores/getaqitoday`)
-    console.log('this is the responseAQI',responseAQIData)
-
+    getTodayAQI(userId)
+    // console.log('this is the responseAQI',responseAQIData)
+    // setAQI(responseAQIData)
   }, []);
 
   return (
@@ -242,13 +246,6 @@ const DashBoard = ({ isSidebarOpen }) => {
                 <Legend />
                 <Area
                   type="monotone"
-                  dataKey="AQI"
-                  stroke="#ff7300"
-                  fillOpacity={1}
-                  fill="url(#colorAQI)"
-                />
-                <Area
-                  type="monotone"
                   dataKey="PersonalExposure"
                   stroke="#8884d8"
                   fillOpacity={1}
@@ -267,16 +264,6 @@ const DashBoard = ({ isSidebarOpen }) => {
         <Typography variant="h5" className="mb-4">
           Suggested Actions
         </Typography>
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Array(3).fill().map((_, index) => (
-            <Infocard
-              image={image1}
-              alt="Image Alt Text"
-              heading="Funky fact"
-              text="More info"
-            />
-          ))}
-        </div> */}
       </section>
       <section className="mt-8">
         <div className="bg-black text-white p-4 rounded shadow-md">
@@ -286,9 +273,11 @@ const DashBoard = ({ isSidebarOpen }) => {
             <a href="#" className="text-blue-400">
               here
             </a>
-            .
           </Typography>
         </div>
+      </section>
+      <section>
+        <RiskProfileCard avgAQI= {aqi} />
       </section>
     </div>
   );
@@ -303,7 +292,6 @@ CustomTooltip.propTypes = {
     PropTypes.shape({
       payload: PropTypes.shape({
         PersonalExposure: PropTypes.number.isRequired,
-        AQI: PropTypes.number.isRequired,
       }),
     })
   ).isRequired,
