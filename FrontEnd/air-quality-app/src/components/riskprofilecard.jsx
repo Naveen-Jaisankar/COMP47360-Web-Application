@@ -50,14 +50,18 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         padding: "2rem",
         backgroundColor: "white",
         borderRadius: 5,
-        border: `solid 10px ${gradeColor}`
+        border: `solid 10px ${gradeColor}`,
+        // maxWidth: "50rem",
+        maxHeight: {xs: "15rem", md: "25rem" }
     }}>
     
-    <Typography variant="h4" component="h3" sx={{
-        color: "black", fontSize:"5rem"
+    <Typography variant="h1" component="h3" sx={{
+        margin: "auto",
+        color: "black", 
+        maxHeight: specialCaseImage? null : "2"
     }}>
         <Box component="img" src={specialCaseImage} sx={{
-            maxWidth: "9rem"
+            maxWidth: specialCaseImage? "9rem": "2rem",
         }}></Box>
     {grade}
     </Typography>
@@ -66,7 +70,7 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
     {/* Text section */}
     <Box sx={{
         marginLeft: "1rem",
-        paddingTop: "1rem"
+        padding: "1rem"
     }}>
     <Typography variant= "h5"sx={{
         color: "white"
