@@ -292,10 +292,7 @@ function Quiz() {
         const data = {
             userId: Number(userId),
             quizDate: new Date().toISOString(), // Ensure date is in ISO format
-            score: totalWeightedComponent, // Assuming this is the quiz score
-            symptomsComponent,
-            activityComponent,
-            impactsComponent
+            score: parseFloat(totalWeightedComponent)            
         };
         handleClick(data);
 
