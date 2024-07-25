@@ -17,7 +17,7 @@ import RiskProfileCard from "../components/riskprofilecard";
 
 const image1 = "../src/static/proxy-image.png";
 
-let noData = false;
+
 
 // reformats the javascript date object to match with database date format
 function formatJavascriptDate(dateObject) {
@@ -47,7 +47,7 @@ function createValidWeek() {
 function createQuizScoreWeek(response) {
   let quizScoreWeekArray = [];
   if (response.data.length == 0) {
-    noData = true;
+    // do something? 
   } else if (response.data.length < 6) {
     response.data = response.data.reverse();
     for (let i = response.data.length - 1; i >= 0; i--) {
@@ -160,15 +160,31 @@ const getLastSevenDays = async (userId) => {
   }
 };
 
-const getTodayAQI = async (userId) => {
+const getTodayAQI = async (userId, setAverageAQI, setUserAQI) => {
   try {
     const rawResponse = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
-    const latestDays = rawResponse.data.reverse()
-    const latestDay = latestDays[0]
-    console.log(latestDay)
+    let latestDays = rawResponse.data.reverse();
+    let latestDay = latestDays[0];
+
+    let todayToFormat = new Date();
+    let today = formatJavascriptDate(todayToFormat);
+
+    const rawAQIresponse = await axiosInstance.get(`dailyquizscores/getaqitoday`);
+    const rawAverageAQI = rawAQIresponse.data;
+    const averageAQI = Math.round(rawAverageAQI);
+    console.log("Average AQI from DB:", averageAQI);
+
+    if (today === latestDay.quizDate) {
+      let rawUserAQI = latestDay.quizScore;
+      let userAQI = Math.round(rawUserAQI);
+      console.log("User AQI from DB:", userAQI);
+      setUserAQI(userAQI);
+      setAverageAQI(averageAQI);
+    } else {
+      console.log("No quiz score for today.");
+    }
   } catch (error) {
-    console.error("Error fetching quiz scores:", error);
-    return [];
+    console.error("Error fetching latest day:", error);
   }
 }
 
@@ -189,7 +205,8 @@ const CustomTooltip = ({ payload, label }) => {
 
 const DashBoard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
-  const [aqi, setAQI] = useState("")
+  const [averageAQI, setAverageAQI] = useState(0)
+  const [userAQI, setUserAQI] = useState(0)
   const { userId } = useContext(AuthContext);
 
   useEffect(() => {
@@ -201,11 +218,14 @@ const DashBoard = ({ isSidebarOpen }) => {
   }, [userId]);
 
   useEffect(() => {
-    const responseAQIData = axiosInstance.get(`dailyquizscores/getaqitoday`)
-    getTodayAQI(userId)
+    // const responseAQIData = axiosInstance.get(`dailyquizscores/getaqitoday`)
+    getTodayAQI(userId, setAverageAQI, setUserAQI)
+    console.log("IN USE EFFECT RN")
+    console.log(userAQI)
+    console.log(averageAQI)
     // console.log('this is the responseAQI',responseAQIData)
     // setAQI(responseAQIData)
-  }, []);
+  }, [userId]);
 
   return (
     <div
@@ -277,7 +297,7 @@ const DashBoard = ({ isSidebarOpen }) => {
         </div>
       </section>
       <section>
-        <RiskProfileCard avgAQI= {aqi} />
+        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI}/>
       </section>
     </div>
   );

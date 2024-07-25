@@ -2,7 +2,7 @@ import { renderGrade, getGrade, renderColor } from "./riskprofilescores";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 
-const RiskProfileCard = (avgAQI, userAQI) => {
+const RiskProfileCard = ({avgAQI, userAQI}) => {
     // let avgAQI = 20
     // let userAQI = 20
     let grade = getGrade(avgAQI, userAQI)
