@@ -4,6 +4,7 @@ import { Typography } from "@mui/material";
 
 const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
     let starImage = "../src/static/star.png"
+    let airImage ="../src/static/air-icon.png" 
     let grade = "";
     let headingText ="";
     let contentText = "";
@@ -16,17 +17,15 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         console.log("Im in risk profile card")
         headingText = riskvalueHeadingText["*"]
         contentText = riskvalueContentText["*"]
-        riskvalueColor["*"]
+        gradeColor = riskvalueColor["*"]
         specialCaseImage = starImage
     } else if (specialCase == "NotYetFilled") {
         console.log("Im in NotYetFilled!")
         headingText = riskvalueHeadingText["!"]
         contentText = riskvalueContentText["!"]
-        riskvalueColor["!"]
-        specialCaseImage = starImage
-
-    } 
-    else if (specialCase === "valid") {
+        gradeColor = riskvalueColor["!"]
+        specialCaseImage = airImage; 
+    } else if (specialCase === "valid") {
     grade = getGrade(avgAQI, userAQI)
     gradeText = renderGrade(avgAQI, userAQI);
     headingText = gradeText.headingText;
@@ -40,7 +39,8 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         marginTop:"1rem",
         backgroundColor: "black",
         display: "flex",
-        borderRadius: 5
+        borderRadius: 5,
+        paddingRight: "1.5rem"
     }}>
 
     {/* Grade section */}
@@ -56,7 +56,9 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
     <Typography variant="h4" component="h3" sx={{
         color: "black", fontSize:"5rem"
     }}>
-        <Box component="img" src={specialCaseImage}></Box>
+        <Box component="img" src={specialCaseImage} sx={{
+            maxWidth: "9rem"
+        }}></Box>
     {grade}
     </Typography>
     </Box>

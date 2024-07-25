@@ -46,7 +46,7 @@ const riskvalueHeadingText = {
     "D": "At High Risk",
     "F": "At Very High Risk",
     "*": "Welcome To Fair",
-    "!": "Daily Form Not Filled"
+    "!": "Daily Form Not Yet Filled"
 };
 
 const riskvalueContentText = {
@@ -66,7 +66,9 @@ const riskvalueColor = {
     "B": "#AD00FF",
     "C": "#FF867C",
     "D": "#FF0000",
-    "F": "#8B0000"
+    "F": "#8B0000",
+    "*": "#3783bd",
+    "!": "#94d138",
 };
 
 function renderGrade(averageAQI, userAQI) {
