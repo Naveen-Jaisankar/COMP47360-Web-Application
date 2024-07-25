@@ -27,6 +27,7 @@ import com.compsci.webapp.util.AQICalculator;
 import com.compsci.webapp.util.Constants;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -194,4 +195,17 @@ public class DailyQuizScoreService {
         double rawPM = (outdoorPM * outdoorHours / maskFactor) + ((indoorPM / indoorFactor) * indoorHours);
         return rawPM / 24.0;
     }
+
+        public double getAqiForToday() {
+        // LocalDate currentDate = LocalDate.now();
+
+        String location = "40.776676, -73.971321";
+
+        // long timestamp = currentDate.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+
+        double aqi = fetchAQIForALocation(location);
+
+        return aqi;
+    }
+
 }
