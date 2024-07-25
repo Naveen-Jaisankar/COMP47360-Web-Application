@@ -1,4 +1,4 @@
-import { useImperativeHandle, useRef, forwardRef } from "react";
+import { useRef } from "react";
 import { Autocomplete, LoadScript } from "@react-google-maps/api";
 import { Box } from "@mui/system";
 import { styled } from "@mui/system";
@@ -18,10 +18,8 @@ const StyledInput = styled("input")({
   },
 });
 
-const DailySearchbar = forwardRef(({passPlaceData}, ref) => {
+const DailySearchbar = ({passPlaceData}) => {
   const inputRef = useRef();
-  const textRef= useRef();
-
   const apikey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const placeslib = ["places"];
 
@@ -56,19 +54,8 @@ const DailySearchbar = forwardRef(({passPlaceData}, ref) => {
       
       }
 
-
     }
-
-  };
-
-  useImperativeHandle(ref, () => ({
-    handleReset() {
-      if (textRef.current){
-        textRef.current.value=""
-      }
-    },
-    textRef
-  }));
+  }
 
   return (
     <Box sx={{ margin: "1rem" }}>
@@ -85,16 +72,13 @@ const DailySearchbar = forwardRef(({passPlaceData}, ref) => {
             type="text"
             className="form-control"
             placeholder="Enter Location"
-            ref={textRef}
             onKeyDown={(e) => { e.key === 'Enter' && e.preventDefault(); }}
           />
         </Autocomplete>
       </LoadScript>
     </Box>
   );
-});
-
-DailySearchbar.displayName = "DailySearchbar";
+};
 
 DailySearchbar.propTypes = {
   passPlaceData: PropTypes.func,
