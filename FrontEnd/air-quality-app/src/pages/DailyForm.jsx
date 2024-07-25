@@ -3,7 +3,7 @@ import UserContent from "../components/usercontent";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useRef } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { styled } from "@mui/system";
 import { ThickHeadingTypography } from "./Home";
 import constants, { dailyForm } from "./../constant";
