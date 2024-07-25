@@ -300,20 +300,38 @@ function Quiz() {
     };
 
     const handleClick = (data) => {
-        axiosInstance.post('/stgeorgequiz/saveScore', data)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                if (error.response) {
-                    console.error('Error data:', error.response.data);
-                    console.error('Error status:', error.response.status);
-                    console.error('Error headers:', error.response.headers);
-                } else {
-                    console.error('There was an error posting the score.', error.message);
-                }
-            });
+        fetch('http://localhost:8080/stgeorgequiz/saveScore', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data), // Send data as JSON string
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     };
+    
+
+    // const handleClick = (data) => {
+    //     axiosInstance.post('/stgeorgequiz/saveScore', data)
+    //         .then(response => {
+    //             console.log(response);
+    //         })
+    //         .catch(error => {
+    //             if (error.response) {
+    //                 console.error('Error data:', error.response.data);
+    //                 console.error('Error status:', error.response.status);
+    //                 console.error('Error headers:', error.response.headers);
+    //             } else {
+    //                 console.error('There was an error posting the score.', error.message);
+    //             }
+    //         });
+    // };
     
 
     // const handleSubmit = () => {
