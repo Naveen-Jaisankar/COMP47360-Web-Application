@@ -292,31 +292,34 @@ function Quiz() {
         // Format date to 'yyyy-MM-dd' 
         const formattedDate = new Date().toISOString().split('T')[0];
     
-        const data = {
-            userId: Number(userId),
-            quizDate: formattedDate,
-            score: parseFloat(totalWeightedComponent)            
-        };
+        // const data = {
+        //     userId: userId,
+        //     quizDate: new Date(),
+        //     score: parseFloat(totalWeightedComponent)            
+        // };
     
-        handleClick(data);
+        handleClick(totalWeightedComponent);
     
         setIsModalOpen(false);
     };
 
-    const handleClick = (data) => {
+    const handleClick = (totalWeightedComponent) => {
         // Convert the data object to a URL-encoded string
-        const formData = new URLSearchParams(data).toString();
-    
-        axiosInstance.post('http://localhost:8080/api/v1/stgeorgequiz/saveScore', formData, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        })
+        // const formData = new URLSearchParams(data).toString();
+        
+        const formData = {
+            user_id: userId, // Use userId from AuthContext
+            quiz_date: new Date(),
+            score:totalWeightedComponent
+        };
+
+
+        axiosInstance.post('/stgeorgequiz/savescore', formData)
         .then(response => {
-            console.log('Success:', response.data);
+          console.log("Data sent successfully!", response);
         })
         .catch(error => {
-            console.error('Error:', error);
+          console.error("There was an error sending the data!", error);
         });
     };
     
