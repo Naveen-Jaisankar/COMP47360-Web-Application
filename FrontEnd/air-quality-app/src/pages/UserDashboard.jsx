@@ -14,12 +14,11 @@ import PropTypes from "prop-types";
 import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
+import { color } from "@mui/system";
 
 const image1 = "../src/static/proxy-image.png";
-// let riskProfileCase = "";
 
-
-// reformats the javascript date object to match with database date format
+// Reformats the JavaScript date object to match with database date format
 function formatJavascriptDate(dateObject) {
   let year = dateObject.getFullYear();
   let month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
@@ -28,8 +27,7 @@ function formatJavascriptDate(dateObject) {
   return `${year}-${month}-${date}`;
 }
 
-// creates an array filled with latest last 7 days, this is used to compare entries in the database to see if they are "valid"
-// valid meaning occuring in the last 7 days
+// Creates an array filled with the last 7 days, used to compare entries in the database
 function createIdealWeek() {
   let today = new Date();
   let idealWeekArray = [];
@@ -43,68 +41,31 @@ function createIdealWeek() {
   return idealWeekArray;
 }
 
-// this grabs the latest entries in the database, if the data is less than a week, it will grab max amount of entries. 
+// This function grabs the latest entries in the database and processes them
 function createQuizScoreWeek(response) {
-
-
   let quizScoreWeekArray = [];
+  let latestResponse = response.data.slice(-7); // Last 7 entries or less
 
-  let latestResponse = response.data.reverse();
-  let responseDate = ""
-  let quizScore = ""
+  console.log("latest Response:", latestResponse);
 
-  console.log("latest Response",latestResponse)
+  for (let i = 0; i < latestResponse.length; i++) {
+    let responseDate = latestResponse[i].quizDate || ""; 
+    let quizScore = latestResponse[i].quizScore || 0; 
 
-  if (latestResponse.length < 6) {
-
-    for (let i = latestResponse.length-1 ; i >= 0; i-- ) {
-      responseDate= latestResponse[i].quizDate;
-      quizScore = latestResponse[i].quizScore;
-      // console.log("am in the loop", responseDate, quizScore)
-      quizScoreWeekArray.push ({quizDate: responseDate, quizScore: quizScore})
-    }
-  } else if (latestResponse.length >= 6){
-    for (let i = 6; i>=0; i--) {
-      responseDate= latestResponse[i].quizDate;
-      quizScore = latestResponse[i].quizScore;
-      // console.log("am in the loop", responseDate, quizScore)
-      quizScoreWeekArray.push ({quizDate: responseDate, quizScore: quizScore})
+    // Check if responseDate is valid
+    if (new Date(responseDate).toString() === "Invalid Date") {
+      console.error("Invalid date:", responseDate);
+      continue;
     }
 
+    quizScoreWeekArray.push({ quizScore, quizDate: responseDate });
   }
-  // console.log("am out of loop", quizScoreWeekArray)
-  return quizScoreWeekArray
 
+  console.log("Final quizScoreWeekArray:", quizScoreWeekArray);
+  return quizScoreWeekArray;
 }
-  // let quizScoreWeekArray = [];
-  // if (response.data.length == 0) {
-  //   // do something? 
-  // } else if (response.data.length < 6) {
-  //   response.data = response.data.reverse();
-  //   for (let i = response.data.length - 1; i >= 0; i--) {
-  //     let responseDate = response.data[i].quizDate;
-  //     let quizScore = response.data[i].quizScore;
-  //     quizScoreWeekArray.push({ quizDate: responseDate, quizScore: quizScore });
-  //   }
-  // } else {
-  //   for (let i = 6; i >= 0; i--) {
-  //     let latestResponse = response.data.reverse();
-  //     console.log(latestResponse[i])
-  //     // console.log("checking out reversed response!", latestResponse)
-  //     // console.log (latestResponse[0].quizDate)
-  //     if (latestResponse[i]) {
-  //       console.log("here in quizscore loop, why making weird formatting?", latestResponse[i].quizDate)
-  //       let responseDate = latestResponse[i].quizDate;
-  //       let quizScore = latestResponse[i].quizScore;
-  //       quizScoreWeekArray.push({ quizDate: responseDate, quizScore: quizScore });
-  //     }
-  //   }
-  // }
-//   console.log("am here after the for loop", quizScoreWeekArray)
-//   return quizScoreWeekArray;
-// }
 
-// compares the quiz entries to valid week, and stores both days where daily quiz was done (validDates)& days where daily quiz was not done (datesMissing)
+// Compares the quiz entries to the ideal week and stores both valid dates and missing dates
 function compareLatestWeek(idealWeekArray, quizScoreWeekArray) {
   console.log("ideal", idealWeekArray);
   console.log("quiz", quizScoreWeekArray);
@@ -114,17 +75,16 @@ function compareLatestWeek(idealWeekArray, quizScoreWeekArray) {
   let todaysDate = formatJavascriptDate(new Date());
 
   idealWeekArray.forEach(idealWeekObject => {
-    let date = idealWeekObject.quizDate; // Use 'date' key as per the initial example
+    let date = idealWeekObject.quizDate; //
     console.log("new date variable", date);
 
     // Find the matching quizScoreWeekObject
     let matchingQuizObject = quizScoreWeekArray.find(quizScoreWeekObject => quizScoreWeekObject.quizDate === date);
-    console.log("match found!", matchingQuizObject);
 
     if (matchingQuizObject) {
       validDates.push(matchingQuizObject);
     } else if (date !== todaysDate) {
-      datesMissing.push({ date: date }); // Push the missing date as an object for consistency
+      datesMissing.push({ date: date });
     }
   });
 
@@ -137,54 +97,7 @@ function compareLatestWeek(idealWeekArray, quizScoreWeekArray) {
   };
 }
 
-  // for (let i = 0; i < idealWeekArray.length; i++) {
-  //   let found = false;
-  //   for (let j = 0; j < quizScoreWeekArray.length; j++) {
-  //     if (idealWeekArray[i].date === quizScoreWeekArray[j].date) {
-  //       validDates.push(quizScoreWeekArray[j]);
-  //       found = true;
-  //       break;
-  //     }
-  //   }
-  //   if (!found && idealWeekArray[i].date != todaysDate) {
-  //     datesMissing.push({ date: idealWeekArray[i].date });
-  //   }
-  // }
-
-  // return {
-  //   validDates: validDates,
-  //   datesMissing: datesMissing
-  // };
-// }
-
-// }
-
-
-  // let validDates = [];
-  // let datesMissing = [];
-  // let todaysDate = formatJavascriptDate(new Date());
-
-  // for (let i = 0; i < idealWeekArray.length; i++) {
-  //   let found = false;
-  //   for (let j = 0; j < quizScoreWeekArray.length; j++) {
-  //     if (idealWeekArray[i].date === quizScoreWeekArray[j].date) {
-  //       validDates.push(quizScoreWeekArray[j]);
-  //       found = true;
-  //       break;
-  //     }
-  //   }
-  //   if (!found && idealWeekArray[i].date != todaysDate) {
-  //     datesMissing.push({ date: idealWeekArray[i].date });
-  //   }
-  // }
-
-  // return {
-  //   validDates: validDates,
-  //   datesMissing: datesMissing,
-  // };
-// }
-
-// populates dates missing with mock information
+// Populates dates missing with mock information
 function populateDates(latestWeek) {
   if (latestWeek.datesMissing) {
     let datesFilled = latestWeek.datesMissing.map((dateInfo) => ({
@@ -193,53 +106,52 @@ function populateDates(latestWeek) {
     }));
     return datesFilled;
   }
+  return [];
 }
 
-// combines both the now filled dates and the valid dates
+// Combines both the now filled dates and the valid dates
 function combineDates(validDates, datesFilled) {
   const combinedDates = validDates.concat(datesFilled);
 
   combinedDates.sort(function (a, b) {
-    return new Date(a.date) - new Date(b.date);
+    return new Date(a.quizDate) - new Date(b.quizDate);
   });
 
   return combinedDates;
 }
 
-// renders the date information is user friendly way.
+// Renders the date information in a user-friendly way
 function renderUserFriendlyDate(combinedDatesToChange) {
-
   combinedDatesToChange.forEach((combinedDate) => {
-
-    let toConvertDate = new Date(combinedDate.date);
+    let toConvertDate = new Date(combinedDate.quizDate);
     let convertedDate = toConvertDate.toDateString();
-    combinedDate.date = convertedDate
-  }
-  )
+    combinedDate.quizDate = convertedDate;
+  });
 
-  return combinedDatesToChange
+  return combinedDatesToChange;
 }
 
+// Fetches the last seven days of data
 const getLastSevenDays = async (userId) => {
   try {
     const response = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
 
     let idealWeekArray = createIdealWeek();
-    console.log("this is ideal week", idealWeekArray)
+    console.log("this is ideal week", idealWeekArray);
     let quizScoreWeekArray = createQuizScoreWeek(response);
-    console.log("quizScore week", quizScoreWeekArray)
+    console.log("quizScore week", quizScoreWeekArray);
     let latestWeek = compareLatestWeek(idealWeekArray, quizScoreWeekArray);
-    console.log("latest week", latestWeek)
+    console.log("latest week", latestWeek);
     let filledDates = populateDates(latestWeek);
-    console.log("filled dates", filledDates)
+    console.log("filled dates", filledDates);
     let combinedDates = combineDates(latestWeek.validDates, filledDates);
-    console.log("combined final", combinedDates)
+    console.log("combined final", combinedDates);
 
-    console.log("right before verbose", combinedDates)
-    let verboseDays = renderUserFriendlyDate(combinedDates)
+    console.log("right before verbose", combinedDates);
+    let verboseDays = renderUserFriendlyDate(combinedDates);
 
     const daysToRender = verboseDays.map((dateEntry) => ({
-      day: dateEntry.date,
+      day: dateEntry.quizDate,
       PersonalExposure: Math.round(dateEntry.quizScore),
     }));
 
@@ -250,10 +162,11 @@ const getLastSevenDays = async (userId) => {
   }
 };
 
+// Renders Risk Profile Card using two endpoints.
 const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase) => {
   try {
     const rawResponse = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
-    console.log("in todayaqi", rawResponse.data.length)
+    console.log("in todayaqi", rawResponse.data.length);
     let latestDays = rawResponse.data.reverse();
     let latestDay = latestDays[0];
 
@@ -265,18 +178,14 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase
     const averageAQI = Math.round(rawAverageAQI);
     console.log("Average AQI from DB:", averageAQI);
 
-
-    if (rawResponse.data.length == 0) {
-      setRiskProfileCase( "firstUse");
-      console.log("here in the firstUse case")
-      console.log(riskProfileCase)
-    } 
-    else if (latestDay.quizDate != today) {
-      setRiskProfileCase("NotYetFilled")
+    if (rawResponse.data.length === 0) {
+      setRiskProfileCase("firstUse");
+      console.log("here in the firstUse case");
+    } else if (latestDay.quizDate !== today) {
+      setRiskProfileCase("NotYetFilled");
       console.log("No quiz score for today.");
-
     } else if (today === latestDay.quizDate) {
-      setRiskProfileCase( "valid");
+      setRiskProfileCase("valid");
 
       let rawUserAQI = latestDay.quizScore;
       let userAQI = Math.round(rawUserAQI);
@@ -289,6 +198,7 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase
   }
 }
 
+
 const CustomTooltip = ({ payload, label }) => {
   if (!payload || payload.length === 0) return null;
 
@@ -296,10 +206,15 @@ const CustomTooltip = ({ payload, label }) => {
 
   return (
     <div className="custom-tooltip p-2 bg-white border rounded shadow">
-      <p className="label">{label}</p>
-      <p className="desc">
-        <strong>Personal Exposure:</strong> {PersonalExposure}
-      </p>
+      <div className="label">
+        <Typography sx={{
+          color: "black"
+        }}>{label}</Typography></div>
+      <div className="desc">
+        <Typography sx={{
+          color: "black",}
+        }>Personal Exposure: {PersonalExposure}</Typography> 
+      </div>
     </div>
   );
 };
@@ -410,10 +325,10 @@ CustomTooltip.propTypes = {
   payload: PropTypes.arrayOf(
     PropTypes.shape({
       payload: PropTypes.shape({
-        PersonalExposure: PropTypes.number.isRequired,
+        PersonalExposure: PropTypes.number
       }),
     })
-  ).isRequired,
+  ),
   label: PropTypes.string,
 };
 
