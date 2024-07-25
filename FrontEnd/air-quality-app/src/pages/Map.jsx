@@ -12,7 +12,8 @@ import { MapSidebar } from '../components/mapsidebar';
 import MapAlertCard from '../components/mapalertcard';
 import Legend from '../components/maplegend';
 import { heatData } from './heatdata';
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 // const warningImg = "../src/static/icons8-warning-96.png";
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
@@ -41,6 +42,7 @@ export default function MapPage() {
   const [heatMapData, setHeatMapData] = useState(null); // Move heatMapData to state
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [lastFetchTime, setLastFetchTime] = useState(0); // State to store the last fetch time
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: googleMapsKey,
@@ -123,7 +125,9 @@ export default function MapPage() {
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [fetchAQIData]);
 
-  const GetAqiForLocation = (loc) => {
+  const GetAqiForLocation = (loc, date) => {
+    // Use the date parameter to filter or fetch data accordingly
+    console.log(date)
     for (const datapoint of predictedData) {
       if (loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= datapoint.min_lon) {
         return datapoint.predicted_aqi;
@@ -137,9 +141,9 @@ export default function MapPage() {
       map.panTo(new google.maps.LatLng(location.lat(), location.lng()));
       map.zoom = 14;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
-      aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() });
+      aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() }, selectedDate);
     }
-  }, [map]);
+  }, [map, selectedDate]);
 
   const mapContainerStyle = useMemo(() => ({
     position: 'relative',
@@ -196,6 +200,12 @@ export default function MapPage() {
                 {isMapSidebarOpen ? <ArrowBackIosRoundedIcon /> : <ArrowForwardIosRoundedIcon />}
               </IconButton> */}
               <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                dateFormat="yyyy/MM/dd"
+                className="ml-2"
+              />
             </div>
             <MapAlertCard aqi={aqiForLocation} />
 
