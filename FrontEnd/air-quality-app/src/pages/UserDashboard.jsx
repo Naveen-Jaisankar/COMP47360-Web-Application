@@ -178,10 +178,12 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase
 
     if (rawResponse.data.length == 0) {
       setRiskProfileCase( "firstUse");
-
-      
-      console.log("here in the correct case")
+      console.log("here in the firstUse case")
       console.log(riskProfileCase)
+    } 
+    else if (latestDay.quizDate != today) {
+      setRiskProfileCase("NotYetFilled")
+      console.log("No quiz score for today.");
 
     } else if (today === latestDay.quizDate) {
       setRiskProfileCase( "valid");
@@ -191,8 +193,6 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase
       console.log("User AQI from DB:", userAQI);
       setUserAQI(userAQI);
       setAverageAQI(averageAQI);
-    } else {
-      console.log("No quiz score for today.");
     }
   } catch (error) {
     console.error("Error fetching latest day:", error);

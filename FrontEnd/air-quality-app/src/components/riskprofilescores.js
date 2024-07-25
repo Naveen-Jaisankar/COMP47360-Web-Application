@@ -45,7 +45,8 @@ const riskvalueHeadingText = {
     "C": "At Considerable Risk",
     "D": "At High Risk",
     "F": "At Very High Risk",
-    "*": "Welcome To Our App"
+    "*": "Welcome To Fair",
+    "!": "Daily Form Not Filled"
 };
 
 const riskvalueContentText = {
@@ -55,7 +56,8 @@ const riskvalueContentText = {
     "C": "Minimise time spent outside when AQI > 50",
     "D": "Minimise time spent outside when AQI > 40",
     "F": "Minimise time spent outside when AQI > 30",
-    "*": "Your Risk Profile Grade will allow you to quickly see how you're doing in terms of exposure"
+    "*": "Your Risk Profile will allow you to quickly see how you're doing in terms of exposure",
+    "!": "Please complete your Daily form to see your Risk Profile today! "
 };
 
 const riskvalueColor = {

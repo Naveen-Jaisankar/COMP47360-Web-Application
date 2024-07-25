@@ -7,8 +7,9 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
     let grade = "";
     let headingText ="";
     let contentText = "";
-    let gradeColor = ""
-    let gradeText = ""
+    let gradeColor = "";
+    let gradeText = "";
+    let specialCaseImage = "";
 
     //  WHERE WE SET INFORMATION AND CASES
     if (specialCase == "firstUse") {
@@ -16,9 +17,16 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         headingText = riskvalueHeadingText["*"]
         contentText = riskvalueContentText["*"]
         riskvalueColor["*"]
-        // grade = starImage
+        specialCaseImage = starImage
+    } else if (specialCase == "NotYetFilled") {
+        console.log("Im in NotYetFilled!")
+        headingText = riskvalueHeadingText["!"]
+        contentText = riskvalueContentText["!"]
+        riskvalueColor["!"]
+        specialCaseImage = starImage
 
-    } else if (specialCase === "valid") {
+    } 
+    else if (specialCase === "valid") {
     grade = getGrade(avgAQI, userAQI)
     gradeText = renderGrade(avgAQI, userAQI);
     headingText = gradeText.headingText;
@@ -44,9 +52,11 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         borderRadius: 5,
         border: `solid 10px ${gradeColor}`
     }}>
+    
     <Typography variant="h4" component="h3" sx={{
-        color: "black", fontSize:"5rem",
+        color: "black", fontSize:"5rem"
     }}>
+        <Box component="img" src={specialCaseImage}></Box>
     {grade}
     </Typography>
     </Box>
@@ -56,10 +66,10 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         marginLeft: "1rem",
         paddingTop: "1rem"
     }}>
-    <Typography sx={{
+    <Typography variant= "h5"sx={{
         color: "white"
     }}>{headingText}</Typography>
-    <Typography sx={{
+    <Typography variant="body1" sx={{
         color: "white"
     }}>{contentText}</Typography>
     </Box>
