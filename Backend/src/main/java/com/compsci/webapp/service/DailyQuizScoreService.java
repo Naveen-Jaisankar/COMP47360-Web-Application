@@ -131,15 +131,22 @@ public class DailyQuizScoreService {
             String[] coords = location.split(",");
             double locLat = Double.parseDouble(coords[0]);
             double locLon = Double.parseDouble(coords[1]);
-            long timeStamp = System.currentTimeMillis() / 1000L;
+            //long timeStamp = System.currentTimeMillis() / 1000L;
+
+            logger.info("Fetching AQI for location: {}, {} with timestamp: {}", locLat, locLon, timestamp);
 
             // fetching weather details from OpenWeather 
-            JSONObject weatherDetails = fetchWeatherDetails(locLat, locLon,timeStamp);
+            JSONObject weatherDetails = fetchWeatherDetails(locLat, locLon,timestamp);
             logger.info("Weather details: {}", weatherDetails.toString());
+            logger.info("Weather details for timestamp {}: {}", timestamp, weatherDetails.toString());
+
+
 
             //  HTTP call to the data model to get the AQI value
-            aqi = fetchAqiFromDataModel(locLat, locLon, timeStamp, weatherDetails);
+            aqi = fetchAqiFromDataModel(locLat, locLon, timestamp, weatherDetails);
             logger.info("AQI fetched: {}", aqi);
+            logger.info("AQI fetched for timestamp {}: {}", timestamp, aqi);
+
 
         } catch (Exception e) {
             logger.error("Error fetching AQI: ", e);
@@ -200,7 +207,9 @@ public class DailyQuizScoreService {
     
             // local data converted to unix
             long timestamp = date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
-    
+             
+            logger.info("Fetching AQI for date: {} with timestamp: {}", date, timestamp);
+
             
             double aqi = fetchAQIForALocation(location, timestamp);
             aqiList.add(aqi);
