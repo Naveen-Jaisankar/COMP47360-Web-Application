@@ -289,21 +289,25 @@ function Quiz() {
         console.log('Impacts Component:', impactsComponent);
         console.log(userId);
     
+        // Format date to 'yyyy-MM-dd' 
+        const formattedDate = new Date().toISOString().split('T')[0];
+    
         const data = {
             userId: Number(userId),
-            quizDate: new Date().toISOString(), // Ensure date is in ISO format
+            quizDate: formattedDate,
             score: parseFloat(totalWeightedComponent)            
         };
+    
         handleClick(data);
-
+    
         setIsModalOpen(false);
     };
 
-    const handleSaveScore = (data) => {
+    const handleClick = (data) => {
         // Convert the data object to a URL-encoded string
         const formData = new URLSearchParams(data).toString();
     
-        axiosInstance.post('http://localhost:8080/api/v1/StGeorgeQuiz/saveScore', formData, {
+        axiosInstance.post('/StGeorgeQuiz/saveScore', formData, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
@@ -315,7 +319,7 @@ function Quiz() {
             console.error('Error:', error);
         });
     };
-
+    
     // const handleClick = (data) => {
     //     fetch('http://localhost:8080/api/v1/stgeorgequiz/saveScore', {
     //         method: 'POST',

@@ -1,6 +1,7 @@
 package com.compsci.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +18,19 @@ public class StGeorgeQuizController {
     @Autowired
     private StGeorgeQuizService stGeorgeQuizService;
 
-   
-    @PostMapping("/saveScore")
-    public ResponseEntity<StGeorgeQuiz> saveScore(@RequestParam Long userId,
-                                                @RequestParam Date quizDate,
-                                                   @RequestParam Double score) {
+    @PostMapping("/{userId}/{quizDate}")
+    public ResponseEntity<StGeorgeQuiz> saveScore(
+            @PathVariable Long userId,
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date quizDate,
+            @RequestBody Double score) {
         StGeorgeQuiz stGeorgeQuiz = stGeorgeQuizService.saveScore(userId, quizDate, score);
         return ResponseEntity.ok(stGeorgeQuiz);
     }
 
-  
-    @GetMapping("/getScore")
-    public ResponseEntity<StGeorgeQuiz> getScore(@RequestParam Long userId,
-                                                  @RequestParam Date quizDate) {
+    @GetMapping("/{userId}/{quizDate}")
+    public ResponseEntity<StGeorgeQuiz> getScore(
+            @PathVariable Long userId,
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date quizDate) {
         Optional<StGeorgeQuiz> stGeorgeQuiz = stGeorgeQuizService.getScore(userId, quizDate);
         return stGeorgeQuiz.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
