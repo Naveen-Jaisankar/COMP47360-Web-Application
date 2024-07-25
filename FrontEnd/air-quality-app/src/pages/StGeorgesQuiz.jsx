@@ -299,22 +299,39 @@ function Quiz() {
         setIsModalOpen(false);
     };
 
-    const handleClick = (data) => {
-        fetch('http://localhost:8080/stgeorgequiz/saveScore', {
-            method: 'POST',
+    const handleSaveScore = (data) => {
+        // Convert the data object to a URL-encoded string
+        const formData = new URLSearchParams(data).toString();
+    
+        axiosInstance.post('http://localhost:8080/api/v1/StGeorgeQuiz/saveScore', formData, {
             headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data), // Send data as JSON string
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
+        .then(response => {
+            console.log('Success:', response.data);
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Error:', error);
         });
     };
+
+    // const handleClick = (data) => {
+    //     fetch('http://localhost:8080/api/v1/stgeorgequiz/saveScore', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(data), // Send data as JSON string
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log('Success:', data);
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error:', error);
+    //     });
+    // };
     
 
     // const handleClick = (data) => {
