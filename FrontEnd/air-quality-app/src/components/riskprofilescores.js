@@ -44,7 +44,8 @@ const riskvalueHeadingText = {
     "B": "At Some Risk",
     "C": "At Considerable Risk",
     "D": "At High Risk",
-    "F": "At Very High Risk"
+    "F": "At Very High Risk",
+    "*": "Welcome To Our App"
 };
 
 const riskvalueContentText = {
@@ -53,7 +54,8 @@ const riskvalueContentText = {
     "B": "Minimise time spent outside when AQI > 60",
     "C": "Minimise time spent outside when AQI > 50",
     "D": "Minimise time spent outside when AQI > 40",
-    "F": "Minimise time spent outside when AQI > 30"
+    "F": "Minimise time spent outside when AQI > 30",
+    "*": "Your Risk Profile Grade will allow you to quickly see how you're doing in terms of exposure"
 };
 
 const riskvalueColor = {
@@ -72,7 +74,7 @@ function renderGrade(averageAQI, userAQI) {
 
     return {
         headingText: headingText,
-        contentText: contentText
+        contentText: contentText,
     };
 }
 
@@ -84,5 +86,8 @@ function renderColor(averageAQI, userAQI) {
 export {
     getGrade,
     renderGrade,
-    renderColor
+    renderColor,
+    riskvalueContentText,
+    riskvalueHeadingText,
+    riskvalueColor
 };

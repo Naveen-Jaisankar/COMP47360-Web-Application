@@ -16,7 +16,7 @@ import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
 
 const image1 = "../src/static/proxy-image.png";
-
+// let riskProfileCase = "";
 
 
 // reformats the javascript date object to match with database date format
@@ -160,9 +160,10 @@ const getLastSevenDays = async (userId) => {
   }
 };
 
-const getTodayAQI = async (userId, setAverageAQI, setUserAQI) => {
+const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase) => {
   try {
     const rawResponse = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
+    console.log("in todayaqi", rawResponse.data.length)
     let latestDays = rawResponse.data.reverse();
     let latestDay = latestDays[0];
 
@@ -174,7 +175,17 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI) => {
     const averageAQI = Math.round(rawAverageAQI);
     console.log("Average AQI from DB:", averageAQI);
 
-    if (today === latestDay.quizDate) {
+
+    if (rawResponse.data.length == 0) {
+      setRiskProfileCase( "firstUse");
+
+      
+      console.log("here in the correct case")
+      console.log(riskProfileCase)
+
+    } else if (today === latestDay.quizDate) {
+      setRiskProfileCase( "valid");
+
       let rawUserAQI = latestDay.quizScore;
       let userAQI = Math.round(rawUserAQI);
       console.log("User AQI from DB:", userAQI);
@@ -208,6 +219,7 @@ const DashBoard = ({ isSidebarOpen }) => {
   const [averageAQI, setAverageAQI] = useState(0)
   const [userAQI, setUserAQI] = useState(0)
   const { userId } = useContext(AuthContext);
+  const [riskProfileCase, setRiskProfileCase] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -218,13 +230,10 @@ const DashBoard = ({ isSidebarOpen }) => {
   }, [userId]);
 
   useEffect(() => {
-    // const responseAQIData = axiosInstance.get(`dailyquizscores/getaqitoday`)
-    getTodayAQI(userId, setAverageAQI, setUserAQI)
-    console.log("IN USE EFFECT RN")
+    getTodayAQI(userId, setAverageAQI, setUserAQI, setRiskProfileCase)
     console.log(userAQI)
     console.log(averageAQI)
-    // console.log('this is the responseAQI',responseAQIData)
-    // setAQI(responseAQIData)
+    console.log(riskProfileCase)
   }, [userId]);
 
   return (
@@ -297,7 +306,7 @@ const DashBoard = ({ isSidebarOpen }) => {
         </div>
       </section>
       <section>
-        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI}/>
+        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase}/>
       </section>
     </div>
   );

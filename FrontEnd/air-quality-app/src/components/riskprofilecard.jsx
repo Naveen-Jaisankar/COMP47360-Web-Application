@@ -1,13 +1,31 @@
-import { renderGrade, getGrade, renderColor } from "./riskprofilescores";
+import { renderGrade, getGrade, renderColor, riskvalueHeadingText, riskvalueContentText, riskvalueColor } from "./riskprofilescores";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 
-const RiskProfileCard = ({avgAQI, userAQI}) => {
-    // let avgAQI = 20
-    // let userAQI = 20
-    let grade = getGrade(avgAQI, userAQI)
-    let { headingText, contentText } = renderGrade(avgAQI,userAQI);
-    let gradeColor = renderColor(avgAQI,userAQI)
+const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
+    let starImage = "../src/static/star.png"
+    let grade = "";
+    let headingText ="";
+    let contentText = "";
+    let gradeColor = ""
+    let gradeText = ""
+
+    //  WHERE WE SET INFORMATION AND CASES
+    if (specialCase == "firstUse") {
+        console.log("Im in risk profile card")
+        headingText = riskvalueHeadingText["*"]
+        contentText = riskvalueContentText["*"]
+        riskvalueColor["*"]
+        // grade = starImage
+
+    } else if (specialCase === "valid") {
+    grade = getGrade(avgAQI, userAQI)
+    gradeText = renderGrade(avgAQI, userAQI);
+    headingText = gradeText.headingText;
+    contentText = gradeText.contentText;
+    gradeColor = renderColor(avgAQI, userAQI)
+    }
+    
 
     return(
     <Box sx={{
