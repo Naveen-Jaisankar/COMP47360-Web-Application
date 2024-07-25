@@ -46,5 +46,10 @@ public class DailyQuizScoreController {
         return dailyQuizScoreService.getAqiForPast7Days(location);
     }
 
+    @GetMapping("/getaqitoday")
+    public double getAqiForToday() {
+        return dailyQuizScoreService.getAqiForToday();
+    }
+
     
 }

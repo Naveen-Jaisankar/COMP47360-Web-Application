@@ -196,10 +196,10 @@ const DashBoard = ({ isSidebarOpen }) => {
 
 
   useEffect(() => {
-    let location = [40.776676, -73.971321]
-    let locationToSend = location.toString()
-    console.log('locationToSend', locationToSend)
-    const responseAQIData = axiosInstance.get(`dailyquizscores/getaqi/past7days/${locationToSend}`)
+    // let location = [40.776676, -73.971321]
+    // let locationToSend = location.toString()
+    // console.log('locationToSend', locationToSend)
+    const responseAQIData = axiosInstance.get(`dailyquizscores/getaqitoday`)
     console.log('this is the responseAQI',responseAQIData)
 
   }, []);

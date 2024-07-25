@@ -219,6 +219,19 @@ public class DailyQuizScoreService {
     }
     
 
+    public double getAqiForToday() {
+        LocalDate currentDate = LocalDate.now();
+
+        String location = "40.776676, -73.971321";
+
+        long timestamp = currentDate.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+
+        double aqi = fetchAQIForALocation(location, timestamp);
+
+        return aqi;
+    }
+    
+
     private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {
         double maskFactor = 1.0;
         double indoorFactor = 3.0;
