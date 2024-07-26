@@ -66,16 +66,7 @@ export default function MapPage() {
 
   const fetchAQIData = useCallback(async () => {
     const locationInput = {
-      loc_lat: 40.75838928128043,
-      loc_lon: -73.97503124048248,
-      time_stamp: 1780310800,
-      humidity: 62,
-      wind_deg: 259,
-      temp: 286.59444444444443,
-      wind_speed: 5.4704,
-      wind_gust: 0.0,
-      pressure: 1009.482859,
-      weather_id: 502
+      time_stamp: Math.floor(Date.now() / 1000),
     };
 
     try {
@@ -117,22 +108,32 @@ export default function MapPage() {
     // Fetch data immediately
     fetchAQIData();
 
-    // Set up interval to fetch data every two minutes
+    
     const interval = setInterval(() => {
       fetchAQIData();
-    }, 1000); // Fetch data every two minutes
+    }, 1800000); // 
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [fetchAQIData]);
 
   const GetAqiForLocation = (loc, date) => {
     // Use the date parameter to filter or fetch data accordingly
-    console.log(date)
-    for (const datapoint of predictedData) {
-      if (loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= datapoint.min_lon) {
-        return datapoint.predicted_aqi;
-      }
-    }
+    console.log(loc)
+    const data = {
+      loc_lat: loc.lat,
+      loc_lon: loc.lng,
+      time_stamp: Math.floor(date.getTime() / 1000)
+    };
+
+    axiosInstance.post('/map/getAQIValueForALocation', data)
+      .then(response => {
+        console.log(response.data.predicted_aqi);
+        return response.predicted_aqi;
+      })
+      .catch(error => {
+        console.error("There was an error sending the data!", error);
+    });
+
     return 0;
   };
 
