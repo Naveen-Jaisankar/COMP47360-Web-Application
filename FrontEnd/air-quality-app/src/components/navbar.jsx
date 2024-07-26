@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext} from "react";
 import { AppBar, Toolbar, IconButton, Typography, Box, Menu, MenuItem} from "@mui/material";
 import AirIcon from '@mui/icons-material/Air';
 import {useNavigate} from 'react-router-dom';
@@ -7,12 +7,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NavbarButton from "./navbarbutton";
 import navbarHeights from './navbarheights';
 import constants from './../constant';
+import { AuthContext } from "../context/AuthContext";
 
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const [anchorNav, setAnchorNav] = useState(null);
+
+  const {token, logout} = useContext(AuthContext);
 
   const handleOnClick = ()=>{
     navigate('/');

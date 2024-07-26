@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import {Typography, Box } from '@mui/material';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Infocard from "../components/infocard";
 import PropTypes from 'prop-types';
 import { AuthContext } from '../context/AuthContext';
 import axiosInstance from "../../src/axios";
-import { useContext } from 'react';
 import UserHistory from './UserHistory';
 const image1 = "../src/static/proxy-image.png";
 
