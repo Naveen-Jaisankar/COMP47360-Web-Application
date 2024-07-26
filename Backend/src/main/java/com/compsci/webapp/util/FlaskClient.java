@@ -30,7 +30,7 @@ public class FlaskClient {
         return new JSONObject(responseString);
     }
 
-    public static JSONArray predictForAllGrids(JSONObject input) throws Exception {
+    public static String predictForAllGrids(JSONObject input) throws Exception {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(PREDICT_FOR_ALL_GRIDS_URL);
 
@@ -43,6 +43,6 @@ public class FlaskClient {
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
         client.close();
-        return new JSONArray(responseString);
+        return responseString;
     }
 }

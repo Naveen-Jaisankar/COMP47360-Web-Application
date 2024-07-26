@@ -31,27 +31,6 @@ public class SingleGridRequest {
     @JsonProperty("time_stamp")
     private long timeStamp;
 
-    @JsonProperty("humidity")
-    private int humidity;
-
-    @JsonProperty("wind_deg")
-    private int windDeg;
-
-    @JsonProperty("temp")
-    private double temp;
-
-    @JsonProperty("wind_speed")
-    private double windSpeed;
-
-    @JsonProperty("wind_gust")
-    private double windGust;
-
-    @JsonProperty("pressure")
-    private double pressure;
-
-    @JsonProperty("weather_id")
-    private int weatherId;
-
 	public double getLocLat() {
 		return locLat;
 	}
@@ -76,60 +55,6 @@ public class SingleGridRequest {
 		this.timeStamp = timeStamp;
 	}
 
-	public int getHumidity() {
-		return humidity;
-	}
-
-	public void setHumidity(int humidity) {
-		this.humidity = humidity;
-	}
-
-	public int getWindDeg() {
-		return windDeg;
-	}
-
-	public void setWindDeg(int windDeg) {
-		this.windDeg = windDeg;
-	}
-
-	public double getTemp() {
-		return temp;
-	}
-
-	public void setTemp(double temp) {
-		this.temp = temp;
-	}
-
-	public double getWindSpeed() {
-		return windSpeed;
-	}
-
-	public void setWindSpeed(double windSpeed) {
-		this.windSpeed = windSpeed;
-	}
-
-	public double getWindGust() {
-		return windGust;
-	}
-
-	public void setWindGust(double windGust) {
-		this.windGust = windGust;
-	}
-
-	public double getPressure() {
-		return pressure;
-	}
-
-	public void setPressure(double pressure) {
-		this.pressure = pressure;
-	}
-
-	public int getWeatherId() {
-		return weatherId;
-	}
-
-	public void setWeatherId(int weatherId) {
-		this.weatherId = weatherId;
-	}
+   
 	
 }

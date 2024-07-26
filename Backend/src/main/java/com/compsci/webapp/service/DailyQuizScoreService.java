@@ -1,35 +1,24 @@
 package com.compsci.webapp.service;
 
-import com.compsci.webapp.util.FlaskClient;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.compsci.webapp.entity.DailyQuizID;
 import com.compsci.webapp.entity.DailyQuizScore;
 import com.compsci.webapp.entity.UserEntity;
 import com.compsci.webapp.repository.DailyQuizScoreRepository;
 import com.compsci.webapp.repository.UserRepository;
 import com.compsci.webapp.request.DailyQuizScoreRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import com.compsci.webapp.util.AQICalculator;
 import com.compsci.webapp.util.Constants;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.compsci.webapp.util.MapUtils;
 
 @Service
 
@@ -50,6 +39,7 @@ public class DailyQuizScoreService {
     
     @Autowired
     private UserRepository userRepository;
+    
 
     public List<DailyQuizScore> getDailyQuizScoreById(Long id) {
     	List<DailyQuizScore> dailyQuizScore = new ArrayList<>();
@@ -65,8 +55,10 @@ public class DailyQuizScoreService {
     	DailyQuizScore dailyQuizScoreEntity = new DailyQuizScore();
     	try {
     		//Fetching AQI data for indoor and outdoor locations
-            double indoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getIndoorLocation());
-            double outdoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getOutdoorLocation());
+
+    	    MapUtils mapUtils = new MapUtils(openWeatherApiKey);
+            double indoorAQI = mapUtils.getAQIForLocation(dailyQuizScoreRequest.getIndoorLocation());
+            double outdoorAQI = mapUtils.getAQIForLocation(dailyQuizScoreRequest.getOutdoorLocation());
             logger.info("Indoor AQI: {}, Outdoor AQI: {}", indoorAQI, outdoorAQI);
 
             // converting AQI to PM2.5
@@ -123,69 +115,7 @@ public class DailyQuizScoreService {
         dailyQuizScoreRepository.delete(quizScore);
     }
 
-    private double fetchAQIForALocation(String location) {
-        double aqi = 0.0; // default value
-        try {
-            // splits location string into latitude and longitude
-            String[] coords = location.split(",");
-            double locLat = Double.parseDouble(coords[0]);
-            double locLon = Double.parseDouble(coords[1]);
-            long timeStamp = System.currentTimeMillis() / 1000L;
-
-            // fetching weather details from OpenWeather 
-            JSONObject weatherDetails = fetchWeatherDetails(locLat, locLon);
-            logger.info("Weather details: {}", weatherDetails.toString());
-
-            //  HTTP call to the data model to get the AQI value
-            aqi = fetchAqiFromDataModel(locLat, locLon, timeStamp, weatherDetails);
-            logger.info("AQI fetched: {}", aqi);
-
-        } catch (Exception e) {
-            logger.error("Error fetching AQI: ", e);
-        }
-
-        return aqi;
-    }
-
-    private JSONObject fetchWeatherDetails(double locLat, double locLon) throws Exception {
-        String url = OPENWEATHER_URL + "?lat=" + locLat + "&lon=" + locLon + "&appid=" + openWeatherApiKey;
-        JSONObject jsonResponse = null;
-        try (CloseableHttpClient client = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(url);
-            CloseableHttpResponse response = client.execute(httpGet);
-
-            String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-            jsonResponse = new JSONObject(responseString);
-            
-        }catch(Exception e) {
-        	logger.error("Error while fetching weather details");
-        }
-        return jsonResponse;
-    }
-
-    private double fetchAqiFromDataModel(double locLat, double locLon, long timeStamp, JSONObject weatherDetails) throws Exception {
-
-    	double predictedAQI = 0;
-        JSONObject jsonInput = new JSONObject();
-        jsonInput.put("loc_lat", locLat);
-        jsonInput.put("loc_lon", locLon);
-        jsonInput.put("time_stamp", timeStamp);
-        jsonInput.put("humidity", weatherDetails.getJSONObject("main").getInt("humidity"));
-        jsonInput.put("temp", weatherDetails.getJSONObject("main").getDouble("temp"));
-        jsonInput.put("pressure", weatherDetails.getJSONObject("main").getDouble("pressure"));
-        jsonInput.put("wind_speed", weatherDetails.getJSONObject("wind").getDouble("speed"));
-        jsonInput.put("wind_deg", weatherDetails.getJSONObject("wind").getInt("deg"));
-        jsonInput.put("wind_gust", weatherDetails.getJSONObject("wind").optDouble("gust", 0.0));
-        jsonInput.put("weather_id", weatherDetails.getJSONArray("weather").getJSONObject(0).getInt("id"));
-
-	    try { 
-	    	predictedAQI = FlaskClient.predictWithLocation(jsonInput).getDouble("predicted_aqi");
-	    }catch(Exception e) {
-	    	logger.error("Error while fetching data from data model");
-	    }
-	    
-	    return predictedAQI;
-    }
+    
 
     private double calculateRiskScore(double indoorPM, double outdoorPM, int indoorHours, int outdoorHours) {
         double maskFactor = 1.0;
