@@ -13,6 +13,8 @@ import { heatData } from './heatdata';
 import { SettingsContext } from '../context/SettingsContext';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import LoadingScreen from '../components/loadingscreen';
+import constant from '../constant';
 
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
 const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
@@ -161,7 +163,7 @@ export default function MapPage() {
   }, []);
 
   if (!isLoaded) {
-    return (<div>Loading...please wait</div>);
+    return (<LoadingScreen loadingtext = {constant.Mappage.loading_text}/>);
   }
 
   const formatLastFetchTime = (timestamp) => {
@@ -234,10 +236,6 @@ export default function MapPage() {
               />
             </div>
             <MapAlertCard aqi={aqiForLocation} />
-
-            <div className="text-sm mt-2">
-              Last fetch time: {formatLastFetchTime(lastFetchTime)}
-            </div>
           </div>
 
           <div className='flex fixed z-10 right-2 mr-3 bottom-4'>

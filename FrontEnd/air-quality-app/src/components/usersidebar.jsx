@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
   return (
     <div className="flex">
       {!isOpen && (
-        <IconButton onClick={toggleDrawer} className="absolute top-2 left-2">
+        <IconButton onClick={toggleDrawer} className="sticky top-2 left-2">
           <MenuIcon />
         </IconButton>
       )}

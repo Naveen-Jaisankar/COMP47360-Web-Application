@@ -110,6 +110,10 @@ export const ForgotPass = {
     forgotText:"Reset Password"
 }
 
+export const Mappage = {
+    loading_text:"Please wait... Loading your map"
+}
+
 export default {
     footerConstants,
     general,
@@ -123,5 +127,6 @@ export default {
     privacy,
     userHistory,
     ForgotPass,
-    userSidebar
+    userSidebar,
+    Mappage
 };

@@ -40,19 +40,19 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/settings" element={<Settings />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register/>} />
+                    {/* <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register/>} /> */}
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path='/forgotpassword' element={<ForgotPass />} />
                     <Route path="/map" element={<Map />} />
-                    <Route path='/blogin' element={<BetterLogin />} />
+                    <Route path='/login' element={<BetterLogin />} />
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
                     <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} />
                     {/* for testing uncomment below */}
-                    {/* <Route path= "/user/dailyform" element={<DailyForm/>}/> */}
-                    {/* <Route path="/user/dashboard" element={<UserDashboard/>} /> */}
+                    {/* <Route path= "/user/dailyform" element={<DailyForm/>}/>
+                    <Route path="/user/dashboard" element={<UserDashboard/>} /> */}
                   </Routes>
                 </MainContent>
               </div>

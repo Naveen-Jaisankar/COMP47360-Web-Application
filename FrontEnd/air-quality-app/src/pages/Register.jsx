@@ -74,7 +74,7 @@ const Register = () => {
 
             <button 
               type="submit" 
-              class="bg-blue-500 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mt-4 w-full transition duration-300 ease-in-out"
+              className="bg-blue-500 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mt-4 w-full transition duration-300 ease-in-out"
             >
                {constants.register.btn}
             </button> 

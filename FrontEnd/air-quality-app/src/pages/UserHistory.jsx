@@ -1,26 +1,28 @@
-import { useState } from "react"
-import { Container, Typography, Box } from "@mui/material"
-import UserContent from "../components/usercontent"
-import CustomCalendar from "../components/customcalendar"
-import RiskProfileCard from "../components/riskprofilecard"
+import { Container, Typography, Box } from "@mui/material";
+import UserContent from "../components/usercontent";
+import CustomCalendar from "../components/customcalendar";
+import RiskProfileCard from "../components/riskprofilecard";
 import constants from './../constant';
-import Sidebar from '../components/usersidebar';
 
-export default function UserHistory () {
-
-    const [isSidebarOpen, setSidebarOpen] = useState(true);
-
-    const toggleDrawer = () => {
-      setSidebarOpen(!isSidebarOpen);
-    };
-
+export default function UserHistory() {
     return (
         <div className="flex">
-            <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
-            <UserContent sx={{ backgroundColor: "#f7f7f2"}} className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
+            <UserContent sx={{ backgroundColor: "#f7f7f2" }}>
                 <Container>
-                    <Box sx= {{padding: "2rem",margin: "1rem"}}>
-                        <Typography variant="h3" component='h2' sx={{fontSize: "3rem", marginBottom: "2rem",}}>
+                    <Box
+                        sx={{
+                            padding: { xs: "1rem", sm: "2rem" },
+                            margin: { xs: "0.5rem", sm: "1rem" },
+                        }}
+                    >
+                        <Typography
+                            variant="h3"
+                            component='h2'
+                            sx={{
+                                fontSize: { xs: "2rem", sm: "3rem" },
+                                marginBottom: { xs: "1rem", sm: "2rem" },
+                            }}
+                        >
                             {constants.userHistory.title}
                         </Typography>
 
@@ -29,16 +31,19 @@ export default function UserHistory () {
                         </Box>
                     </Box>
 
-                    <Box sx= {{ padding: "2rem"}}>
-                        <Typography variant="h3" component='h2' sx={{fontSize: "3rem"}}>
+                    <Box sx={{ padding: { xs: "1rem", sm: "2rem" } }}>
+                        <Typography
+                            variant="h3"
+                            component='h2'
+                            sx={{ fontSize: { xs: "2rem", sm: "3rem" } }}
+                        >
                             {constants.userHistory.riskProfileTitle}
                         </Typography>
 
-                        <RiskProfileCard />           
+                        <RiskProfileCard />
                     </Box>
-
                 </Container>
             </UserContent>
         </div>
-    )
+    );
 }

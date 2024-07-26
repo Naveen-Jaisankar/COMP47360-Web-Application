@@ -56,7 +56,7 @@ const Navbar = () => {
                 <NavbarButton to="/map">{constants.general.map}</NavbarButton>
                 <NavbarButton to="/settings">{constants.general.settings}</NavbarButton>
                 <NavbarButton to="/user">{constants.general.user_dash}</NavbarButton>
-                <NavbarButton to="/register">{constants.general.login_register}</NavbarButton>
+                <NavbarButton to="/login">{constants.general.login_register}</NavbarButton>
             </Box>
 
           <IconButton edge="end" color="inherit" aria-label="menu" size="large"

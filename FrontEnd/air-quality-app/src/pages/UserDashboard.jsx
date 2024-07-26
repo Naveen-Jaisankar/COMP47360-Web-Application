@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { AuthContext } from '../context/AuthContext';
 import axiosInstance from "../../src/axios";
 import { useContext } from 'react';
+import UserHistory from './UserHistory';
 const image1 = "../src/static/proxy-image.png";
 
 // Function to get the last 7 days with formatted dates
@@ -108,6 +109,11 @@ const DashBoard = ({ isSidebarOpen }) => {
           </Typography>
         </div>
       </section>
+
+      <section>
+        <UserHistory />
+      </section>
+      
       <section>
         <Typography variant="h5" className="mb-4">Suggested Actions</Typography>
         {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
