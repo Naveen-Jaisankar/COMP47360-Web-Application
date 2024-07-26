@@ -1,11 +1,8 @@
 package com.compsci.webapp.util;
 
-
 public class AQICalculator {
-
     // method that converts AQI to PM2.5
     public static double aqiToPm25(int aqi) {
-
         double pm25;
         if (aqi < 0) {
             pm25 = 0.0;

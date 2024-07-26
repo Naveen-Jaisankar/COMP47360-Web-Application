@@ -1,20 +1,23 @@
+import { useState, useContext, useEffect } from 'react';
 import UserContent from "../components/usercontent";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState, useContext } from 'react';
-import { styled, useTheme } from "@mui/system";
+import { letterSpacing, styled, useTheme } from "@mui/system";
 import {ThickHeadingTypography} from "./Home";
+
+
 import constants from './../constant';
 import Sidebar from '../components/usersidebar';
 import axiosInstance from "../../src/axios";
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import { AuthContext } from '../context/AuthContext';
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
   fontWeight: "bold",
   color: theme.palette.text.primary,
 }));
+
 
 const GreyBackgroundBox = styled(Box) (({theme}) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#0D1B2A' : "#F1F3F2",
@@ -34,12 +37,13 @@ export default function DailyForm() {
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
-  const { userId } = useContext(AuthContext); // Get userId from AuthContext  const theme = useTheme();
+
   const theme = useTheme();
 
-  // Validation functions
+  const { userId } = useContext(AuthContext);
+  const [isValidatingHours, setIsValidatingHours] = useState(false);
+  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
 
-  // checks if location is in Manhattan
   const checkValidLocation = (indoorLocation, outdoorLocation) => {
     let isValid = false;
     let indoorCheck = false;
@@ -47,11 +51,7 @@ export default function DailyForm() {
 
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
-        console.log(component);
-        if (
-          component.long_name === "Manhattan" ||
-          component.short_name === "Manhattan"
-        ) {
+        if (component.long_name === "Manhattan" || component.short_name === "Manhattan") {
           indoorCheck = true;
         }
       });
@@ -59,66 +59,85 @@ export default function DailyForm() {
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
-        console.log("outdoors:");
-        console.log(component);
-        if (
-          component.long_name === "Manhattan" ||
-          component.short_name === "Manhattan"
-        ) {
+        if (component.long_name === "Manhattan" || component.short_name === "Manhattan") {
           outdoorCheck = true;
         }
       });
     }
 
-    if (indoorCheck === true && outdoorCheck === true) {
+    if (indoorCheck && outdoorCheck) {
       isValid = true;
     }
     return isValid;
   };
 
-  // checks if the user has inputted 24 hours, if not this function will proportionately "fill" the rest of hours
-  // based of users input. If input is 0, it will take the "average day" spent indoors/outdoors i.e. 2 hours indoors/22 hours outdoors
   const check24Hours = (indoorHours, outdoorHours) => {
     let hourCheck = true;
+    if (indoorHours + outdoorHours > 24) {
+      hourCheck = false;
+    }
+    return hourCheck
+  }
+
+  const adjustHours = (indoorHours, outdoorHours) => {
     const totalHours = indoorHours + outdoorHours;
+
     if (totalHours === 0) {
       setIndoorHours(22);
       setOutdoorHours(2);
     } else if (totalHours < 24) {
-      var indoorHourRatio = indoorHours / totalHours;
-      var outdoorHourRatio = outdoorHours / totalHours;
+      const indoorHourRatio = indoorHours / totalHours;
+      const outdoorHourRatio = outdoorHours / totalHours;
 
-      var leftoverHours = 24 - totalHours;
+      const leftoverHours = 24 - totalHours;
+      console.log("leftover hours:" + leftoverHours)
 
       const newIndoorHours = Math.round(leftoverHours * indoorHourRatio);
-      console.log(newIndoorHours);
-
+      console.log("new indoor hours:" , newIndoorHours)
       const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio);
-      console.log(newOutdoorHours);
+      console.log("new outdoor hours:", newOutdoorHours)
 
-      const adjustedIndoorHours = indoorHours + newIndoorHours;
-      const adjustedOutdoorHours = outdoorHours + newOutdoorHours;
+      let adjustedIndoorHours = indoorHours + newIndoorHours;
+      let adjustedOutdoorHours = outdoorHours + newOutdoorHours;
 
-      console.log(`adjusted indoors, ${adjustedIndoorHours}`);
-      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
+      console.log(adjustedIndoorHours, adjustedOutdoorHours)
 
-      setIndoorHours(adjustedIndoorHours)
-      setOutdoorHours(adjustedOutdoorHours)
-    } else if (totalHours > 24){
-      hourCheck = false;
+      if ((adjustedIndoorHours + adjustedOutdoorHours) > 24) {
+        const excess = (adjustedIndoorHours + adjustedOutdoorHours) -24
+
+        if (adjustedIndoorHours > adjustedOutdoorHours) {
+          adjustedIndoorHours = adjustedIndoorHours - excess
+          console.log("here in calc indoor", adjustedIndoorHours)
+        } else if (adjustedOutdoorHours > adjustedIndoorHours) {
+          adjustedOutdoorHours = adjustedOutdoorHours - excess
+          console.log("here in calc zdoor", adjustedIndoorHours)
+        }
+
+      }
+      setIndoorHours(adjustedIndoorHours);
+      setOutdoorHours(adjustedOutdoorHours);
     }
+  };
 
-    return hourCheck;
-  }
+  useEffect(() => {
+    if (isValidatingHours) {
+      adjustHours(indoorHours, outdoorHours);
+      setIsValidatingHours(false);
+      setIsReadyToSubmit(true);
+    }
+  }, [isValidatingHours]);
 
-  // Submission function
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (isReadyToSubmit) {
+      handleSubmit();
+    }
+  }, [isReadyToSubmit]);
 
-    const is24Hours = check24Hours(indoorHours, outdoorHours);
+  const handleSubmit = async () => {
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
+    const is24Hours = check24Hours(indoorHours, outdoorHours);
 
-    let indoorLocationArray = [indoorLocation.lat ,indoorLocation.lng];
+    let indoorLocationArray = [indoorLocation.lat, indoorLocation.lng];
     let outdoorLocationArray = [outdoorLocation.lat, outdoorLocation.lng];
 
     let indoorLocationToSend = indoorLocationArray.toString();
@@ -135,17 +154,17 @@ export default function DailyForm() {
 
     if (!isValid) {
       alert("Please choose a location in Manhattan");
-    } else if (!is24Hours) {
+    } else if (!is24Hours){
       alert("24 hours exceeded, number inputs are invalid");
-    } else {
+    } else{
       try {
-        axiosInstance.post('/dailyquizscores/createDailyQuizScore', data)
-        .then(response => {
-          console.log("Data sent successfully!", response);
-        })
-        .catch(error => {
-          console.error("There was an error sending the data!", error);
-        });
+        await axiosInstance.post('/dailyquizscores/createDailyQuizScore', data)
+          .then(response => {
+            console.log("Data sent successfully!", response);
+          })
+          .catch(error => {
+            console.error("There was an error sending the data!", error);
+          });
 
         alert("Form submitted");
 
@@ -157,6 +176,13 @@ export default function DailyForm() {
         console.log(`Error: ${err.message}`);
       }
     }
+
+    setIsReadyToSubmit(false);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setIsValidatingHours(true);
   };
 
   const handleIndoorHoursChange = (event, newValue) => {
@@ -210,9 +236,9 @@ export default function DailyForm() {
               <QuestionTypography variant="h5" component="h2">
                 {constants.dailyForm.q1_indoorLocation}
               </QuestionTypography>
-              <DailySearchbar 
-                value={indoorLocation.address || ""} 
-                passPlaceData={handleIndoorPlaceChange} 
+              <DailySearchbar
+                value={indoorLocation.address}
+                passPlaceData={handleIndoorPlaceChange}
               />
 
               <QuestionTypography variant="h5" component="h2">
@@ -234,7 +260,7 @@ export default function DailyForm() {
               <CustomNumberInput
                 value={outdoorHours}
                 onChange={handleOutdoorHoursChange}
-                arialabel={"Number of Hours spent indoors"}
+                arialabel={"Number of Hours spent outdoors"}
               />
                <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
                   <Button
