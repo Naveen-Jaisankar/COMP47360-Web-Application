@@ -33,3 +33,4 @@ public class AQICalculator {
         return ylo + (yhi - ylo) * ((x - xlo) / (xhi - xlo));
     }
 }
+

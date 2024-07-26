@@ -102,4 +102,3 @@ DailySearchbar.propTypes = {
 
 export default DailySearchbar;
 
-
