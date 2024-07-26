@@ -90,7 +90,7 @@ taxi_density_model = joblib.load(taxi_density_model_path)
 aqi_model = joblib.load(aqi_model_path)
 
 # Load grid information
-grid_info = pd.read_csv( grid_info_path)
+grid_info = pd.read_csv(grid_info_path)
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
