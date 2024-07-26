@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
-import { color } from "@mui/system";
+import { color, textAlign } from "@mui/system";
 
 const image1 = "../src/static/proxy-image.png";
 
@@ -311,7 +311,10 @@ const DashBoard = ({ isSidebarOpen }) => {
         </div>
       </section>
       <section>
-        <RiskProfileCard avgAQI={13} userAQI={userAQI} specialCase={riskProfileCase}/>
+        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase}
+        sx={{
+          textAlign: "justify"
+        }}/>
       </section>
     </div>
   );

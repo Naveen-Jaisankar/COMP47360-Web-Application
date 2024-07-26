@@ -53,7 +53,7 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         borderRadius: 5,
         border: `solid 10px ${gradeColor}`,
         // maxWidth: "50rem",
-        maxHeight: {xs: "15rem", md: "25rem" }
+        maxHeight: {xs: "15rem", md: "18rem" }
     }}>
     
     <Typography variant="h1" component="h3" sx={{
@@ -77,14 +77,15 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
         color: "white"
     }}>{headingText}</Typography>
     <Typography variant="body1" sx={{
-        color: "white"
+        color: "white",
+        textAlign: "justify"
     }}>{contentText}</Typography>
     </Box>
 
     </Box>)
 }
 
-RiskProfileCardard.propTypes = {
+RiskProfileCard.propTypes = {
     avgAQI: PropTypes.number,
     userAQI: PropTypes.number,
     specialCase: PropTypes.string,
