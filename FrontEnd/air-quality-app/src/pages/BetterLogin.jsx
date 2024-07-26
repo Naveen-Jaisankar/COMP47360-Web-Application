@@ -21,7 +21,7 @@ const BetterLogin = () => {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F2F2F2",
+    backgroundColor: darkMode ? "#000000":"#F2F2F2",
     borderRadius: "2vh",
     padding: "2rem",
     position: "fixed",
@@ -54,7 +54,7 @@ const BetterLogin = () => {
       }
 
       <BoxBox>
-        <div style={{ textAlign: 'center', color: '#4B5563', marginBottom: '1rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
           <div className="flex flex-col mt-1">
             <span>{isSignUpMode ? 'Already have an account?' : "Don't have an account?"}</span>
             <div className="ml-1">
