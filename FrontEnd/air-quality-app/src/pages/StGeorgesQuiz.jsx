@@ -16,7 +16,7 @@ import { styled } from "@mui/system";
 import { CreamBackgroundBox, SmallerHeadingBox } from "./Home";
 import constants, { dailyForm } from "./../constant";
 import CircleIcon from "@mui/icons-material/Circle";
-import { Typography }from "@mui/material";
+import { Typography, Button }from "@mui/material";
 
 const questions = [
   {
@@ -768,37 +768,72 @@ function Quiz() {
   );
 }
 
-const QuestionTypography = styled(Typography)({
-    fontSize: "3rem",
-    fontWeight: 420,
-  });
-  
-  const AnswerTypography = styled(Typography)({
-    fontSize: "2rem",
-    marginBottom: "2rem",
-    marginTop: "1rem"
-  });
-
-export default function Form() {
-  return (
-    <>
-      <CreamBackgroundBox
-        sx={{
-          minWidth: "100vw",
-        }}
-      >
-        <MainContent
+  export default function Form() {
+    return (
+      <>
+        <CreamBackgroundBox
           sx={{
-            backgroundColor: "#f7f7f2",
+            minWidth: "100vw",
           }}
         >
-            <Box>
-                <Typography variant="h1">Heading</Typography>
-                <Typography variant="h2">Heading</Typography>
-                <Typography variant="body1">Body</Typography>
+          <MainContent
+            sx={{
+              backgroundColor: "#f7f7f2",
+              padding: "2rem",
+              textAlign: "justify",
+            }}
+          >
+            <Box sx={{ marginBottom: "2rem" }}>
+              <Typography variant="h1" sx={{ marginBottom: "1rem" }}>
+                St. George's Respiratory Questionnaire
+              </Typography>
+              <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
+                What is it?
+              </Typography>
+              <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
+                The St. George's Respiratory Questionnaire (SGRQ) is defined as a measure for <i>"health impairment in patients with asthma and COPD"</i>. It assesses an individual's quality of life and how their respiratory ailments affect it.
+              </Typography>
+              <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
+                Should I Take it?
+              </Typography>
+              <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
+                Individuals suffering from any respiratory conditions are highly encouraged to take the quiz. It will provide insights into your own health, and will personalize your risk profile card to be more reflective of your health state.
+              </Typography>
+              <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
+                What if I Don't Have a Respiratory Condition?
+              </Typography>
+              <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
+                You may still take the quiz. If none of the questions apply to you, then your risk profile will remain the same, however, you may find a few questions that do apply. It is therefore encouraged that everyone completes the questionnaire.
+              </Typography>
+              <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
+                How Many Times Do I Need to Take the Quiz?
+              </Typography>
+              <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
+                Once for the first time to personalize your risk profile, then again whenever you feel your health circumstances change, or after 4 - 6 months.
+              </Typography>
+              <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
+                What Information Will You Store?
+              </Typography>
+              <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
+                <i>"Fair"</i> stores a weighted score of the quiz, along with an account identifier and the date the quiz was taken. No identifiable personable data is recorded.
+              </Typography>
+              <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
+                Where Can I Take the Quiz?
+              </Typography>
+              <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
+                Press the <i>"Start Quiz"</i> button below. Please complete the quiz in one sitting. You may go back to previous questions if you wish. Maximum one submission per day.
+              </Typography>
             </Box>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              variant="contained"
+              color="success"
+              size="large"
+            >
+              <Quiz />
+            </Button>
+          </Box>
         </MainContent>
-        <Quiz />
       </CreamBackgroundBox>
     </>
   );
