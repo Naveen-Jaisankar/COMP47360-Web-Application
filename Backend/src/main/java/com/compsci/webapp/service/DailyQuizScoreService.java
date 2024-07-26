@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.compsci.webapp.util.AQICalculator;
 import com.compsci.webapp.util.Constants;
+import com.compsci.webapp.util.DailyQuizScoreDataObject;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -52,8 +53,8 @@ public class DailyQuizScoreService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<DailyQuizScore> getDailyQuizScoreById(Long id) {
-    	List<DailyQuizScore> dailyQuizScore = new ArrayList<>();
+    public List<DailyQuizScoreDataObject> getDailyQuizScoreById(Long id) {
+    	List<DailyQuizScoreDataObject> dailyQuizScore = new ArrayList<>();
     	try {
     		dailyQuizScore = dailyQuizScoreRepository.findByUserId_UserId(id);
     	}catch(Exception e) {
