@@ -202,7 +202,7 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase
 const CustomTooltip = ({ payload, label }) => {
   if (!payload || payload.length === 0) return null;
 
-  const { PersonalExposure, AQI } = payload[0].payload;
+  const { PersonalExposure} = payload[0].payload;
 
   return (
     <div className="custom-tooltip p-2 bg-white border rounded shadow">
@@ -312,9 +312,7 @@ const DashBoard = ({ isSidebarOpen }) => {
       </section>
       <section>
         <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase}
-        sx={{
-          textAlign: "justify"
-        }}/>
+       />
       </section>
     </div>
   );
@@ -328,7 +326,8 @@ CustomTooltip.propTypes = {
   payload: PropTypes.arrayOf(
     PropTypes.shape({
       payload: PropTypes.shape({
-        PersonalExposure: PropTypes.number
+        PersonalExposure: PropTypes.number,
+        payload: PropTypes.number
       }),
     })
   ),
