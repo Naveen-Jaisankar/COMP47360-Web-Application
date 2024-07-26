@@ -17,10 +17,10 @@ export default function UserHistory () {
     return (
         <div className="flex">
             <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
-            <UserContent sx={{ backgroundColor: "#f7f7f2"}} className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
+            <UserContent className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
                 <Container>
                     <Box sx= {{padding: "2rem",margin: "1rem"}}>
-                        <Typography variant="h3" component='h2' sx={{fontSize: "3rem", marginBottom: "2rem",}}>
+                        <Typography variant="h3" component='h2' sx={{ marginBottom: "2rem",}}>
                             {constants.userHistory.title}
                         </Typography>
 
@@ -30,7 +30,7 @@ export default function UserHistory () {
                     </Box>
 
                     <Box sx= {{ padding: "2rem"}}>
-                        <Typography variant="h3" component='h2' sx={{fontSize: "3rem"}}>
+                        <Typography variant="h3" component='h2'>
                             {constants.userHistory.riskProfileTitle}
                         </Typography>
 
