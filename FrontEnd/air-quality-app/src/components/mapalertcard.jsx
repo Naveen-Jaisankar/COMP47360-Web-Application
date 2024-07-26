@@ -1,3 +1,4 @@
+import { Typography, Box } from "@mui/material";
 import { renderMapAlert } from "./mapalerts";
 import PropTypes from 'prop-types';
 
@@ -5,15 +6,37 @@ const MapAlertCard = ({aqi}) => {
     let {alertHeading, aqiNumber, alertContent} = renderMapAlert(aqi)
 
     return (
-        <div className='flex items-center justify-center bg-[#0D1B2A] text-white p-2 ml-3 rounded-lg max-w-md w-full'>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bgcolor="#0D1B2A"
+        color="white"
+        p={2}
+        ml={3}
+        borderRadius="8px"
+        maxWidth="md"
+        width="20%"
+      >
         {/* <img src={warningImg} alt="Warning Icon" /> */}
-        <div className='break-words whitespace-normal'>
-          <h2 className="font-bold text-lg">{alertHeading}</h2>
-          <p className="text-sm mt-1">{aqiNumber}</p>
-          <p className="text-sm mt-1">{alertContent}</p>
-        </div>
-      </div>
-    )
+        <Box
+          sx={{
+            wordBreak: "break-word",
+            whiteSpace: "normal",
+          }}
+        >
+          <Typography variant="h5" sx={{ fontWeight: "bold"}}>
+            {alertHeading}
+          </Typography>
+          <Typography variant="body2">
+            {aqiNumber}
+          </Typography>
+          <Typography variant="body2">
+            {alertContent}
+          </Typography>
+        </Box>
+      </Box>
+    );
 }
 
 export default MapAlertCard;
