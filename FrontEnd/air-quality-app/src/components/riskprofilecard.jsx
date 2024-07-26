@@ -1,6 +1,7 @@
 import { renderGrade, getGrade, renderColor, riskvalueHeadingText, riskvalueContentText, riskvalueColor } from "./riskprofilescores";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
+import PropTypes from 'prop-types';
 
 const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
     let starImage = "../src/static/star.png"
@@ -81,6 +82,12 @@ const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
     </Box>
 
     </Box>)
+}
+
+RiskProfileCardard.propTypes = {
+    avgAQI: PropTypes.number,
+    userAQI: PropTypes.number,
+    specialCase: PropTypes.string,
 }
 
 export default RiskProfileCard
