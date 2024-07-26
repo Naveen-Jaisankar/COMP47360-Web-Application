@@ -3,8 +3,12 @@ import Modal from 'react-modal';
 import QuizQuestion from '../components/QuizQuestion';
 import axios from 'axios';
 import axiosInstance from '../axios.jsx';
+import CustomModal from '../components/custommodal.jsx';
 import { AuthContext } from '../context/AuthContext';
-import {useContext} from 'react'
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import {useContext, useRef} from 'react'
+import { useNavigate } from 'react-router-dom';
+
 
 const questions = [
     {
@@ -228,6 +232,9 @@ function Quiz() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const submitModalRef = useRef();
+    const navigate = useNavigate();
+
     const { userId } = useContext(AuthContext);
 
     const handleAnswerChange = (questionId, answer, score) => {
@@ -276,6 +283,13 @@ function Quiz() {
             setCurrentQuestionIndex(currentQuestionIndex - 1);
         }
     };
+    
+    const handleModalClose = (redirectUrl = '/user-dashboard') => {
+        setIsLoading(true);
+        setTimeout(() => {
+          navigate(redirectUrl);
+        }, 1500);
+      };
 
     const handleSubmit = () => {
         const totalWeightedComponent = calculateTotalWeightedComponent();
@@ -301,6 +315,10 @@ function Quiz() {
         handleClick(totalWeightedComponent);
     
         setIsModalOpen(false);
+
+        submitModalRef.current.openModal();
+
+
     };
 
     const handleClick = (totalWeightedComponent) => {
@@ -524,6 +542,16 @@ function Quiz() {
                     />
                 </form>
             </Modal>
+            <CustomModal
+                ref={submitModalRef}
+                title="test"
+                description="test"
+                IconComponent={TaskAltIcon}
+                iconColor="green"
+                // Comment/ uncomment below to test redirect.
+                onClose={() => handleModalClose('/user/dashboard')} 
+              />
+
         </>
     );
 }
