@@ -47,6 +47,7 @@ function App() {
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
+                    <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} />
                   </Routes>
                 </MainContent>
               </div>
