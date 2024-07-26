@@ -9,7 +9,14 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingscreen";
+import { Box, Container } from "@mui/system";
+// import { List, ListItem, Typography } from "@mui/material"
+import MainContent from "../components/maincontent";
+import { styled } from "@mui/system";
+import { CreamBackgroundBox, SmallerHeadingBox } from "./Home";
 import constants, { dailyForm } from "./../constant";
+import CircleIcon from "@mui/icons-material/Circle";
+import { Typography }from "@mui/material";
 
 const questions = [
   {
@@ -761,11 +768,38 @@ function Quiz() {
   );
 }
 
+const QuestionTypography = styled(Typography)({
+    fontSize: "3rem",
+    fontWeight: 420,
+  });
+  
+  const AnswerTypography = styled(Typography)({
+    fontSize: "2rem",
+    marginBottom: "2rem",
+    marginTop: "1rem"
+  });
+
 export default function Form() {
   return (
-    <div>
-      <h1>Here is the Form Page!</h1>
-      <Quiz />
-    </div>
+    <>
+      <CreamBackgroundBox
+        sx={{
+          minWidth: "100vw",
+        }}
+      >
+        <MainContent
+          sx={{
+            backgroundColor: "#f7f7f2",
+          }}
+        >
+            <Box>
+                <Typography variant="h1">Heading</Typography>
+                <Typography variant="h2">Heading</Typography>
+                <Typography variant="body1">Body</Typography>
+            </Box>
+        </MainContent>
+        <Quiz />
+      </CreamBackgroundBox>
+    </>
   );
 }
