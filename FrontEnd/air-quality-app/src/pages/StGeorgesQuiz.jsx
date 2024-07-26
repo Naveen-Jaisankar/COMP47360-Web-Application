@@ -760,7 +760,7 @@ function Quiz() {
         IconComponent={TaskAltIcon}
         iconColor="green"
         // Comment/ uncomment below to test redirect.
-        onClose={() => handleModalClose("/user/dashboard")}
+        onClose={() => handleModalClose("/user")}
       />
       </>
     )}
