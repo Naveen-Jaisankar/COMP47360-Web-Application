@@ -9,6 +9,7 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingscreen";
+import constants, { dailyForm } from "./../constant";
 
 const questions = [
   {
@@ -713,7 +714,7 @@ function Quiz() {
   return (
     <>
     {isLoading ? (
-      <LoadingScreen loadingtext={constants.dailyForm.loadingText}/>
+      <LoadingScreen loadingtext="Sending you back to the user dashboard now!"/>
     ) : (
         <>
       <button onClick={() => setIsModalOpen(true)}>Start Quiz</button>
@@ -747,8 +748,8 @@ function Quiz() {
       </Modal>
       <CustomModal
         ref={submitModalRef}
-        title="test"
-        description="test"
+        title={constants.dailyForm.modalTitle}
+        description={constants.dailyForm.modalThankYou}
         IconComponent={TaskAltIcon}
         iconColor="green"
         // Comment/ uncomment below to test redirect.
