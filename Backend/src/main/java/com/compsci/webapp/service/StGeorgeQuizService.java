@@ -30,7 +30,9 @@ public class StGeorgeQuizService {
         return stGeorgeQuizRepository.save(stGeorgeQuiz);
     }
 
-//    public Optional<StGeorgeQuiz> getScore(Long userId, Date quizDate) {
-//        return stGeorgeQuizRepository.findByUserIdAndQuizDate(userId, quizDate);
-//    }
+    public Integer findScoreByUserId(Long userId) {
+
+        return stGeorgeQuizRepository.findScoreByUserId(userId);
+    }
+
 }

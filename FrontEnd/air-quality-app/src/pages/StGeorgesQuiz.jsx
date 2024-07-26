@@ -318,27 +318,63 @@ function Quiz() {
         .then(response => {
           console.log("Data sent successfully!", response);
         })
+        
         .catch(error => {
           console.error("There was an error sending the data!", error);
         });
+    }; 
+
+ 
+
+    const getScore = (userId) => {
+        axios.get(`/stgeorgequiz/getScore/${userId}`)
+            .then(response => {
+                setScore(response.data);
+                console.log("Score fetched successfully!", response.data);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the score!", error);
+                setError("There was an error fetching the score");
+            });
     };
+
     
-    // const handleClick = (data) => {
-    //     fetch('http://localhost:8080/api/v1/stgeorgequiz/saveScore', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(data), // Send data as JSON string
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log('Success:', data);
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error:', error);
-    //     });
-    // };
+
+
+    // function getScore(userId) {
+    //     const endpoint = `/stgeorgequiz/user/${userId}`;
+        
+    //     axiosInstance.get(endpoint)
+    //         .then(res => {
+    //             const quiz_score = res.data;
+    //             console.log(quiz_score);
+    //             return quiz_score;
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }
+
+    
+
+    
+    // function getscore (user_id, quiz_date) {
+        
+    //     const endpoint = `/stgeorgequiz/${user_id}/${quiz_date}/`
+    //     axiosInstance.get(endpoint).then(res=> {
+    //         console.log(res.data)
+            
+    //      const quiz_score = res.data
+    //         return quiz_score
+
+
+            
+    //     }).catch(err => {console.log (err)}) // to use this function user must input user id and quiz date in frontend 
+
+
+    // }
+
+    
     
 
     // const handleClick = (data) => {
