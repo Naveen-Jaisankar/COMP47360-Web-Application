@@ -72,6 +72,9 @@ export const dailyForm = {
     q2_indoorHours: "How many hours did you spend indoors today?",
     q3_outdoorLocation: "While outdoors, where did you spend most of your time?",
     q4_outdoorHours: "How many hours did you spend outdoors today?",
+    modalTitle: "Form Submitted",
+    modalThankYou: "Thank You!",
+    loadingText: "Returning you to your Dashboard"
 }
 
 export const privacy = {

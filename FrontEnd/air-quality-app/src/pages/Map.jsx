@@ -11,6 +11,8 @@ import MapAlertCard from '../components/mapalertcard';
 import Legend from '../components/maplegend';
 import { heatData } from './heatdata';
 import { SettingsContext } from '../context/SettingsContext';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
 const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
@@ -32,6 +34,7 @@ export default function MapPage() {
   const [zoomLevel, setZoomLevel] = useState(11.7);
   
   const {darkMode} = useContext(SettingsContext);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: googleMapsKey,
@@ -75,16 +78,7 @@ export default function MapPage() {
 
   const fetchAQIData = useCallback(async () => {
     const locationInput = {
-      loc_lat: 40.75838928128043,
-      loc_lon: -73.97503124048248,
-      time_stamp: 1780310800,
-      humidity: 62,
-      wind_deg: 259,
-      temp: 286.59444444444443,
-      wind_speed: 5.4704,
-      wind_gust: 0.0,
-      pressure: 1009.482859,
-      weather_id: 502
+      time_stamp: Math.floor(Date.now() / 1000),
     };
 
     try {
@@ -113,18 +107,33 @@ export default function MapPage() {
 
   useEffect(() => {
     fetchAQIData();
+
+    
     const interval = setInterval(() => {
       fetchAQIData();
-    }, 1000);
-    return () => clearInterval(interval);
+    }, 1800000); // 
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [fetchAQIData]);
 
-  const GetAqiForLocation = (loc) => {
-    for (const datapoint of predictedData) {
-      if (loc.lat >= datapoint.min_lat && loc.lat <= datapoint.max_lat && loc.lng <= datapoint.max_lon && loc.lng >= datapoint.min_lon) {
-        return datapoint.predicted_aqi;
-      }
-    }
+  const GetAqiForLocation = (loc, date) => {
+    // Use the date parameter to filter or fetch data accordingly
+    console.log(loc)
+    const data = {
+      loc_lat: loc.lat,
+      loc_lon: loc.lng,
+      time_stamp: Math.floor(date.getTime() / 1000)
+    };
+
+    axiosInstance.post('/map/getAQIValueForALocation', data)
+      .then(response => {
+        console.log(response.data.predicted_aqi);
+        return response.predicted_aqi;
+      })
+      .catch(error => {
+        console.error("There was an error sending the data!", error);
+    });
+
     return 0;
   };
 
@@ -133,9 +142,9 @@ export default function MapPage() {
       map.panTo(new google.maps.LatLng(location.lat(), location.lng()));
       map.zoom = 12;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
-      aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() });
+      aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() }, selectedDate);
     }
-  }, [map]);
+  }, [map, selectedDate]);
 
   const mapContainerStyle = useMemo(() => ({
     position: 'relative',
@@ -217,6 +226,12 @@ export default function MapPage() {
           <div className='flex flex-col fixed ml-3 z-10 gap-2 top-12 mt-6'>
             <div className='flex flex-row items-center ml-3 p-2'>
               <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                dateFormat="yyyy/MM/dd"
+                className="ml-2 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
             </div>
             <MapAlertCard aqi={aqiForLocation} />
 
