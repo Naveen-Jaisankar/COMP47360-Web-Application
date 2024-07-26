@@ -785,13 +785,13 @@ function Quiz() {
           >
             <Box sx={{ marginBottom: "2rem" }}>
               <Typography variant="h1" sx={{ marginBottom: "1rem" }}>
-                St. George's Respiratory Questionnaire
+                St. George&apos;s Respiratory Questionnaire
               </Typography>
               <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
                 What is it?
               </Typography>
               <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
-                The St. George's Respiratory Questionnaire (SGRQ) is defined as a measure for <i>"health impairment in patients with asthma and COPD"</i>. It assesses an individual's quality of life and how their respiratory ailments affect it.
+                The St. George&apos;s Respiratory Questionnaire (SGRQ) is defined as a measure for <i>&quot;health impairment in patients with asthma and COPD&quot;</i>. It assesses an individual&apos;s quality of life and how their respiratory ailments affect it.
               </Typography>
               <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
                 Should I Take it?
@@ -800,7 +800,7 @@ function Quiz() {
                 Individuals suffering from any respiratory conditions are highly encouraged to take the quiz. It will provide insights into your own health, and will personalize your risk profile card to be more reflective of your health state.
               </Typography>
               <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
-                What if I Don't Have a Respiratory Condition?
+                What if I Don&apos;t Have a Respiratory Condition?
               </Typography>
               <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
                 You may still take the quiz. If none of the questions apply to you, then your risk profile will remain the same, however, you may find a few questions that do apply. It is therefore encouraged that everyone completes the questionnaire.
@@ -815,13 +815,13 @@ function Quiz() {
                 What Information Will You Store?
               </Typography>
               <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
-                <i>"Fair"</i> stores a weighted score of the quiz, along with an account identifier and the date the quiz was taken. No identifiable personable data is recorded.
+                <i>&quot;Fair&quot;</i> stores a weighted score of the quiz, along with an account identifier and the date the quiz was taken. No identifiable personable data is recorded.
               </Typography>
               <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
                 Where Can I Take the Quiz?
               </Typography>
               <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
-                Press the <i>"Start Quiz"</i> button below. Please complete the quiz in one sitting. You may go back to previous questions if you wish. Maximum one submission per day.
+                Press the <i>&quot;Start Quiz&quot;</i> button below. Please complete the quiz in one sitting. You may go back to previous questions if you wish. Maximum one submission per day.
               </Typography>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
