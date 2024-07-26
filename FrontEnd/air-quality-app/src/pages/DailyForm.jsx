@@ -3,8 +3,9 @@ import UserContent from "../components/usercontent";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { letterSpacing, styled } from "@mui/system";
+import { letterSpacing, styled, useTheme } from "@mui/system";
 import { ThickHeadingTypography } from "./Home";
+
 import constants from "./../constant";
 import axiosInstance from "../../src/axios";
 import { AuthContext } from "../context/AuthContext";
@@ -17,22 +18,30 @@ import LoadingScreen from "../components/loadingscreen";
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
   fontWeight: "bold",
-  fontSize: "1.5rem",
   color: theme.palette.text.primary,
 }));
 
-const GreyBackgroundBox = styled(Box)({
-  backgroundColor: "#F1F3F2",
+const GreyBackgroundBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#0D1B2A" : "#F1F3F2",
   margin: "1rem",
   padding: "2rem",
   borderRadius: "20px",
-});
+  borderColor: theme.palette.mode === "dark" ? "#F7F7F2" : "black",
+  borderStyle: "solid",
+  borderWidth: 4,
+}));
+
+// image from https://fearlesstravels.com/the-streets-of-new-york/
+const bannerImage = "../src/static/backgroundDaily.jpg";
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
   const [outdoorLocation, setOutdoorLocation] = useState("");
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
+
+  const theme = useTheme();
+
   const { userId } = useContext(AuthContext);
   const [isValidatingHours, setIsValidatingHours] = useState(false);
   const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
@@ -235,71 +244,100 @@ export default function DailyForm() {
       ) : (
         <div className="flex">
           <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
-          <UserContent
-            className={`transition-all duration-300 ${
-              isSidebarOpen ? "ml-60" : "ml-0"
-            } p-6`}
+          <Box
+            sx={{
+              backgroundImage: `url(${bannerImage})`,
+              backgroundSize: "cover",
+              width: "100%",
+              height: "100%",
+              minHeight: "95vh",
+            }}
           >
-            <Container sx={{ marginTop: "2rem" }}>
-              <ThickHeadingTypography
-                variant="h1"
-                component="h1"
-                sx={{ color: "black", paddingLeft: "1rem" }}
-              >
-                {constants.dailyForm.title}
-              </ThickHeadingTypography>
+            <UserContent
+              className={`transition-all duration-300 ${
+                isSidebarOpen ? "ml-60" : "ml-0"
+              } p-6`}
+            >
+              <Container sx={{ marginTop: "2rem", marginLeft: "-3rem" }}>
+                <ThickHeadingTypography
+                  variant="h2"
+                  component="h1"
+                  sx={{
+                    color: theme.palette.mode === "dark" ? "#F1F3F2" : "white",
+                    paddingLeft: "1rem",
+                  }}
+                >
+                  {constants.dailyForm.title}
+                </ThickHeadingTypography>
 
-              <GreyBackgroundBox>
-                <form onSubmit={submitHandler}>
-                  <QuestionTypography variant="h4" component="h2">
-                    {constants.dailyForm.q1_indoorLocation}
-                  </QuestionTypography>
-                  <DailySearchbar
-                    value={indoorLocation.address}
-                    passPlaceData={handleIndoorPlaceChange}
-                    ref={indoorSbarTextRef}
-                  />
+                <GreyBackgroundBox>
+                  <form onSubmit={submitHandler}>
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q1_indoorLocation}
+                    </QuestionTypography>
+                    <DailySearchbar
+                      value={indoorLocation.address}
+                      passPlaceData={handleIndoorPlaceChange}
+                      ref={indoorSbarTextRef}
+                    />
 
-                  <QuestionTypography variant="h4" component="h2">
-                    {constants.dailyForm.q2_indoorHours}
-                  </QuestionTypography>
-                  <CustomNumberInput
-                    value={indoorHours}
-                    onChange={handleIndoorHoursChange}
-                    arialabel={"Number of Hours spent indoors"}
-                  />
-                  <QuestionTypography variant="h4" component="h2">
-                    {constants.dailyForm.q3_outdoorLocation}
-                  </QuestionTypography>
-                  <DailySearchbar
-                    passPlaceData={handleOutdoorPlaceChange}
-                    ref={outdoorSbarTextRef}
-                  />
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q2_indoorHours}
+                    </QuestionTypography>
+                    <CustomNumberInput
+                      value={indoorHours}
+                      onChange={handleIndoorHoursChange}
+                      arialabel={"Number of Hours spent indoors"}
+                    />
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q3_outdoorLocation}
+                    </QuestionTypography>
+                    <DailySearchbar
+                      passPlaceData={handleOutdoorPlaceChange}
+                      ref={outdoorSbarTextRef}
+                    />
 
-                  <QuestionTypography variant="h4" component="h2">
-                    {constants.dailyForm.q4_outdoorHours}
-                  </QuestionTypography>
-                  <CustomNumberInput
-                    value={outdoorHours}
-                    onChange={handleOutdoorHoursChange}
-                    arialabel={"Number of Hours spent outdoors"}
-                  />
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q4_outdoorHours}
+                    </QuestionTypography>
+                    <CustomNumberInput
+                      value={outdoorHours}
+                      onChange={handleOutdoorHoursChange}
+                      arialabel={"Number of Hours spent outdoors"}
+                    />
 
-                  <CustomModal
-                    ref={modalRef}
-                    title={constants.dailyForm.modalTitle}
-                    description={constants.dailyForm.modalThankYou}
-                    IconComponent={TaskAltIcon}
-                    iconColor="green"
-                    // Comment/ uncomment below to test redirect.
-                    onClose={() => handleModalClose("/user")}
-                  />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: "2rem",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        sx={{
+                          width: "200px", // Set a fixed width for the button
+                        }}
+                      >
+                        {constants.dailyForm.submitButton}
+                      </Button>
+                    </Box>
 
-                  <Button type="submit">Submit</Button>
-                </form>
-              </GreyBackgroundBox>
-            </Container>
-          </UserContent>
+                    <CustomModal
+                      ref={modalRef}
+                      title={constants.dailyForm.modalTitle}
+                      description={constants.dailyForm.modalThankYou}
+                      IconComponent={TaskAltIcon}
+                      iconColor="green"
+                      // Comment/ uncomment below to test redirect.
+                      onClose={() => handleModalClose("/user")}
+                    />
+                  </form>
+                </GreyBackgroundBox>
+              </Container>
+            </UserContent>
+          </Box>
         </div>
       )}
     </>
