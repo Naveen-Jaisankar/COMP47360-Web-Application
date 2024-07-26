@@ -1,8 +1,6 @@
 import { Box, Container } from "@mui/system";
 // import { List, ListItem, Typography } from "@mui/material"
-import MainContent from "../components/maincontent";
-import { styled } from "@mui/system";
-import { CreamBackgroundBox, SmallerHeadingBox } from "./Home";
+import { styled, useTheme } from "@mui/system";
 import constants from "./../constant";
 import {
   List,
@@ -14,14 +12,13 @@ import {
 } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import {useNavigate} from 'react-router-dom'
+import Footer from "../components/footer";
 
 const QuestionTypography = styled(Typography)({
-  fontSize: "3rem",
   fontWeight: 420,
 });
 
 const AnswerTypography = styled(Typography)({
-  fontSize: "2rem",
   marginBottom: "2rem",
   marginTop: "1rem"
 });
@@ -30,24 +27,23 @@ export default function Privacy() {
     const navigate = useNavigate();
 
     const handleClick= () => {
-        navigate('/register')
+        navigate(-1)
     }
+    const theme = useTheme();
   return (
     <>
-      <CreamBackgroundBox
-        sx={{
-          minWidth: "100vw",
-        }}
-      >
-        <MainContent
+        <Box
           sx={{
-            backgroundColor: "#f7f7f2",
+            paddingTop: "2rem",
+            paddingBottom: "2rem",
+            minHeight:"100%",
+            backgroundColor:  theme.palette.mode === 'dark' ? 'black' : "#F7F7F2",
           }}
         >
           <Container
             sx={{
               padding: 0,
-              backgroundColor: "#f7f7f2",
+              backgroundColor:  theme.palette.mode === 'dark' ? 'black' : "#F7F7F2",
             }}
           >
             {/* Header section */}
@@ -56,7 +52,9 @@ export default function Privacy() {
                 marginBottom: "3rem",
               }}
             >
-              <Typography variant="h2" component="h1">
+              <Typography variant="h2" component="h1" sx={{
+                fontWeight: "medium",
+              }}>
                 {constants.privacy.title}
               </Typography>
               <Box sx={{
@@ -72,14 +70,14 @@ export default function Privacy() {
 
             {/* Information section */}
             <Box>
-              <QuestionTypography variant="h3" component="h2">
+              <QuestionTypography variant="h4" component="h2">
                 {constants.privacy.q1_personalData}
               </QuestionTypography>
               <AnswerTypography variant="body1" component="p">
                 {constants.privacy.content1}
               </AnswerTypography>
 
-              <QuestionTypography variant="h3" component="h2">
+              <QuestionTypography variant="h4" component="h2">
                 {constants.privacy.q2_useOfPersonalData}
               </QuestionTypography>
               <AnswerTypography variant="body1" component="p">
@@ -112,7 +110,7 @@ export default function Privacy() {
                 </ListItem>
               </List>
 
-              <QuestionTypography variant="h3" component="h2">
+              <QuestionTypography variant="h4" component="h2">
                 {constants.privacy.q3_sharingOfPersonalData}
               </QuestionTypography>
               <AnswerTypography variant="body1" component="p">
@@ -124,9 +122,8 @@ export default function Privacy() {
               <Box sx={{
                 marginBottom: "2rem"
               }}>
-              <Typography variant="h2" component="h2" sx={{
+              <Typography variant="h3" component="h2" sx={{
                   fontWeight: 'medium',
-                  fontSize: '3rem',
                   marginBottom: "1rem",
                 }}>{constants.privacy.terms_title}</Typography>
               <Typography sx={{
@@ -145,14 +142,12 @@ export default function Privacy() {
           sx={{
             marginTop: "2rem",
             margin: "auto",
-            backgroundColor: "#0D1B2A"
-          }}>Back to Register Page</Button>
+            backgroundColor:  theme.palette.mode === 'dark' ? 'lightgrey' : "black",
+          }}>Back to Previous Page</Button>
           </Container>
           
-        </MainContent>
-
-       
-      </CreamBackgroundBox>
+        </Box>
+      <Footer />
       
       
     </>

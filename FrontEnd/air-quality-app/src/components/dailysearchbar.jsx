@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 const StyledInput = styled("input")({
   width: "100%",
+  color: "red",
   padding: "1rem",
   fontSize: "18px",
   border: "1px solid #ccc",
@@ -82,6 +83,9 @@ const DailySearchbar = forwardRef(({passPlaceData}, ref) => {
           }}
         >
           <StyledInput
+            sx={{
+              color: "black"
+            }}
             type="text"
             className="form-control"
             placeholder="Enter Location"
@@ -101,5 +105,4 @@ DailySearchbar.propTypes = {
 }
 
 export default DailySearchbar;
-
 

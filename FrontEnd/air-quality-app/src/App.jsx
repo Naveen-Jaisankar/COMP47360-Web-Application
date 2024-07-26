@@ -18,6 +18,7 @@ import { UserPanel } from './pages/UserPanel';
 import ForgotPass from './pages/ForgotPassword';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import TypographyTest from './pages/TypographyTest';
 
 function App() {
   const { fontSize } = useContext(SettingsContext);
@@ -48,9 +49,6 @@ function App() {
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
                     <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} />
-                    {/* for testing uncomment below */}
-                    {/* <Route path= "/user/dailyform" element={<DailyForm/>}/> */}
-                    {/* <Route path="/user/dashboard" element={<UserDashboard/>} /> */}
                   </Routes>
                 </MainContent>
               </div>
