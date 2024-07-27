@@ -1,8 +1,12 @@
-import {useRef} from "react";
+import {useRef, useContext} from "react";
 import {Autocomplete} from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 
+import { SettingsContext } from "../context/SettingsContext";
+
 const PlaceAutomplete = ({onPlaceSelected})=>{
+
+    const {darkMode} = useContext(SettingsContext);
 
     const autocompleteRef = useRef(null);
     const onLoad = (autocompleteInstance) =>{
@@ -43,7 +47,8 @@ const PlaceAutomplete = ({onPlaceSelected})=>{
             fontSize: '14px',
             outline: 'none',
             textOverflow: 'ellipses',
-
+            color: darkMode ? 'white' : 'black', // Change text color based on dark mode
+            backgroundColor: darkMode ? '#333' : 'white', // Change background color based on dark mode
             zIndex: '10'
             }}
         />
