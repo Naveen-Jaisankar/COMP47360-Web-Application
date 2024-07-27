@@ -3,6 +3,8 @@ package com.compsci.webapp.controller;
 import com.compsci.webapp.entity.DailyQuizScore;
 import com.compsci.webapp.request.DailyQuizScoreRequest;
 import com.compsci.webapp.service.DailyQuizScoreService;
+import com.compsci.webapp.util.DailyQuizScoreDataObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,7 @@ public class DailyQuizScoreController {
     }
 
     @GetMapping("getQuizScore/{id}")
-    public List<DailyQuizScore> getDailyQuizScoreById(@PathVariable Long id) {
+    public List<DailyQuizScoreDataObject> getDailyQuizScoreById(@PathVariable Long id) {
         return dailyQuizScoreService.getDailyQuizScoreById(id);
     }
 
@@ -39,6 +41,11 @@ public class DailyQuizScoreController {
     public void deleteDailyQuizScore(@PathVariable Long id, @PathVariable LocalDate quizDate) {
         dailyQuizScoreService.deleteDailyQuizScore(id, quizDate);
     }
-    
-    
+
+    @GetMapping("/getaqitoday")
+    public double getAqiForToday() {
+        return dailyQuizScoreService.getAqiForToday();
+    }
+
+
 }

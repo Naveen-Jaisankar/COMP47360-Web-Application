@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Box, Menu, MenuItem } from '@mui/material';
+import { useState, useContext } from "react";
+import { AppBar, Toolbar, IconButton, Typography, Box, Menu, MenuItem } from "@mui/material";
 import AirIcon from '@mui/icons-material/Air';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -7,6 +7,7 @@ import Settings from '../pages/Settings';
 import NavbarButton from './navbarbutton';
 import navbarHeights from './navbarheights';
 import constants from './../constant';
+import { AuthContext } from "../context/AuthContext";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -19,6 +20,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [anchorNav, setAnchorNav] = useState(null);
 
+  const { token, logout } = useContext(AuthContext);
+
   const handleOnClick = () => {
     navigate('/');
   };
@@ -29,6 +32,11 @@ const Navbar = () => {
 
   const handleCloseMenu = () => {
     setAnchorNav(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   const desktopStyle = {
@@ -68,7 +76,6 @@ const Navbar = () => {
 
     '&:hover': {
       backgroundColor: 'lightgrey'
-
   }
   }
   
@@ -111,7 +118,11 @@ const Navbar = () => {
           <NavbarButton to="/map">{constants.general.map}</NavbarButton>
           <Settings sx={desktopStyle} />
           <NavbarButton to="/user">{constants.general.user_dash}</NavbarButton>
-          <NavbarButton to="/register">{constants.general.login_register}</NavbarButton>
+          {token ? (
+            <NavbarButton onClick={handleLogout}>{constants.general.logout}</NavbarButton>
+          ) : (
+            <NavbarButton to="/login">{constants.general.login_register}</NavbarButton>
+          )}
         </Box>
 
         <IconButton
@@ -134,7 +145,11 @@ const Navbar = () => {
           <MenuItem onClick={() => { handleCloseMenu(); navigate('/map'); }}>{constants.general.map}</MenuItem>
           <Settings sx= {mobileStyle}/>
           <MenuItem onClick={() => { handleCloseMenu(); navigate('/user'); }}>{constants.general.user_dash}</MenuItem>
-          <MenuItem onClick={() => { handleCloseMenu(); navigate('/register'); }}>{constants.general.login_register}</MenuItem>
+          {token ? (
+            <MenuItem onClick={() => { handleCloseMenu(); handleLogout(); }}>{constants.general.logout}</MenuItem>
+          ) : (
+            <MenuItem onClick={() => { handleCloseMenu(); navigate('/register'); }}>{constants.general.login_register}</MenuItem>
+          )}
         </Menu>
       </Toolbar>
     </AppBar>

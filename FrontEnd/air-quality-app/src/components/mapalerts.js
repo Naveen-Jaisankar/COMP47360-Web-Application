@@ -40,10 +40,10 @@ let aqiNumber = {
 let alertContent = {
     'Good': 'Air pollution levels pose little or no risk in this area',
     'Moderate': 'Air pollution levels pose moderate health concerns for groups highly sensitive to air pollution. Highly Sensitive groups should limit prolonged outdoor exposure', 
-    'Unhealthy_for_Sensitive_Groups':  'Air pollution levels pose considerable health concerns, and sensitive groups may experience ill effects. Adults and children with respiratory disease should limit prolonged outdoor exposure ',
-    'Unhealthy': 'Air pollution levels pose high risk for all groups. All groups are advised to limit outdoor exposure, children especially so.',
-    'Very_Unhealthy':  'Air pollution levels pose extreme risk for entire population. Sensitive groups should avoid all outdoor activities, general public should considerably limit outdoor activity ',
-    'Hazardous': 'Air pollution levels pose extreme danger to human life, all groups should remain indoors.',
+    'Unhealthy_for_Sensitive_Groups':  'Air pollution levels pose considerable health concerns, and sensitive groups may experience ill effects. Adults and children with respiratory disease should limit prolonged outdoor exposure. Please consider wearing a mask.',
+    'Unhealthy': 'Air pollution levels pose high risk for all groups. All groups are advised to limit outdoor exposure, especially children. Please wear masks when engaging in outdoor activities.',
+    'Very_Unhealthy':  'Air pollution levels pose extreme risk for entire population. It is strongly advised to remain indoors. ',
+    'Hazardous': 'Air pollution levels poses extreme danger to human life, all groups should remain indoors.',
 }
 
 function renderMapAlert(aqiForLocation) {
