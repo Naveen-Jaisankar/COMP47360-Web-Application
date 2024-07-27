@@ -22,7 +22,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/rp
     username: root
-    password: lemon
+    password: 23211599
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
