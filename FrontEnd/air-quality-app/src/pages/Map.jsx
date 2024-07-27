@@ -17,7 +17,7 @@ import LoadingScreen from '../components/loadingscreen';
 import constant from '../constant';
 
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
-const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
+const googleMapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const libs = ['visualization', 'places'];
 
 
