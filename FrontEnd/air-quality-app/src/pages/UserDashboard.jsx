@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Typography, Box, Grid } from "@mui/material";
+import Infocard from "../components/infocard";
 import {
   AreaChart,
   Area,
@@ -16,7 +17,6 @@ import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
 import CustomCalendar from "../components/customcalendar";
 import { color, textAlign } from "@mui/system";
-import { useContext } from 'react';
 import { maxWidth } from '@mui/system';
 
 const image1 = "/static/proxy-image.png";
@@ -212,6 +212,13 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase
   }
 }
 
+const getLatestDay = async (userId) => {
+  const rawResponse = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
+  let latestDays = rawResponse.data.reverse();
+  let latestDay = latestDays[0];
+  console.log("Latest Day:", latestDay)
+  return latestDay
+}
 
 const CustomTooltip = ({ payload, label }) => {
   if (!payload || payload.length === 0) return null;
@@ -236,10 +243,12 @@ const CustomTooltip = ({ payload, label }) => {
 const DashBoard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
   const [averageAQI, setAverageAQI] = useState(0)
+  const [recommendations, setRecommendations] = useState([]);
   const [userAQI, setUserAQI] = useState(0)
   const { userId } = useContext(AuthContext);
   const [riskProfileCase, setRiskProfileCase] = useState("");
 
+  // For the graph
   useEffect(() => {
     const fetchData = async () => {
       const days = await getLastSevenDays(userId);
@@ -248,6 +257,7 @@ const DashBoard = ({ isSidebarOpen }) => {
     fetchData();
   }, [userId]);
 
+  // For the risk profile card
   useEffect(() => {
     getTodayAQI(userId, setAverageAQI, setUserAQI, setRiskProfileCase)
     console.log(userAQI)
@@ -255,10 +265,68 @@ const DashBoard = ({ isSidebarOpen }) => {
     console.log(riskProfileCase)
   }, [userId]);
 
+  // For the personalised health recommendations
   useEffect(() => {
     const latestDay = getLatestDay(userId);
     setRecommendations(getRecommendations(latestDay.quizScore));
   }, [userId]);
+
+  const getRecommendations = (data) => {
+    const personalExposure = data;
+    console.log("PE Data:", data)
+    const recs = [];
+
+    if (personalExposure < 30) {
+      recs.push({
+        image: healthImages.thumbs_up,
+        heading: 'Keep Up the Good Work!',
+        text: 'Your personal exposure is low. Continue maintaining your healthy habits.',
+      });
+      recs.push({
+        image: healthImages.water_bottle,
+        heading: 'Stay Hydrated!',
+        text: 'Drinking plenty of water helps your body fight off pollutants.',
+      });
+      recs.push({
+        image: healthImages.park,
+        heading: 'Enjoy the Fresh Air!',
+        text: 'Make sure to relax and/or exercise in nature, preferably away from roads.'
+      })
+    } else if (personalExposure < 70) {
+      recs.push({
+        image: healthImages.warning,
+        heading: 'Moderate Exposure',
+        text: 'Your exposure is moderate. Try to avoid outdoor activities during peak pollution hours.',
+      });
+      recs.push({
+        image: healthImages.face_mask,
+        heading: 'Wear a Mask',
+        text: 'Consider wearing a mask if you need to go outside during peak pollution times.',
+      });
+      recs.push({
+        image: healthImages.house,
+        heading: 'Indoor Activities',
+        text: 'Plan indoor activities to reduce your exposure to air pollution.',
+      });
+    } else {
+      recs.push({
+        image: healthImages.warning,
+        heading: 'High Exposure Alert',
+        text: 'Your exposure is high. Stay indoors and use air purifiers if possible.',
+      });
+      recs.push({
+        image: healthImages.newspaper,
+        heading: 'Check Air Quality',
+        text: 'Regularly check air quality updates to plan your outdoor activities accordingly.',
+      });
+      recs.push({
+        image: healthImages.doctor,
+        heading: 'Consult a Doctor',
+        text: 'If you feel unwell, consult a doctor, especially if you have respiratory issues.',
+      });
+    }
+    return recs.slice(0, 3);
+  };
 
   return (
     <div
