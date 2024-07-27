@@ -9,7 +9,7 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingscreen";
-import { Box, Container } from "@mui/system";
+import { Box, Container, useTheme } from "@mui/system";
 // import { List, ListItem, Typography } from "@mui/material"
 import MainContent from "../components/maincontent";
 import { styled } from "@mui/system";
@@ -474,7 +474,6 @@ function Quiz({closeSubmitHandler}) {
   };
 
 
-
   const handleSubmit = () => {
     const totalWeightedComponent = calculateTotalWeightedComponent();
     const symptomsComponent = calculateSymptomsComponent();
@@ -726,6 +725,8 @@ function Quiz({closeSubmitHandler}) {
         style={{
           content: {
             top: "20vh",
+            backgroundColor: "white",
+            color: "black"
           },
         }}
       >
@@ -771,24 +772,19 @@ function Quiz({closeSubmitHandler}) {
         navigate(redirectUrl);
       }, 1500);
     };
-
+    const theme = useTheme();
     return (
       <>
           {isLoading ? (
       <LoadingScreen loadingtext="Sending you back to the user dashboard now!"/>
     ) : (
-        <CreamBackgroundBox
-          sx={{
-            minWidth: "100vw",
-          }}
-        >
-          <MainContent
-            sx={{
-              backgroundColor: "#f7f7f2",
-              padding: "2rem",
-              textAlign: "justify",
-            }}
-          >
+      <Box
+      sx={{
+        padding: "2rem",
+        minHeight:"100%",
+        backgroundColor:  theme.palette.mode === 'dark' ? 'black' : "#F7F7F2",
+      }}
+    >
             <Box sx={{ marginBottom: "2rem" }}>
               <Typography variant="h1" sx={{ marginBottom: "1rem" }}>
                 St. George&apos;s Respiratory Questionnaire
@@ -841,8 +837,7 @@ function Quiz({closeSubmitHandler}) {
               </div>
             </Button>
           </Box>
-        </MainContent>
-      </CreamBackgroundBox>
+        </Box>
       )}
     </>
   );

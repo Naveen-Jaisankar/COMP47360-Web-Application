@@ -16,7 +16,7 @@ import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
 import CustomCalendar from "../components/customcalendar";
-import { color, textAlign } from "@mui/system";
+import { color, textAlign, useTheme } from "@mui/system";
 import { maxWidth } from '@mui/system';
 
 const image1 = "/static/proxy-image.png";
@@ -337,6 +337,7 @@ const DashBoard = ({ isSidebarOpen }) => {
     return recs.slice(0, 3);
   };
 
+  const theme = useTheme();  
   return (
     <div
       className={`transition-all duration-300 ${
@@ -399,9 +400,13 @@ const DashBoard = ({ isSidebarOpen }) => {
           // border: "1px solid grey",
         }}>
         <Typography variant="h6" sx={{
-          fontWeight: "light"
+          fontWeight: "light",
+          color: '#151515'
+
         }}>Your Summary</Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" sx={{
+            color: '#151515'
+          }}>
             • Spent x minutes in low to medium pollution, spent x minutes in high pollution.
           </Typography>
           </Box>
@@ -419,6 +424,7 @@ const DashBoard = ({ isSidebarOpen }) => {
                   maxWidth: "12rem",
                   margin: "auto",
                   paddingTop: "1rem",
+                  filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
                   
                 }}
               />
