@@ -22,14 +22,14 @@ import { maxWidth } from '@mui/system';
 const image1 = "static/proxy-image.png";
 
 const healthImages = {
-  thumbs_up: "../src/static/thumbs_up.png",
-  water_bottle: "../src/static/water_bottle.png",
-  park: "../src/static/park.png",
-  warning: "../src/static/warning.png",
-  face_mask: "../src/static/face_mask.png",
-  house: "../src/static/house.png",
-  newspaper: "../src/static/newspaper.jpg",
-  doctor: "../src/static/doctor.png"
+  thumbs_up: "static/thumbs_up.png",
+  water_bottle: "static/water_bottle.png",
+  park: "static/park.png",
+  warning: "static/warning.png",
+  face_mask: "static/face_mask.png",
+  house: "static/house.png",
+  newspaper: "static/newspaper.jpg",
+  doctor: "static/doctor.png"
 };
 
 // Reformats the JavaScript date object to match with database date format
