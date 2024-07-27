@@ -431,7 +431,7 @@ const DashBoard = ({ isSidebarOpen }) => {
           <Typography variant="body1">
             Looking for more personalised suggestions? Try our additional
             assessment{" "}
-            <a href="#" className="text-blue-400">
+            <a href="/user/stgeorgesquiz" className="text-blue-400">
               here
             </a>
           </Typography>

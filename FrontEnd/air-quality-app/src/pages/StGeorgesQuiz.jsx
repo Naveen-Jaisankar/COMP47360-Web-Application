@@ -780,6 +780,7 @@ function Quiz({closeSubmitHandler}) {
         <CreamBackgroundBox
           sx={{
             minWidth: "100vw",
+            minHeight: "200vh"
           }}
         >
           <MainContent
