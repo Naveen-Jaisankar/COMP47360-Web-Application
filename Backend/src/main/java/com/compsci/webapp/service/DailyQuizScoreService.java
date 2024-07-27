@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,17 +17,9 @@ import com.compsci.webapp.repository.UserRepository;
 import com.compsci.webapp.request.DailyQuizScoreRequest;
 import com.compsci.webapp.util.AQICalculator;
 import com.compsci.webapp.util.Constants;
-<<<<<<< HEAD
-import com.compsci.webapp.util.MapUtils;
-=======
 import com.compsci.webapp.util.DailyQuizScoreDataObject;
-
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
->>>>>>> refs/remotes/origin/main
+import com.compsci.webapp.util.MapUtils;
+import org.slf4j.Logger;
 
 @Service
 
@@ -141,8 +132,8 @@ public class DailyQuizScoreService {
         String location = "40.776676, -73.971321";
 
         // long timestamp = currentDate.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
-
-        double aqi = fetchAQIForALocation(location);
+        MapUtils mapUtils = new MapUtils(openWeatherApiKey);
+        double aqi = mapUtils.getAQIForLocation(location);
 
         return aqi;
     }
