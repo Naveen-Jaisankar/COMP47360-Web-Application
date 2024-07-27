@@ -13,6 +13,7 @@ import com.compsci.webapp.util.Constants;
 import jakarta.validation.Valid;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -23,13 +24,7 @@ public class StGeorgeQuizController {
     private StGeorgeQuizService stGeorgeQuizService;
 
 
-//    @GetMapping("/{userId}/{quizDate}")
-//    public ResponseEntity<StGeorgeQuiz> getScore(
-//            @PathVariable Long userId,
-//            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date quizDate) {
-//        Optional<StGeorgeQuiz> stGeorgeQuiz = stGeorgeQuizService.getScore(userId, quizDate);
-//        return stGeorgeQuiz.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
+
     
     @PostMapping("/savescore")
     public String saveScore(@Valid @RequestBody StGeorgeQuizRequest stGeorgeQuizRequest) {
@@ -37,6 +32,11 @@ public class StGeorgeQuizController {
     	return Constants.SUBMITTED_SUCCESSFULLY.getMessage();
     }
     
+    @GetMapping("/getScore/{userId}/{quizDate}")
+    public StGeorgeQuizRequest getScore(@PathVariable Long userId, @PathVariable String quizDate) {
+        LocalDate date = LocalDate.parse(quizDate);
+        StGeorgeQuizRequest quizRequest = stGeorgeQuizService.getScore(userId, date);
+        return quizRequest;  
     
-    
+}
 }
