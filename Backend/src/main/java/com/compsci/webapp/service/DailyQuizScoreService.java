@@ -67,8 +67,8 @@ public class DailyQuizScoreService {
     	DailyQuizScore dailyQuizScoreEntity = new DailyQuizScore();
     	try {
     		//Fetching AQI data for indoor and outdoor locations
-            double indoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getIndoorLocation());
-            double outdoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getOutdoorLocation());
+            double indoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getIndoorLocation(), 0);
+            double outdoorAQI = fetchAQIForALocation(dailyQuizScoreRequest.getOutdoorLocation(), 0);
             logger.info("Indoor AQI: {}, Outdoor AQI: {}", indoorAQI, outdoorAQI);
 
             // converting AQI to PM2.5
@@ -125,7 +125,7 @@ public class DailyQuizScoreService {
         dailyQuizScoreRepository.delete(quizScore);
     }
 
-    private double fetchAQIForALocation(String location) {
+    private double fetchAQIForALocation(String location, long timestamp) {
         double aqi = 0.0; // default value
         try {
             // splits location string into latitude and longitude
@@ -165,6 +165,26 @@ public class DailyQuizScoreService {
         return jsonResponse;
     }
 
+    public List<Double> getAqiForPast7Days(String location) {
+        List<Double> aqiList = new ArrayList<>();
+        //  get the current date
+        LocalDate currentDate = LocalDate.now();
+        
+        for (int i = 0; i < 7; i++) {
+            // Calculate the date for each of the past 7 days
+            LocalDate date = currentDate.minusDays(i);
+
+            // Convert LocalDate to Unix timestamp (seconds since epoch)
+            long timestamp = date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+            
+            // reteieve AQI for the specific date
+            double aqi = fetchAQIForALocation(location, timestamp);
+            aqiList.add(aqi);
+        }
+        
+        return aqiList;
+    }
+
     private double fetchAqiFromDataModel(double locLat, double locLon, long timeStamp, JSONObject weatherDetails) throws Exception {
 
     	double predictedAQI = 0;
@@ -200,11 +220,13 @@ public class DailyQuizScoreService {
         public double getAqiForToday() {
         // LocalDate currentDate = LocalDate.now();
 
+        long timeStamp = System.currentTimeMillis() / 1000L;
+
         String location = "40.776676, -73.971321";
 
         // long timestamp = currentDate.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
 
-        double aqi = fetchAQIForALocation(location);
+        double aqi = fetchAQIForALocation(location, timeStamp);
 
         return aqi;
     }
