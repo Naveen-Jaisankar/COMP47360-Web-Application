@@ -267,16 +267,25 @@ const DashBoard = ({ isSidebarOpen }) => {
 
   // For the personalised health recommendations
   useEffect(() => {
-    const latestDay = getLatestDay(userId);
-    setRecommendations(getRecommendations(latestDay.quizScore));
-  }, [userId]);
+    const fetchLatestDay = async () => {
+      try {
+        const latestDay = await getLatestDay(userId);
+        console.log("(Use Effect) Latest Day:", latestDay);
+        setRecommendations(getRecommendations(latestDay.quizScore));
+      } catch (error) {
+        console.error("Failed to fetch the latest day:", error);
+      }
+    };
+  
+    fetchLatestDay();
+  }, [userId]);  
 
   const getRecommendations = (data) => {
     const personalExposure = data;
     console.log("PE Data:", data)
     const recs = [];
 
-    if (personalExposure < 30) {
+    if (personalExposure < 4) {
       recs.push({
         image: healthImages.thumbs_up,
         heading: 'Keep Up the Good Work!',
@@ -292,7 +301,7 @@ const DashBoard = ({ isSidebarOpen }) => {
         heading: 'Enjoy the Fresh Air!',
         text: 'Make sure to relax and/or exercise in nature, preferably away from roads.'
       })
-    } else if (personalExposure < 70) {
+    } else if (personalExposure < 9) {
       recs.push({
         image: healthImages.warning,
         heading: 'Moderate Exposure',

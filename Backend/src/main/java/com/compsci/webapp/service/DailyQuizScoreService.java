@@ -220,11 +220,13 @@ public class DailyQuizScoreService {
         public double getAqiForToday() {
         // LocalDate currentDate = LocalDate.now();
 
+        long timeStamp = System.currentTimeMillis() / 1000L;
+
         String location = "40.776676, -73.971321";
 
         // long timestamp = currentDate.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
 
-        double aqi = fetchAQIForALocation(location);
+        double aqi = fetchAQIForALocation(location, timeStamp);
 
         return aqi;
     }
