@@ -842,3 +842,7 @@ function Quiz({closeSubmitHandler}) {
     </>
   );
 }
+
+Quiz.propTypes = {
+  closeSubmitHandler: PropTypes.func.isRequired,
+};
