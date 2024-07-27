@@ -73,7 +73,7 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                 <p className="text-lg mt-2">{constant.userSidebar.welcomeText}</p>
                 <p className="text-lg text-center mt-2 mb-2">{constant.userSidebar.exposureText}</p>
                 <Button variant="contained" className="bg-white text-green-500 mt-1" component ={Link} to="/user/dailyform">
-                  Start
+                  Start Daily Quiz
                 </Button>
               </div>
               <div className='mt-4 text-center text-2xl'>

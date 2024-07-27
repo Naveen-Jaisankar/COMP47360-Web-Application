@@ -46,7 +46,7 @@ const riskvalueHeadingText = {
     "D": "At High Risk",
     "F": "At Very High Risk",
     "*": "Welcome To Fair",
-    "!": "Daily Form Not Yet Filled"
+    "!": "Daily Quiz Not Yet Filled"
 };
 
 const riskvalueContentText = {
@@ -57,7 +57,7 @@ const riskvalueContentText = {
     "D": "Your air pollutant exposure score is below average for anyone living in your area. You may have spent an excessive period of time in or around busy areas such as roads, and perhaps did not take the necessary precautions to reduce overall exposure such as wearing a mask in these environments. Be aware that disregarding the negative effects of air pollution, while not immediately detrimental, are highly likely to cause serious problems in the later years of one’s life. Fortunately, you may greatly improve your score by assessing the AQI of locations you will stay in with our map, wearing a face mask in highly polluted areas, and using an air purifier at home. Try your best to get back to at least a C grade as soon as possible.",
     "F": "Your air pollutant exposure score is extremely high for your area. You may have been exposed to excessive quantities of pollutants based on your location. Consult your doctor if you develop symptoms of respiratory distress and monitor your condition closely for the next while. Be mindful that continuous exposure to such a high level of pollutants may lead to irreparable respiratory and circulatory system damage that could manifest into a chronic condition later in life. To mitigate this risk, avoid staying near roads for extended periods of time, wear a face mask when in highly polluted areas, avoid visiting char-broil cuisine restaurants, use an air purifier at home, and continue to monitor your exposure levels. By implementing these recommendations, along with your personalised recommendations, you may significantly reduce your exposure, and greatly reduce the risk of developing chronic diseases later in life.",
     "*": "Your Risk Profile will allow you to quickly see how you're doing in terms of exposure",
-    "!": "Please complete your Daily form to see your Risk Profile today! "
+    "!": "Please complete your Daily quiz to see your Risk Profile today! "
 };
 
 const riskvalueColor = {

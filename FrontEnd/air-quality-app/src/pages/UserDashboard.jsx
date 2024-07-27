@@ -399,15 +399,10 @@ const DashBoard = ({ isSidebarOpen }) => {
           borderRadius: "2vh",
           // border: "1px solid grey",
         }}>
-        <Typography variant="h6" sx={{
-          fontWeight: "light",
-          color: '#151515'
-
-        }}>Your Summary</Typography>
           <Typography variant="body1" sx={{
             color: '#151515'
           }}>
-            • Your personalised health recommendations are generated below based on the answers you have given us.
+            Your personalised health recommendations are generated below based on the latest data you have given us. If this is your first time, your suggested actions will appear after you fill in the daily quiz.
           </Typography>
           </Box>
         
@@ -432,6 +427,38 @@ const DashBoard = ({ isSidebarOpen }) => {
           ))}
         </Grid>
       </section>
+      <section>
+      {/* <div className="flex flex-col gap-3"> */}
+      <Box sx= {{
+        paddingBottom: "2rem"
+      }}>
+      <Typography variant="h5" className="mb-4" sx={{
+          paddingBottom: "0.8rem"
+        }}>Risk Profile</Typography>
+        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase} />
+        </Box>
+        <Typography variant="h5" className="mb-4" sx={{
+          paddingBottom: "0.8rem"
+        }}>Daily Quiz Calendar</Typography>
+         <Box sx={{
+          marginLeft: "2rem",
+          padding: "2rem",
+          backgroundColor: "#F7F7F2",
+          borderRadius: "2vh",
+          // border: "1px solid grey",
+        }}>
+          <Typography variant="body1" sx={{
+            color: '#151515'
+          }}>
+            Want to see which days you&apos;ve completed the daily form? Check out the calendar below!
+          </Typography>
+          </Box>
+        <Box sx= {{
+          padding: "1.5rem"
+        }}>
+        <CustomCalendar />
+        </Box>
+
       <section className="mt-8">
         <div className="bg-black text-white p-4 rounded shadow-md">
           <Typography variant="body1">
@@ -443,11 +470,6 @@ const DashBoard = ({ isSidebarOpen }) => {
           </Typography>
         </div>
       </section>
-      <section>
-      <div className="flex flex-col gap-3">
-        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase} />
-          <CustomCalendar />
-      </div>
       </section>
     </div>
   );
