@@ -1,6 +1,8 @@
 package com.compsci.webapp.response;
 
- /**
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+/**
  * Module Name: UserRegisterResponse.java
  * Date of Creation: 17-Jun-2024
  * Author: navee
@@ -9,6 +11,7 @@ package com.compsci.webapp.response;
  * This class handles ...
  */
 
+@JsonInclude(JsonInclude.Include.NON_NULL)//Will not send fields with null values
 public class UserRegisterResponse {
         
     private String userName;

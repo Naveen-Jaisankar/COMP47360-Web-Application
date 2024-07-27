@@ -1,27 +1,38 @@
+import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContent from "../components/usercontent";
-import UserPlaceholder from "../components/userplaceholder";
 import { Box, Container, Typography, Button } from "@mui/material";
 import DailySearchbar from "../components/dailysearchbar";
 import CustomNumberInput from "../components/customnumberinput";
-import { useState } from "react";
-import { styled } from "@mui/system";
-import {ThickHeadingTypography} from "./Home"
-import constants from './../constant';
-import Sidebar from '../components/usersidebar';
+import { letterSpacing, styled, useTheme } from "@mui/system";
+import { ThickHeadingTypography } from "./Home";
+
+import constants from "./../constant";
+import axiosInstance from "../../src/axios";
+import { AuthContext } from "../context/AuthContext";
+import Sidebar from "../components/usersidebar";
+import CustomModal from "../components/custommodal";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../components/loadingscreen";
 
 const QuestionTypography = styled(Typography)(({ theme }) => ({
   marginBottom: "1rem",
   fontWeight: "bold",
-  fontSize: "1.5rem",
   color: theme.palette.text.primary,
 }));
 
-const GreyBackgroundBox = styled(Box) ({
-  backgroundColor: "#F1F3F2",
+const GreyBackgroundBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#0D1B2A" : "#F1F3F2",
   margin: "1rem",
   padding: "2rem",
   borderRadius: "20px",
-});
+  borderColor: theme.palette.mode === "dark" ? "#F7F7F2" : "black",
+  borderStyle: "solid",
+  borderWidth: 4,
+}));
+
+// image from https://fearlesstravels.com/the-streets-of-new-york/
+const bannerImage = "../src/static/backgroundDaily.jpg";
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");
@@ -29,21 +40,26 @@ export default function DailyForm() {
   const [indoorHours, setIndoorHours] = useState(0);
   const [outdoorHours, setOutdoorHours] = useState(0);
 
+  const theme = useTheme();
 
-  // Validation functions
+  const { userId } = useContext(AuthContext);
+  const [isValidatingHours, setIsValidatingHours] = useState(false);
+  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // checks if location is in Manhattan
+  const modalRef = useRef();
+
+  const indoorSbarTextRef = useRef();
+  const outdoorSbarTextRef = useRef();
+  const navigate = useNavigate();
+
   const checkValidLocation = (indoorLocation, outdoorLocation) => {
     let isValid = false;
     let indoorCheck = false;
     let outdoorCheck = false;
 
-    // If the location has loaded, check each component within the array if they match with the word "Manhattan"
-    // if so, the location is valid. This accounts for less detailed/more detailed addresses with more/less components within the array.
-
     if (indoorLocation.components_array) {
       indoorLocation.components_array.forEach((component) => {
-        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -55,8 +71,6 @@ export default function DailyForm() {
 
     if (outdoorLocation.components_array) {
       outdoorLocation.components_array.forEach((component) => {
-        console.log("outdoors:");
-        console.log(component);
         if (
           component.long_name === "Manhattan" ||
           component.short_name === "Manhattan"
@@ -66,152 +80,266 @@ export default function DailyForm() {
       });
     }
 
-    if (indoorCheck === true && outdoorCheck === true) {
+    if (indoorCheck && outdoorCheck) {
       isValid = true;
     }
     return isValid;
   };
 
-  // checks if the user has inputted 24 hours, if not this function will proportionately "fill" the rest of hours
-  // based of users input. If input is 0, it will take the "average day" spent indoors/outdoors i.e. 2 hours indoors/22 hours outdoors
   const check24Hours = (indoorHours, outdoorHours) => {
     let hourCheck = true;
+    if (indoorHours + outdoorHours > 24) {
+      hourCheck = false;
+    }
+    return hourCheck;
+  };
+
+  const adjustHours = (indoorHours, outdoorHours) => {
     const totalHours = indoorHours + outdoorHours;
+
     if (totalHours === 0) {
       setIndoorHours(22);
       setOutdoorHours(2);
     } else if (totalHours < 24) {
-      var indoorHourRatio = indoorHours / totalHours;
-      var outdoorHourRatio = outdoorHours / totalHours;
+      const indoorHourRatio = indoorHours / totalHours;
+      const outdoorHourRatio = outdoorHours / totalHours;
 
-      var leftoverHours = 24 - totalHours;
+      const leftoverHours = 24 - totalHours;
+      console.log("leftover hours:" + leftoverHours);
 
       const newIndoorHours = Math.round(leftoverHours * indoorHourRatio);
-      console.log(newIndoorHours);
-
+      console.log("new indoor hours:", newIndoorHours);
       const newOutdoorHours = Math.round(leftoverHours * outdoorHourRatio);
-      console.log(newOutdoorHours);
+      console.log("new outdoor hours:", newOutdoorHours);
 
-      const adjustedIndoorHours = indoorHours + newIndoorHours;
-      const adjustedOutdoorHours = outdoorHours + newOutdoorHours;
+      let adjustedIndoorHours = indoorHours + newIndoorHours;
+      let adjustedOutdoorHours = outdoorHours + newOutdoorHours;
 
-      console.log(`adjusted indoors, ${adjustedIndoorHours}`);
-      console.log(`adjusted outdoors, ${adjustedOutdoorHours}`);
+      console.log(adjustedIndoorHours, adjustedOutdoorHours);
 
-      setIndoorHours(adjustedIndoorHours)
-      setOutdoorHours(adjustedOutdoorHours)
-    } else if (totalHours > 24){
-      hourCheck = false;
+      if (adjustedIndoorHours + adjustedOutdoorHours > 24) {
+        const excess = adjustedIndoorHours + adjustedOutdoorHours - 24;
+
+        if (adjustedIndoorHours > adjustedOutdoorHours) {
+          adjustedIndoorHours = adjustedIndoorHours - excess;
+          console.log("here in calc indoor", adjustedIndoorHours);
+        } else if (adjustedOutdoorHours > adjustedIndoorHours) {
+          adjustedOutdoorHours = adjustedOutdoorHours - excess;
+          console.log("here in calc zdoor", adjustedIndoorHours);
+        }
+      }
+      setIndoorHours(adjustedIndoorHours);
+      setOutdoorHours(adjustedOutdoorHours);
     }
+  };
 
-    return hourCheck;
-  }
+  useEffect(() => {
+    if (isValidatingHours) {
+      adjustHours(indoorHours, outdoorHours);
+      setIsValidatingHours(false);
+      setIsReadyToSubmit(true);
+    }
+  }, [isValidatingHours]);
 
-  // Submission function
+  useEffect(() => {
+    if (isReadyToSubmit) {
+      handleSubmit();
+    }
+  }, [isReadyToSubmit]);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    const is24Hours = check24Hours(indoorHours, outdoorHours);
+  const handleSubmit = async () => {
     const isValid = checkValidLocation(indoorLocation, outdoorLocation);
+    const is24Hours = check24Hours(indoorHours, outdoorHours);
+
+    let indoorLocationArray = [indoorLocation.lat, indoorLocation.lng];
+    let outdoorLocationArray = [outdoorLocation.lat, outdoorLocation.lng];
+
+    let indoorLocationToSend = indoorLocationArray.toString();
+    let outdoorLocationToSend = outdoorLocationArray.toString();
+
+    const data = {
+      user_id: userId, // Use userId from AuthContext
+      quiz_date: new Date(),
+      indoor_location: indoorLocationToSend,
+      outdoor_location: outdoorLocationToSend,
+      indoor_hours: indoorHours,
+      outdoor_hours: outdoorHours,
+    };
 
     if (!isValid) {
       alert("Please choose a location in Manhattan");
     } else if (!is24Hours) {
-      alert("24 hours exceeded, number inputs are invalid")
-    } else{
+      alert("24 hours exceeded, number inputs are invalid");
+    } else {
       try {
-        console.log(`Indoor Hours: ${indoorHours}`);
-        console.log(`Outdoor Hours: ${outdoorHours}`);
-        console.log(`Indoor Location: ${indoorLocation.address}`);
-        console.log(`Indoor Lat: ${indoorLocation.lat}`);
-        console.log(`Indoor Lng: ${indoorLocation.lng}`);
-        console.log(`Outdoor Location: ${outdoorLocation.address}`);
-        console.log(`Outdoor Lat: ${outdoorLocation.lat}`);
-        console.log(`Outdoor Lng: ${outdoorLocation.lng}`);
-        alert("Form submitted :D");
+        await axiosInstance
+          .post("/dailyquizscores/createDailyQuizScore", data)
+          .then((response) => {
+            console.log("Data sent successfully!", response);
+          })
+          .catch((error) => {
+            console.error("There was an error sending the data!", error);
+          });
 
         setIndoorLocation("");
         setOutdoorLocation("");
         setIndoorHours(0);
         setOutdoorHours(0);
+
+        modalRef.current.openModal(); // Open the modal using the ref
+
+        if (indoorSbarTextRef.current) {
+          indoorSbarTextRef.current.handleReset();
+        }
+
+        if (outdoorSbarTextRef.current) {
+          outdoorSbarTextRef.current.handleReset();
+        }
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
     }
+
+    setIsReadyToSubmit(false);
   };
 
-  // Form input functions
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setIsValidatingHours(true);
+  };
 
-    const handleIndoorHoursChange = (event, newValue) => {
-      const indoorValue = newValue;
-      setIndoorHours(indoorValue);
-    };
+  const handleIndoorHoursChange = (event, newValue) => {
+    setIndoorHours(newValue);
+  };
 
-    const handleOutdoorHoursChange = (event, newValue) => {
-      const outdoorValue = newValue;
-      setOutdoorHours(outdoorValue);
-    };
+  const handleOutdoorHoursChange = (event, newValue) => {
+    setOutdoorHours(newValue);
+  };
 
-    const handleIndoorPlaceChange = (placeData) => {
-      setIndoorLocation(placeData);
-    };
+  const handleIndoorPlaceChange = (placeData) => {
+    setIndoorLocation(placeData);
+  };
 
-    const handleOutdoorPlaceChange = (placeData) => {
-      setOutdoorLocation(placeData);
-    };
+  const handleOutdoorPlaceChange = (placeData) => {
+    setOutdoorLocation(placeData);
+  };
 
-    const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-    const toggleDrawer = () => {
-      setSidebarOpen(!isSidebarOpen);
-    };
+  const toggleDrawer = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleModalClose = (redirectUrl = "/user-dashboard") => {
+    setIsLoading(true);
+    setTimeout(() => {
+      navigate(redirectUrl);
+    }, 1500);
+  };
 
   return (
-    <div className="flex">
-      <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
-      <UserContent className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-0'} p-6`}>
-        <Container sx={{marginTop: "2rem",}}>
-          <ThickHeadingTypography variant="h1" component="h1" sx={{color: "black", paddingLeft: "1rem"}}>
-            {constants.dailyForm.title}
-          </ThickHeadingTypography>
+    <>
+      {isLoading ? (
+        <LoadingScreen loadingtext={constants.dailyForm.loadingText} />
+      ) : (
+        <div className="flex">
+          <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleDrawer} />
+          <Box
+            sx={{
+              backgroundImage: `url(${bannerImage})`,
+              backgroundSize: "cover",
+              width: "100%",
+              height: "100%",
+              minHeight: "95vh",
+            }}
+          >
+            <UserContent
+              className={`transition-all duration-300 ${
+                isSidebarOpen ? "ml-60" : "ml-0"
+              } p-6`}
+            >
+              <Container sx={{ marginTop: "2rem", marginLeft: "-3rem" }}>
+                <ThickHeadingTypography
+                  variant="h2"
+                  component="h1"
+                  sx={{
+                    color: theme.palette.mode === "dark" ? "#F1F3F2" : "white",
+                    paddingLeft: "1rem",
+                  }}
+                >
+                  {constants.dailyForm.title}
+                </ThickHeadingTypography>
 
-          <GreyBackgroundBox>
-            <form onSubmit={submitHandler}>
-              <QuestionTypography variant="h4" component="h2">
-                {constants.dailyForm.q1_indoorLocation}
-              </QuestionTypography>
-              <DailySearchbar 
-                value={indoorLocation.address || ""} 
-                passPlaceData={handleIndoorPlaceChange} />
+                <GreyBackgroundBox>
+                  <form onSubmit={submitHandler}>
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q1_indoorLocation}
+                    </QuestionTypography>
+                    <DailySearchbar
+                      value={indoorLocation.address}
+                      passPlaceData={handleIndoorPlaceChange}
+                      ref={indoorSbarTextRef}
+                    />
 
-              <QuestionTypography variant="h4" component="h2">
-                {constants.dailyForm.q2_indoorHours}
-              </QuestionTypography>
-              <CustomNumberInput
-                value={indoorHours}
-                onChange={handleIndoorHoursChange}
-                arialabel={"Number of Hours spent indoors"}
-              />
-              <QuestionTypography variant="h4" component="h2">
-               {constants.dailyForm.q3_outdoorLocation}
-              </QuestionTypography>
-              <DailySearchbar passPlaceData={handleOutdoorPlaceChange} />
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q2_indoorHours}
+                    </QuestionTypography>
+                    <CustomNumberInput
+                      value={indoorHours}
+                      onChange={handleIndoorHoursChange}
+                      arialabel={"Number of Hours spent indoors"}
+                    />
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q3_outdoorLocation}
+                    </QuestionTypography>
+                    <DailySearchbar
+                      passPlaceData={handleOutdoorPlaceChange}
+                      ref={outdoorSbarTextRef}
+                    />
 
-              <QuestionTypography variant="h4" component="h2">
-               {constants.dailyForm.q4_outdoorHours}
-              </QuestionTypography>
-              <CustomNumberInput
-                value={outdoorHours}
-                onChange={handleOutdoorHoursChange}
-                arialabel={"Number of Hours spent indoors"}
-              />
+                    <QuestionTypography variant="h5" component="h2">
+                      {constants.dailyForm.q4_outdoorHours}
+                    </QuestionTypography>
+                    <CustomNumberInput
+                      value={outdoorHours}
+                      onChange={handleOutdoorHoursChange}
+                      arialabel={"Number of Hours spent outdoors"}
+                    />
 
-              <Button type="submit">Submit</Button>
-            </form>
-          </GreyBackgroundBox>
-        </Container>
-      </UserContent>
-    </div>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: "2rem",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        sx={{
+                          width: "200px", // Set a fixed width for the button
+                        }}
+                      >
+                        {constants.dailyForm.submitButton}
+                      </Button>
+                    </Box>
+
+                    <CustomModal
+                      ref={modalRef}
+                      title={constants.dailyForm.modalTitle}
+                      description={constants.dailyForm.modalThankYou}
+                      IconComponent={TaskAltIcon}
+                      iconColor="green"
+                      // Comment/ uncomment below to test redirect.
+                      onClose={() => handleModalClose("/user")}
+                    />
+                  </form>
+                </GreyBackgroundBox>
+              </Container>
+            </UserContent>
+          </Box>
+        </div>
+      )}
+    </>
   );
 }

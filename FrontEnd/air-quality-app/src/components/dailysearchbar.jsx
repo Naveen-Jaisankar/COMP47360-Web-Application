@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useImperativeHandle, useRef, forwardRef } from "react";
 import { Autocomplete, LoadScript } from "@react-google-maps/api";
 import { Box } from "@mui/system";
 import { styled } from "@mui/system";
@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 const StyledInput = styled("input")({
   width: "100%",
+  color: "red",
   padding: "1rem",
   fontSize: "18px",
   border: "1px solid #ccc",
@@ -18,8 +19,10 @@ const StyledInput = styled("input")({
   },
 });
 
-const DailySearchbar = ({passPlaceData}) => {
+const DailySearchbar = forwardRef(({passPlaceData}, ref) => {
   const inputRef = useRef();
+  const textRef= useRef();
+
   const apikey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const placeslib = ["places"];
 
@@ -54,8 +57,19 @@ const DailySearchbar = ({passPlaceData}) => {
       
       }
 
+
     }
-  }
+
+  };
+
+  useImperativeHandle(ref, () => ({
+    handleReset() {
+      if (textRef.current){
+        textRef.current.value=""
+      }
+    },
+    textRef
+  }));
 
   return (
     <Box sx={{ margin: "1rem" }}>
@@ -69,21 +83,26 @@ const DailySearchbar = ({passPlaceData}) => {
           }}
         >
           <StyledInput
+            sx={{
+              color: "black"
+            }}
             type="text"
             className="form-control"
             placeholder="Enter Location"
+            ref={textRef}
             onKeyDown={(e) => { e.key === 'Enter' && e.preventDefault(); }}
           />
         </Autocomplete>
       </LoadScript>
     </Box>
   );
-};
+});
+
+DailySearchbar.displayName = "DailySearchbar";
 
 DailySearchbar.propTypes = {
   passPlaceData: PropTypes.func,
 }
 
 export default DailySearchbar;
-
 

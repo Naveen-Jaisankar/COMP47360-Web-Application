@@ -5,7 +5,6 @@ import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Home from './pages/Home';
 import Map from './pages/Map'
-import Form from './pages/Form'
 import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
 import Privacy from './pages/Privacy';
@@ -19,6 +18,7 @@ import { UserPanel } from './pages/UserPanel';
 import ForgotPass from './pages/ForgotPassword';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import TypographyTest from './pages/TypographyTest';
 
 function App() {
   const { fontSize } = useContext(SettingsContext);
@@ -48,6 +48,7 @@ function App() {
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
                     <Route path="/user/history" element={<ProtectedRoute element={<UserHistory />} />} />
+                    <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} />
                   </Routes>
                 </MainContent>
               </div>

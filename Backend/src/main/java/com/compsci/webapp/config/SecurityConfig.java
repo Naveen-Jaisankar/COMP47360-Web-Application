@@ -35,6 +35,7 @@ public class SecurityConfig {
             .requestMatchers("/api/v1/auth/profile/**").permitAll()
             .requestMatchers("/swagger-ui/**").permitAll()
             .requestMatchers("/api-docs/**").permitAll()
+            .requestMatchers("/api/v1/dailyquizscores/**").permitAll()
             .anyRequest().authenticated()
             .and()
         .sessionManagement()

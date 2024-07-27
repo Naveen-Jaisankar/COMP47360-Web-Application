@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,9 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import com.compsci.webapp.config.JwtService;
 import com.compsci.webapp.entity.EmailConfirmationEntity;
 import com.compsci.webapp.entity.UserEntity;
+import com.compsci.webapp.exception.InactiveUserException;
+import com.compsci.webapp.exception.InvalidCredentialsException;
+import com.compsci.webapp.exception.UserNotFoundException;
 import com.compsci.webapp.repository.EmailConfirmationRepository;
 import com.compsci.webapp.repository.UserRepository;
 import com.compsci.webapp.request.ResendVerificationEmailReqeust;
@@ -35,6 +39,7 @@ import com.compsci.webapp.request.UserSignInRequest;
 import com.compsci.webapp.response.ResendVerificationEmailResponse;
 import com.compsci.webapp.response.UserRegisterResponse;
 import com.compsci.webapp.response.UserSignInResponse;
+import com.compsci.webapp.util.Constants;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -67,7 +72,9 @@ public class AuthServiceImpl implements AuthService {
 	public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) {
 
 		if (Boolean.TRUE.equals(userRepository.existsByUserEmail(userRegisterRequest.getUserEmail()))) {
-		    throw new IllegalArgumentException("Email is already in use!");
+			UserRegisterResponse response = new UserRegisterResponse();
+            response.setMessage(Constants.EMAIL_ALREADY_IN_USE.getMessage());
+            return response;
 		}
         
 		UserEntity user = new UserEntity();
@@ -119,7 +126,7 @@ public class AuthServiceImpl implements AuthService {
 			int updated = emailConfirmationRepository.updateEmailConfirmationDetails(userId,token , LocalDateTime.now().plusMinutes(15), LocalDateTime.now());
 			constructandSendVerificationEmail(token,user);
 		}else {
-			throw new IllegalArgumentException("Email-id doesn't exist");
+			throw new UserNotFoundException(Constants.USER_NOT_FOUND.getMessage());
 		}
 		return null;
 	}
@@ -130,18 +137,30 @@ public class AuthServiceImpl implements AuthService {
 		UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
 		userRegisterResponse.setUserName(user.getUserName());
 		userRegisterResponse.setUserEmail(user.getUserEmail());
-		userRegisterResponse.setMessage("User registered successfully!");
+		userRegisterResponse.setMessage(Constants.REGISTERED_SUCCESSFULL.getMessage());
         return userRegisterResponse;
     }
 
 	@Override
 	public UserSignInResponse userSignIn(UserSignInRequest userSignInRequest) {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInRequest.getUserEmail(), userSignInRequest.getUserPassword()));
-		var user = userRepository.findByUserEmail(userSignInRequest.getUserEmail()).orElseThrow();
+		UserEntity user = userRepository.findByUserEmail(userSignInRequest.getUserEmail())
+                .orElseThrow(() -> new UserNotFoundException(Constants.USER_NOT_FOUND.getMessage()));
+
+        if (!user.isEnabled()) {
+            throw new InactiveUserException(Constants.INACTIVE_USER.getMessage());
+        }
+
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInRequest.getUserEmail(), userSignInRequest.getUserPassword()));
+        } catch (AuthenticationException e) {
+            throw new InvalidCredentialsException(Constants.BAD_CREDENTIALS.getMessage());
+        }
+        
 		var jwtToken = jwtService.generateToken(user);
 		UserSignInResponse userSignInResponse = new UserSignInResponse();
 		userSignInResponse.setToken(jwtToken);
-		userSignInResponse.setMessage("Login Successfull!!");
+		userSignInResponse.setMessage(Constants.LOGIN_SUCCESSFULL.getMessage());
+		userSignInResponse.setUserId(user.getUserId());
 		userSignInResponse.setUserEmail(user.getUserEmail());
 		userSignInResponse.setUserName(user.getUserName());
 		return userSignInResponse;
@@ -153,13 +172,13 @@ public class AuthServiceImpl implements AuthService {
 		Optional<EmailConfirmationEntity> emailConfirmationEntity = emailConfirmationRepository.findByEmailConfirmationToken(token);
 
 		if(emailConfirmationEntity.isEmpty()) {
-			return "User not found";
+			return Constants.USER_NOT_FOUND.getMessage();
 		}
 
 		EmailConfirmationEntity emailConfirmation = emailConfirmationEntity.get();
 
         if (emailConfirmation.getEmailConfirmationConfirmedAt() != null) {
-            return "Email already confirmed";
+            return Constants.EMAIL_ALREADY_VERIFIED.getMessage();
         }
 
         LocalDateTime expiredAt = emailConfirmation.getEmailConfirmationExpiresAt();
