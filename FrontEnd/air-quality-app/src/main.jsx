@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import './public/static/index.css'
+import './static/index.css'
 import { ThemeContextProvider } from './context/SettingsContext.jsx'
 import { HelmetProvider } from 'react-helmet-async'
 
