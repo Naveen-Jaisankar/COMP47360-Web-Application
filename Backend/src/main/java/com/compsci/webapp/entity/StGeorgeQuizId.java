@@ -20,10 +20,10 @@ public class StGeorgeQuizId implements Serializable {
     private LocalDate quizDate;
 
     // Default constructor
-    public DailyQuizID() {}
+    public StGeorgeQuizId() {}
 
     // Parameterized constructor
-    public DailyQuizID(Long userId, LocalDate quizDate) {
+    public StGeorgeQuizId(Long userId, LocalDate quizDate) {
         this.userId = userId;
         this.quizDate = quizDate;
     }
@@ -55,7 +55,7 @@ public class StGeorgeQuizId implements Serializable {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        DailyQuizID that = (DailyQuizID) obj;
+        StGeorgeQuizId that = (StGeorgeQuizId) obj;
         return Objects.equals(userId, that.userId) &&
                Objects.equals(quizDate, that.quizDate);
     }
