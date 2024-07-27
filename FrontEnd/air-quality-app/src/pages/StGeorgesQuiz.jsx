@@ -528,8 +528,8 @@ function Quiz({closeSubmitHandler}) {
     .get(`/stgeorgequiz/getscore`, {
       params: {
         userId: userId,
-        quizDate: quizDate
-      }
+        quizDate: quizDate,
+    },
     })
     .then((response) => {
       console.log("Score data received:", response.data);
@@ -539,8 +539,10 @@ function Quiz({closeSubmitHandler}) {
       console.error("There was an error retrieving the score!", error);
     });
   
-  
+    setIsModalOpen(false);
+    submitModalRef.current.openModal();
 };
+
 
   // const handleClick = (data) => {
   //     fetch('http://localhost:8080/api/v1/stgeorgequiz/saveScore', {
@@ -732,7 +734,8 @@ function Quiz({closeSubmitHandler}) {
     return (totalSelectedScores * 100) / totalPossibleScores;
   };
 
-  return (
+{
+  return ( 
     <>
 
         <>
@@ -766,7 +769,7 @@ function Quiz({closeSubmitHandler}) {
             }
           />
         </form>
-      </Modal>
+        </Modal> 
       <CustomModal
         ref={submitModalRef}
         title={constants.dailyForm.modalTitle}
@@ -780,6 +783,7 @@ function Quiz({closeSubmitHandler}) {
 
     </>
   );
+          };
 
 
   export default function Form() {
