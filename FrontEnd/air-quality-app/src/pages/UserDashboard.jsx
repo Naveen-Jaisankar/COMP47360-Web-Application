@@ -450,7 +450,7 @@ const DashBoard = ({ isSidebarOpen }) => {
           <Typography variant="body1" sx={{
             color: '#151515'
           }}>
-            Want to see which days you've completed the daily form? Check out the calendar below!
+            Want to see which days you&apos;ve completed the daily form? Check out the calendar below!
           </Typography>
           </Box>
         <Box sx= {{
