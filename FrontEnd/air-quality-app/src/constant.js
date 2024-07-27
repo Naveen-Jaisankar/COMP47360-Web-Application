@@ -17,8 +17,8 @@ export const general = {
     logout:'Logout',
     save_and_continue : "Save & Continue",
     getting_started : "Getting Started",
-    user_dash:"Dashboard"
-
+    user_dash:"Dashboard",
+    loading_site:"Website is loading..."
 }
 
 export const generalHealth = {
@@ -41,17 +41,16 @@ export const homePage =  {
 }
 
 export const loginConsts = {
-    login : "Log-In",
-    login_body : "Breathe easier with Fair",
+    login : "Welcome back!",
     login_btn : "Login",
     create_acnt : " Not a member? Create an account here",
     forgot_pass:"Forgot Password? Click here!"
 }
 
 export const register = {
-    title : "Create an account",
-    body : "Enter your details to sign up",
-    btn : "Register",
+    title : "Sign Up",
+    body : "Breathe easier with Fair",
+    btn : "Sign Up",
     create_my_acnt : "Create my account",
 }
 
@@ -75,7 +74,8 @@ export const dailyForm = {
     q4_outdoorHours: "How many hours did you spend outdoors today?",
     modalTitle: "Form Submitted",
     modalThankYou: "Thank You!",
-    loadingText: "Returning you to your Dashboard"
+    loadingText: "Returning you to your Dashboard",
+    submitButton:"submit"
 }
 
 export const privacy = {
@@ -111,6 +111,10 @@ export const ForgotPass = {
     forgotText:"Reset Password"
 }
 
+export const Mappage = {
+    loading_text:"Please wait... Loading your map"
+}
+
 export default {
     footerConstants,
     general,
@@ -124,5 +128,6 @@ export default {
     privacy,
     userHistory,
     ForgotPass,
-    userSidebar
+    userSidebar,
+    Mappage
 };

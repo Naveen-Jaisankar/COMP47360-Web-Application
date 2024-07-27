@@ -1,47 +1,41 @@
 /*global google*/
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useContext } from 'react';
 import { GoogleMap, HeatmapLayer, useJsApiLoader, Marker } from '@react-google-maps/api';
-// import { IconButton } from '@mui/material';
-// import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-// import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import PlaceAutocomplete from '../components/mapautocomplete';
 import axiosInstance from '../axios';
 import mapstyle from '../components/mapstyles';
+import darkmapstyle from '../components/darkmapstyles';
 import { MapSidebar } from '../components/mapsidebar';
 import MapAlertCard from '../components/mapalertcard';
 import Legend from '../components/maplegend';
 import { heatData } from './heatdata';
+import { SettingsContext } from '../context/SettingsContext';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import LoadingScreen from '../components/loadingscreen';
+import constant from '../constant';
 
-// const warningImg = "../src/static/icons8-warning-96.png";
 const centerPosition = { lat: 40.773631, lng: -73.971290 };
-const googleMapsKey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
+const googleMapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const libs = ['visualization', 'places'];
-const airQualityGradient = [
-  "rgba(32, 205, 50, 0)",
-  "rgba(0, 228, 0, 1)",
-  "rgba(255, 255, 0, 1)",
-  "rgba(255, 126, 0, 1)",
-  "rgba(255, 0, 0, 1)",
-  "rgba(143, 63, 151, 1)",
-  "rgba(126, 0, 35, 1)",
-];
+
 
 let predictedData = [];
 let aqiForLocation = 100;
-
 
 export default function MapPage() {
   const [map, setMap] = useState(null);
   const [markerPos, setMarkerPos] = useState(centerPosition);
   const [isMapSidebarOpen, setIsMapSidebarOpen] = useState(false);
-  const [shouldRenderMarker, setShouldRenderMarker] = useState(false); // Variable to control when the marker will be loaded in.
-  const [shouldRenderHeatMap, setShouldRenderHeatMap] = useState(false); // Variable to control when the heatmap will be loaded in.
-  const [heatMapData, setHeatMapData] = useState(null); // Move heatMapData to state
-  const [loading, setLoading] = useState(true); // State to manage loading state
-  const [lastFetchTime, setLastFetchTime] = useState(0); // State to store the last fetch time
+  const [shouldRenderMarker, setShouldRenderMarker] = useState(false);
+  const [shouldRenderHeatMap, setShouldRenderHeatMap] = useState(false);
+  const [heatMapData, setHeatMapData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [lastFetchTime, setLastFetchTime] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(11.7);
+  
+  const {darkMode} = useContext(SettingsContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const { isLoaded } = useJsApiLoader({
@@ -49,18 +43,38 @@ export default function MapPage() {
     libraries: libs
   });
 
-  const GetheatData = () =>{
-    const newHeatMapData = predictedData.map(result => {
-      let wt = 6;
-      if (result.predicted_aqi <= 50) wt = 1;
-      else if (result.predicted_aqi <= 100) wt = 2;
-      else if (result.predicted_aqi <= 150) wt = 3;
-      else if (result.predicted_aqi <= 200) wt = 4;
-      else if (result.predicted_aqi <= 300) wt = 5;
+  const airQualityGradient = [
+    "rgba(32,205, 50,0)",
+    "rgba(0, 228, 0, 1)",
+    "rgba(32, 205, 50, 1)",
+    "rgba(255, 255, 0, 1)",
+    "rgba(255, 126, 0, 1)",
+    "rgba(255, 0, 0, 1)",
+    "rgba(143, 63, 151, 1)",
+    "rgba(126, 0, 35, 1)",
+  ];
 
-      return { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt };
+  const GetheatData = (predictedData) => {
+    const newHeatMapData = predictedData.flatMap(result => {
+      var wt = 0.6 / 9;
+      if (result.predicted_aqi <= 50) wt = 0.1 / 9;
+      else if (result.predicted_aqi <= 100) wt = 0.2 / 9;
+      else if (result.predicted_aqi <= 150) wt = 0.3 / 9;
+      else if (result.predicted_aqi <= 200) wt = 0.4 / 9;
+      else if (result.predicted_aqi <= 300) wt = 0.5 / 9;
+  
+      return [
+        { lat: result.max_lat, lng: result.max_lon, weight: wt },
+        { lat: result.max_lat, lng: result.min_lon, weight: wt },
+        { lat: result.min_lat, lng: result.max_lon, weight: wt },
+        { lat: result.min_lat, lng: result.min_lon, weight: wt },
+        { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
+        {lat: (result.max_lat + result.min_lat) / 2, lng: result.max_lon, weight: wt},
+        {lat: (result.max_lat + result.min_lat) / 2, lng: result.min_lon, weight: wt},
+        {lat: result.max_lat, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
+        {lat: result.min_lat, lng: (result.max_lon + result.min_lon) / 2, weight: wt },
+      ];
     });
-
     return newHeatMapData;
   }
 
@@ -74,38 +88,26 @@ export default function MapPage() {
       if(response.data.length > 0)
       {
         predictedData = response.data;
-        const newHeatMapData = response.data.map(result => {
-          let wt = 6;
-          if (result.predicted_aqi <= 50) wt = 1;
-          else if (result.predicted_aqi <= 100) wt = 2;
-          else if (result.predicted_aqi <= 150) wt = 3;
-          else if (result.predicted_aqi <= 200) wt = 4;
-          else if (result.predicted_aqi <= 300) wt = 5;
-  
-          return { lat: (result.max_lat + result.min_lat) / 2, lng: (result.max_lon + result.min_lon) / 2, weight: wt };
-        });
+        const newHeatMapData = GetheatData(predictedData);
         setHeatMapData(newHeatMapData);
         console.log("Location data sent successfully!", response);
-        setLoading(false); // Set loading to false once data is fetched
-        setLastFetchTime(Date.now()); // Update the last fetch time
+        setLoading(false);
+        setLastFetchTime(Date.now());
       }
       else
       {
         predictedData = heatData;
-        setHeatMapData(GetheatData())
-        setLoading(false); // Set loading to false once data is fetched
-        setLastFetchTime(Date.now()); // Update the last fetch time
+        setHeatMapData(GetheatData(predictedData))
+        setLoading(false);
+        setLastFetchTime(Date.now());
       }
     } catch (error) {
       console.error("There was an error sending the location data!", error);
-      setLoading(false); // Set loading to false in case of an error
+      setLoading(false);
     }
   }, []);
 
-  
-
   useEffect(() => {
-    // Fetch data immediately
     fetchAQIData();
 
     
@@ -140,7 +142,7 @@ export default function MapPage() {
   const handlePlaceSelected = useCallback((location) => {
     if (map) {
       map.panTo(new google.maps.LatLng(location.lat(), location.lng()));
-      map.zoom = 14;
+      map.zoom = 12;
       setMarkerPos({ lat: location.lat(), lng: location.lng() });
       aqiForLocation = GetAqiForLocation({ lat: location.lat(), lng: location.lng() }, selectedDate);
     }
@@ -148,26 +150,20 @@ export default function MapPage() {
 
   const mapContainerStyle = useMemo(() => ({
     position: 'relative',
-    // width: isMapSidebarOpen ? '80vw' : '100vw',
     width:'100vw',
     height: '100vh'
   }), [isMapSidebarOpen]);
 
-  // const handleToggleSidebar = useCallback(() => {
-  //   setIsMapSidebarOpen(prevState => !prevState);
-  // }, []);
-
   useEffect(() => {
-    // Set a delay of 1 second before rendering the marker for the first time (0.04 seconds lowest so far)
     const timer = setTimeout(() => {
       setShouldRenderMarker(true);
       setShouldRenderHeatMap(true);
-    }, 1000); // Adjust the delay time here as needed
-    return () => clearTimeout(timer); // Clears out the delay for future marker rendering
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!isLoaded) {
-    return (<div>Loading...please wait</div>);
+    return (<LoadingScreen loadingtext = {constant.Mappage.loading_text}/>);
   }
 
   const formatLastFetchTime = (timestamp) => {
@@ -176,20 +172,54 @@ export default function MapPage() {
     return date.toLocaleString();
   };
 
+  const handleZoomChanged = () => {
+    if (map) {
+      const newZoomLevel = map.getZoom();
+      setZoomLevel(newZoomLevel);
+    }
+  };
+
+  const getHeatmapRadius = () => {
+    console.log(zoomLevel);
+    if (zoomLevel < 13) return 20;
+    if (zoomLevel < 14) return 40;
+    if(zoomLevel < 15) return 80;
+    if(zoomLevel < 16) return 150;
+    return 300;
+  };
+
+  const getHeatmapOpacity = () => {
+    if (zoomLevel < 13) return 0.2;
+    return 0.4;
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       <MapSidebar isOpen={isMapSidebarOpen} />
       <div style={{ width: '100vw', height: '100vh' }} className='flex-1 ml-0'>
-        <GoogleMap mapContainerStyle={mapContainerStyle}
-          center={centerPosition} zoom={12} onLoad={(map) => setMap(map)}
-          options={{ disableDefaultUI: { zoomControl: true, mapTypeControl: true, streetViewControl: true }, styles: mapstyle }}>
 
-          {map && !loading && heatMapData.length> 0 && shouldRenderHeatMap &&
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle} center={centerPosition} 
+        zoom={zoomLevel} onZoomChanged = {handleZoomChanged} onLoad={(map) => setMap(map)}
+        options={{
+          disableDefaultUI: {
+            zoomControl: true,
+            mapTypeControl: true,
+            streetViewControl: true,
+          },
+          styles: darkMode ? darkmapstyle : mapstyle,
+          gestureHandling: 'greedy',
+          zoomControl:true,
+          minZoom: 8,
+          maxZoom: 16
+        }}
+      >
+          {map && !loading && heatMapData.length > 0 && shouldRenderHeatMap &&
             <HeatmapLayer
               data={heatMapData.map((data) => (
                 { location: new google.maps.LatLng(data.lat, data.lng), weight: data.weight }
               ))}
-              options={{ radius: 20, dissipating: true, opacity: 0.2, gradient: airQualityGradient }}
+              options={{radius: getHeatmapRadius(), dissipating: true, opacity: getHeatmapOpacity(), gradient: airQualityGradient}}
             />
           }
 
@@ -197,22 +227,19 @@ export default function MapPage() {
 
           <div className='flex flex-col fixed ml-3 z-10 gap-2 top-12 mt-6'>
             <div className='flex flex-row items-center ml-3 p-2'>
-              {/* <IconButton onClick={handleToggleSidebar} className='font-bold'>
-                {isMapSidebarOpen ? <ArrowBackIosRoundedIcon /> : <ArrowForwardIosRoundedIcon />}
-              </IconButton> */}
               <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
               <DatePicker
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
                 dateFormat="yyyy/MM/dd"
-                className="ml-2"
+                className={`${darkMode ? 
+                  "ml-2 px-2 py-1 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-800 text-gray-200" 
+                  : 
+                  "ml-2 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                }`}
               />
             </div>
             <MapAlertCard aqi={aqiForLocation} />
-
-            <div className="text-sm mt-2">
-              Last fetch time: {formatLastFetchTime(lastFetchTime)}
-            </div>
           </div>
 
           <div className='flex fixed z-10 right-2 mr-3 bottom-4'>

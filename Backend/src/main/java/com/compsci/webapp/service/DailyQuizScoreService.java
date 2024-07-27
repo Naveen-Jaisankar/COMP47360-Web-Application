@@ -18,7 +18,17 @@ import com.compsci.webapp.repository.UserRepository;
 import com.compsci.webapp.request.DailyQuizScoreRequest;
 import com.compsci.webapp.util.AQICalculator;
 import com.compsci.webapp.util.Constants;
+<<<<<<< HEAD
 import com.compsci.webapp.util.MapUtils;
+=======
+import com.compsci.webapp.util.DailyQuizScoreDataObject;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+>>>>>>> refs/remotes/origin/main
 
 @Service
 
@@ -41,8 +51,8 @@ public class DailyQuizScoreService {
     private UserRepository userRepository;
     
 
-    public List<DailyQuizScore> getDailyQuizScoreById(Long id) {
-    	List<DailyQuizScore> dailyQuizScore = new ArrayList<>();
+    public List<DailyQuizScoreDataObject> getDailyQuizScoreById(Long id) {
+    	List<DailyQuizScoreDataObject> dailyQuizScore = new ArrayList<>();
     	try {
     		dailyQuizScore = dailyQuizScoreRepository.findByUserId_UserId(id);
     	}catch(Exception e) {
@@ -124,4 +134,17 @@ public class DailyQuizScoreService {
         double rawPM = (outdoorPM * outdoorHours / maskFactor) + ((indoorPM / indoorFactor) * indoorHours);
         return rawPM / 24.0;
     }
+
+        public double getAqiForToday() {
+        // LocalDate currentDate = LocalDate.now();
+
+        String location = "40.776676, -73.971321";
+
+        // long timestamp = currentDate.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+
+        double aqi = fetchAQIForALocation(location);
+
+        return aqi;
+    }
+
 }
