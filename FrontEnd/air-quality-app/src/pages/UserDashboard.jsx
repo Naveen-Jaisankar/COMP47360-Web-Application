@@ -407,7 +407,7 @@ const DashBoard = ({ isSidebarOpen }) => {
           <Typography variant="body1" sx={{
             color: '#151515'
           }}>
-            • Spent x minutes in low to medium pollution, spent x minutes in high pollution.
+            • Your personalised health recommendations are generated below based on the answers you have given us.
           </Typography>
           </Box>
         
