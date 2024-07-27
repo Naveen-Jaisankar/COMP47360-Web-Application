@@ -4,8 +4,8 @@ import { Typography } from "@mui/material";
 import PropTypes from 'prop-types';
 
 const RiskProfileCard = ({avgAQI, userAQI, specialCase}) => {
-    let starImage = "../src/static/star.png"
-    let airImage ="../src/static/air-icon.png" 
+    let starImage = "static/star.png"
+    let airImage ="static/air-icon.png" 
     let grade = "";
     let headingText ="";
     let contentText = "";
