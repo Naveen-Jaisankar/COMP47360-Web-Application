@@ -32,7 +32,7 @@ const GreyBackgroundBox = styled(Box)(({ theme }) => ({
 }));
 
 // image from https://fearlesstravels.com/the-streets-of-new-york/
-const bannerImage = "../src/static/backgroundDaily.jpg";
+const bannerImage = "static/backgroundDaily.jpg";
 
 export default function DailyForm() {
   const [indoorLocation, setIndoorLocation] = useState("");

@@ -16,7 +16,7 @@ import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
 import { color, textAlign } from "@mui/system";
 
-const image1 = "../src/static/proxy-image.png";
+const image1 = "static/proxy-image.png";
 
 // Reformats the JavaScript date object to match with database date format
 function formatJavascriptDate(dateObject) {
