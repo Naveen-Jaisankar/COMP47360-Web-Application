@@ -1,5 +1,6 @@
 package com.compsci.webapp.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ public interface StGeorgeQuizRepository extends JpaRepository<StGeorgeQuiz, StGe
 	List<StGeorgeQuiz> findByUserId(UserEntity userEntity);
 
 	List<StGeorgeQuiz> findByUserId_UserId(Long userId);
+
+	StGeorgeQuiz findByUserId_UserIdAndQuizDate(Long userId, LocalDate quizDate);
 }
