@@ -23,7 +23,7 @@ const DailySearchbar = forwardRef(({passPlaceData}, ref) => {
   const inputRef = useRef();
   const textRef= useRef();
 
-  const apikey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const apikey = "AIzaSyBa8lmVjO0jiQvLJKR6twQ5jbila4wR3Tg";
   const placeslib = ["places"];
 
   const nyBounds = {
