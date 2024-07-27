@@ -17,6 +17,7 @@ import { CreamBackgroundBox, SmallerHeadingBox } from "./Home";
 import constants, { dailyForm } from "./../constant";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Typography, Button }from "@mui/material";
+import PropTypes from 'prop-types';
 
 const questions = [
   {
