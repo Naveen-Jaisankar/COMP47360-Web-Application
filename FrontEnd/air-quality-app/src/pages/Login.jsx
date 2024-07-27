@@ -1,9 +1,7 @@
 import { useContext, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import AirIcon from '@mui/icons-material/Air';
 import { useNavigate } from 'react-router-dom';
 
 import constant from '../constant';
@@ -57,11 +55,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <AirIcon fontSize="large" className="mb-4" />
-
-      <Typography variant="h4" className="mb-4 font-bold">{constant.loginConsts.login}</Typography>
-      <Typography variant="body1" className="mb-8 text-gray-500">{constant.loginConsts.login_body}</Typography>
+    <div className="flex flex-col items-center justify-center">
+      <Typography variant="h4" className="mb-3 font-bold">{constant.loginConsts.login}</Typography>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm">
         <TextField
@@ -87,13 +82,14 @@ const Login = () => {
           required
         />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth className="mt-4">{constant.loginConsts.login_btn}</Button>
-
+        <button 
+          type="submit" 
+          className="bg-blue-500 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mt-4 w-full transition duration-300 ease-in-out"
+        >
+          { constant.loginConsts.login_btn }
+        </button>    
+        
         <div className="flex flex-col items-center justify-center mt-3">
-          <Link to="/register" className="text-blue-500 mt-3 p-2">
-            {constant.loginConsts.create_acnt}
-          </Link>
-
           <Link to="/forgotpassword" className="text-blue-500 mt-3 p-2">
             {constant.loginConsts.forgot_pass}
           </Link>

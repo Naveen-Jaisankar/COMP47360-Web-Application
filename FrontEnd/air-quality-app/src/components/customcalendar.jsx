@@ -1,27 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../static/custom-calendar.css'
 import { Paper } from '@mui/material';
+import axiosInstance from "../../src/axios";
+
+import { AuthContext } from '../context/AuthContext';
+
+//array to store the dates for calendar
+let completedDailies = [];
 
 const CustomCalendar = () => {
   const [completedDaily, setCompletedDaily] = useState([])
-
-  // possibly fetch the backend here
-  const fetchDates = () => {
-  // set it as the variable completedDailies
-  }
-
-  // mock data for completed quiz
-  const completedDailies = [
-    new Date("2024-06-13"),
-    new Date("2024-06-14")
-  ]
+  const { userId } = useContext(AuthContext); 
 
   // used so it doesn't infinitely render :(((
-  useEffect( () => {
-    setCompletedDaily(completedDailies)
-  }, [])
+    useEffect(() => {
+      axiosInstance.get('dailyquizscores/getQuizScore/' + userId)
+        .then(function (response) {
+          response.data.forEach(datapoint => {
+            completedDailies.push(new Date(datapoint.quizDate));
+          });
+          setCompletedDaily(completedDailies)
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }, []);
 
   // helper function that checks two dates if they're the same
   const isSameDay = (date1, date2) => {
@@ -55,8 +60,7 @@ const CustomCalendar = () => {
 
   return (
     <Paper>
-      <Calendar
-      tileContent={renderTileContent} />
+      <Calendar tileContent={renderTileContent} />
     </Paper>
   )
 }

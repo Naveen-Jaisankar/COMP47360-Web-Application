@@ -5,7 +5,6 @@ import constants from "./../constant";
 import { styled, useTheme } from "@mui/system";
 import Footer from "../components/footer";
 
-
 const image1 = "/static/proxy-image.png";
 const image2 = "/static/face-mask2.png";
 const image3 = "/static/heart.png";
