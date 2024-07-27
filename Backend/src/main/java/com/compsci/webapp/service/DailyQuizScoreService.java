@@ -1,8 +1,6 @@
 package com.compsci.webapp.service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import com.compsci.webapp.util.FlaskClient;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +126,8 @@ public class DailyQuizScoreService {
 
         public double getAqiForToday() {
         // LocalDate currentDate = LocalDate.now();
+
+        long timeStamp = System.currentTimeMillis() / 1000L;
 
         String location = "40.776676, -73.971321";
 
