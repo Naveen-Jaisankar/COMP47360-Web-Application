@@ -402,7 +402,7 @@ const DashBoard = ({ isSidebarOpen }) => {
           <Typography variant="body1" sx={{
             color: '#151515'
           }}>
-            Your personalised health recommendations are generated below based on the latest data you have given us. If this is your first time, your suggested acions will appear after you fill in the daily quiz.
+            Your personalised health recommendations are generated below based on the latest data you have given us. If this is your first time, your suggested actions will appear after you fill in the daily quiz.
           </Typography>
           </Box>
         
