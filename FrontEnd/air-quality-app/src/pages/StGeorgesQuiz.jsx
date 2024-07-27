@@ -406,11 +406,11 @@ const questions = [
   },
 ];
 
-function Quiz() {
+function Quiz({closeSubmitHandler}) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
   const submitModalRef = useRef();
   const navigate = useNavigate();
 
@@ -473,12 +473,7 @@ function Quiz() {
     }
   };
 
-  const handleModalClose = (redirectUrl = "/user-dashboard") => {
-    setIsLoading(true);
-    setTimeout(() => {
-      navigate(redirectUrl);
-    }, 1500);
-  };
+
 
   const handleSubmit = () => {
     const totalWeightedComponent = calculateTotalWeightedComponent();
@@ -720,9 +715,7 @@ function Quiz() {
 
   return (
     <>
-    {isLoading ? (
-      <LoadingScreen loadingtext="Sending you back to the user dashboard now!"/>
-    ) : (
+
         <>
       <button onClick={() => setIsModalOpen(true)}>Start Quiz</button>
       <Modal
@@ -760,17 +753,30 @@ function Quiz() {
         IconComponent={TaskAltIcon}
         iconColor="green"
         // Comment/ uncomment below to test redirect.
-        onClose={() => handleModalClose("/user")}
+        onClose={closeSubmitHandler}
       />
       </>
-    )}
+
     </>
   );
 }
 
   export default function Form() {
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleModalClose = (redirectUrl = "/user") => {
+      setIsLoading(true);
+      setTimeout(() => {
+        navigate(redirectUrl);
+      }, 1500);
+    };
+
     return (
       <>
+          {isLoading ? (
+      <LoadingScreen loadingtext="Sending you back to the user dashboard now!"/>
+    ) : (
         <CreamBackgroundBox
           sx={{
             minWidth: "100vw",
@@ -830,11 +836,14 @@ function Quiz() {
               color="success"
               size="large"
             >
-              <Quiz />
+              <div>
+              <Quiz closeSubmitHandler={() => handleModalClose("/user")}/>
+              </div>
             </Button>
           </Box>
         </MainContent>
       </CreamBackgroundBox>
+      )}
     </>
   );
 }
