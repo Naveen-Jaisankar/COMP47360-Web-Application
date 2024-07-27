@@ -17,8 +17,8 @@ export const general = {
     logout:'Logout',
     save_and_continue : "Save & Continue",
     getting_started : "Getting Started",
-    user_dash:"Dashboard"
-
+    user_dash:"Dashboard",
+    loading_site:"Website is loading..."
 }
 
 export const generalHealth = {

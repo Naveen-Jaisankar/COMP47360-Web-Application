@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Typography, Box } from "@mui/material";
 import {
   AreaChart,
@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
+import CustomCalendar from "../components/customcalendar";
 import { color, textAlign } from "@mui/system";
 
 const image1 = "../src/static/proxy-image.png";
@@ -294,10 +295,10 @@ const DashBoard = ({ isSidebarOpen }) => {
           </Typography>
         </div>
       </section>
-
+{/* 
       <section>
         <UserHistory />
-      </section>
+      </section> */}
       
       <section>
         <Typography variant="h5" className="mb-4">
@@ -316,8 +317,10 @@ const DashBoard = ({ isSidebarOpen }) => {
         </div>
       </section>
       <section>
-        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase}
-       />
+      <div className="flex flex-col gap-3">
+        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase} />
+          <CustomCalendar />
+      </div>
       </section>
     </div>
   );

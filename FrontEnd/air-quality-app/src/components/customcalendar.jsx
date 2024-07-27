@@ -60,8 +60,7 @@ const CustomCalendar = () => {
 
   return (
     <Paper>
-      <Calendar
-      tileContent={renderTileContent} />
+      <Calendar tileContent={renderTileContent} />
     </Paper>
   )
 }

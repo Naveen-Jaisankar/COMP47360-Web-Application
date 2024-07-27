@@ -85,12 +85,6 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                   </Button>
                 </li>
                 <li>
-                  <Button className='block py-2 px-4 ' component ={Link} to="/user/history"
-                   sx={{ color: 'white' }} >
-                    History
-                  </Button>
-                </li>
-                <li>
                   <Button className='block py-2 px-4' component ={Link} to="#"
                    sx={{ color: 'white' }}>
                     Assessment

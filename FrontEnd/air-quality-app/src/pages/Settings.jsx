@@ -54,7 +54,7 @@ const Settings = ( {sx} ) => {
           <Typography variant="body1" sx={{ paddingRight: '1rem' }}>
             {constant.settings.text_size}
           </Typography>
-          <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={30} />
+          <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={25} />
         </WideMenuItem>
         <WideMenuItem>
           <Typography variant="body1" className="mr-2">
