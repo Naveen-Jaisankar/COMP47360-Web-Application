@@ -226,19 +226,19 @@ export default function MapPage() {
           {shouldRenderMarker && <Marker position={{ lat: markerPos.lat, lng: markerPos.lng }} />}
 
           <div className='flex flex-col fixed ml-3 z-10 gap-2 top-12 mt-6'>
-            <div className='flex flex-row items-center ml-3 p-2'>
-              <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} />
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                dateFormat="yyyy/MM/dd"
-                className={`${darkMode ? 
-                  "ml-2 px-2 py-1 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-800 text-gray-200" 
-                  : 
-                  "ml-2 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                }`}
-              />
-            </div>
+          <div className="flex flex-wrap justify-center items-center ml-3 p-2">
+            <PlaceAutocomplete onPlaceSelected={handlePlaceSelected} className="lg:w-1/2 md:w-full sm:w-full" />
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              dateFormat="yyyy/MM/dd"
+              className={`${darkMode ? 
+                "ml-2 px-2 py-1 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-800 text-gray-200" 
+                : 
+                "ml-2 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              } lg:w-1/2 md:w-full sm:w-full lg:ml-4 md:ml-2 sm:ml-2 sm:p-1`}
+            />
+          </div>
             <MapAlertCard aqi={aqiForLocation} />
           </div>
 
