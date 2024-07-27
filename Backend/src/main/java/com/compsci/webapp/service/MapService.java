@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.json.JSONArray;
 
+import com.compsci.webapp.request.AllGridRequest;
 import com.compsci.webapp.request.SingleGridRequest;
 import com.compsci.webapp.response.AllGridResponse;
 import com.compsci.webapp.response.SingleGridResponse;
@@ -20,6 +21,6 @@ import com.compsci.webapp.response.SingleGridResponse;
 
 public interface MapService {
 	
-	List<AllGridResponse> predictForAllGrids(SingleGridRequest input);
+	List<AllGridResponse> predictForAllGrids(AllGridRequest input);
 	SingleGridResponse predictForASingleGrid(SingleGridRequest input);
 }
