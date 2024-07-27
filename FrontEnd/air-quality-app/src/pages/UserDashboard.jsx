@@ -17,7 +17,7 @@ import RiskProfileCard from "../components/riskprofilecard";
 import CustomCalendar from "../components/customcalendar";
 import { color, textAlign } from "@mui/system";
 
-const image1 = "../src/public/static/proxy-image.png";
+const image1 = "/static/proxy-image.png";
 
 // Reformats the JavaScript date object to match with database date format
 function formatJavascriptDate(dateObject) {
