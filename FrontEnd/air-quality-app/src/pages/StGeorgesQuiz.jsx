@@ -523,6 +523,25 @@ function Quiz({closeSubmitHandler}) {
       });
   };
 
+  // const quizDate = new Date().toISOString().split('T')[0]; // Assuming quizDate needs to be in yyyy-MM-dd format
+  axiosInstance
+    .get(`/stgeorgequiz/getscore`, {
+      params: {
+        userId: userId,
+        quizDate: quizDate
+      }
+    })
+    .then((response) => {
+      console.log("Score data received:", response.data);
+     
+    })
+    .catch((error) => {
+      console.error("There was an error retrieving the score!", error);
+    });
+  
+  
+};
+
   // const handleClick = (data) => {
   //     fetch('http://localhost:8080/api/v1/stgeorgequiz/saveScore', {
   //         method: 'POST',
@@ -761,7 +780,7 @@ function Quiz({closeSubmitHandler}) {
 
     </>
   );
-}
+
 
   export default function Form() {
     const [isLoading, setIsLoading] = useState(false);
