@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.compsci.webapp.request.AllGridRequest;
 import com.compsci.webapp.request.SingleGridRequest;
 import com.compsci.webapp.response.AllGridResponse;
 import com.compsci.webapp.response.SingleGridResponse;
@@ -35,8 +36,7 @@ public class MapController {
 	private MapService mapService;
 	
 	@PostMapping("/getAllAQIValues")
-	public ResponseEntity<?> predictForAllGrids(@Valid @RequestBody SingleGridRequest input) {
-//		JSONArray predictedValueForAllGrids = new JSONArray();
+	public ResponseEntity<?> predictForAllGrids(@Valid @RequestBody AllGridRequest input) {
 		List<AllGridResponse> predictedValueForAllGrids = new ArrayList<>();
 		try {
 			predictedValueForAllGrids = mapService.predictForAllGrids(input);
