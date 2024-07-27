@@ -1,5 +1,6 @@
 package com.compsci.webapp.repository;
 
+ import java.time.LocalDate;
  import java.util.Optional;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.compsci.webapp.entity.StGeorgeQuiz;
 import com.compsci.webapp.entity.UserEntity;
 
 @Repository
@@ -35,4 +37,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     
     @Query("SELECT u FROM UserEntity u WHERE u.userId = ?1")
     UserEntity getUserById(Long userId);
+
 }
