@@ -10,8 +10,8 @@ import org.json.JSONArray;
 
 public class FlaskClient {
 
-    private static final String PREDICT_WITH_LOCATION_URL = "http://localhost:5001/predict_with_location";
-    private static final String PREDICT_FOR_ALL_GRIDS_URL = "http://localhost:5001/predict_for_all_grids";
+    private static final String PREDICT_WITH_LOCATION_URL = "http://13.60.97.126:5001/predict_with_location";
+    private static final String PREDICT_FOR_ALL_GRIDS_URL = "http://13.60.97.126:5001/predict_for_all_grids";
 
 
     public static JSONObject predictWithLocation(JSONObject input) throws Exception {
@@ -30,7 +30,7 @@ public class FlaskClient {
         return new JSONObject(responseString);
     }
 
-    public static JSONArray predictForAllGrids(JSONObject input) throws Exception {
+    public static String predictForAllGrids(JSONObject input) throws Exception {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(PREDICT_FOR_ALL_GRIDS_URL);
 
@@ -43,6 +43,6 @@ public class FlaskClient {
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
         client.close();
-        return new JSONArray(responseString);
+        return responseString;
     }
 }
