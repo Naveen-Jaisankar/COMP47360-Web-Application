@@ -45,6 +45,7 @@ export const loginConsts = {
     login_btn : "Login",
     create_acnt : " Not a member? Create an account here",
     forgot_pass:"Forgot Password? Click here!"
+
 }
 
 export const register = {
@@ -52,6 +53,8 @@ export const register = {
     body : "Breathe easier with Fair",
     btn : "Sign Up",
     create_my_acnt : "Create my account",
+    registration_modal_title: "Thank you for registering with Fair",
+    registration_modal_text:"Please check your email to verify your account" 
 }
 
 export const settings = {

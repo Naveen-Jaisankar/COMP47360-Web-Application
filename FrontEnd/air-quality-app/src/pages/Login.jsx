@@ -38,11 +38,14 @@ const Login = () => {
           console.log(error);
           if (error.response) {
             if (error.response.status === 401) {
+              alert('Incorrect email or password')
               console.log('Incorrect email or password!');
             } else if (error.response.status === 403) {
               console.log('User account is inactive. Please contact support.');
+              alert('User account is inactive. Please contact support.')
             } else if (error.response.status === 404) {
               console.log('User not found!');
+              alert('User not found')
             }
           }
         });
