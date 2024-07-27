@@ -101,8 +101,8 @@ export const privacy = {
 }
 
 export const userSidebar = {
-    welcomeText:"Welcome back, User",
-    exposureText:"Take your exposure quiz today"
+    welcomeText:"Welcome back",
+    exposureText:"Take your daily quiz today"
 }
 
 export const userHistory = {
