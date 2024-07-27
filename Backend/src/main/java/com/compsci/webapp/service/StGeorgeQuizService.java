@@ -1,5 +1,6 @@
 package com.compsci.webapp.service;
 
+import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +8,7 @@ import com.compsci.webapp.entity.StGeorgeQuiz;
 import com.compsci.webapp.entity.UserEntity;
 import com.compsci.webapp.repository.StGeorgeQuizRepository;
 import com.compsci.webapp.repository.UserRepository;
+import com.compsci.webapp.request.StGeorgeQuizRequest;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -30,7 +32,16 @@ public class StGeorgeQuizService {
         return stGeorgeQuizRepository.save(stGeorgeQuiz);
     }
 
-//    public Optional<StGeorgeQuiz> getScore(Long userId, Date quizDate) {
-//        return stGeorgeQuizRepository.findByUserIdAndQuizDate(userId, quizDate);
-//    }
-}
+    public StGeorgeQuizRequest getScore(Long userId, LocalDate quizDate) {
+        StGeorgeQuiz stGeorgeQuiz =  stGeorgeQuizRepository.findByUserId_UserIdAndQuizDate(userId, quizDate);
+        if (stGeorgeQuiz != null) {
+            StGeorgeQuizRequest request = new StGeorgeQuizRequest();
+            request.setUserId(stGeorgeQuiz.getUserId().getUserId());
+            request.setQuizDate(stGeorgeQuiz.getQuizDate());
+            request.setScore(stGeorgeQuiz.getScore());
+            return request;
+        }
+        return null;  //  where no quiz is found
+    }
+        
+    }
