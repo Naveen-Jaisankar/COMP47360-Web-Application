@@ -19,6 +19,7 @@ import ForgotPass from './pages/ForgotPassword';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import BetterLogin from './pages/BetterLogin';
+import TypographyTest from './pages/TypographyTest';
 
 function App() {
   const { fontSize } = useContext(SettingsContext);

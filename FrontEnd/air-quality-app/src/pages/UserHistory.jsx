@@ -9,20 +9,8 @@ export default function UserHistory() {
         <div className="flex">
             <UserContent sx={{ backgroundColor: "#f7f7f2" }}>
                 <Container>
-                    <Box
-                        sx={{
-                            padding: { xs: "1rem", sm: "2rem" },
-                            margin: { xs: "0.5rem", sm: "1rem" },
-                        }}
-                    >
-                        <Typography
-                            variant="h3"
-                            component='h2'
-                            sx={{
-                                fontSize: { xs: "2rem", sm: "3rem" },
-                                marginBottom: { xs: "1rem", sm: "2rem" },
-                            }}
-                        >
+                    <Box sx= {{padding: "2rem",margin: "1rem"}}>
+                        <Typography variant="h3" component='h2' sx={{ marginBottom: "2rem",}}>
                             {constants.userHistory.title}
                         </Typography>
 
@@ -31,12 +19,8 @@ export default function UserHistory() {
                         </Box>
                     </Box>
 
-                    <Box sx={{ padding: { xs: "1rem", sm: "2rem" } }}>
-                        <Typography
-                            variant="h3"
-                            component='h2'
-                            sx={{ fontSize: { xs: "2rem", sm: "3rem" } }}
-                        >
+                    <Box sx= {{ padding: "2rem"}}>
+                        <Typography variant="h3" component='h2'>
                             {constants.userHistory.riskProfileTitle}
                         </Typography>
 

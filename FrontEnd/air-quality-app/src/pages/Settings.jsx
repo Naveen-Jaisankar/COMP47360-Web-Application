@@ -1,71 +1,73 @@
-import { useContext } from 'react';
-import { Switch, Slider, Typography, Paper, Container } from '@mui/material';
+import { useContext, useState } from 'react';
+import { Switch, Slider, Typography, Button, Menu, MenuItem } from '@mui/material';
 import { SettingsContext } from '../context/SettingsContext';
 import { styled } from '@mui/system';
 import constant from '../constant';
+import PropTypes from 'prop-types';
 
+const WideMenuItem = styled(MenuItem)({
+  margin: '1rem',
+  width: '30rem',
+  // backgroundColor: "black"
+});
 
-const ColumnContainer = styled(Container)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100vh',
-  padding: 2,
-})
+const Settings = ( {sx} ) => {
+  const { darkMode, toggleDarkMode, fontSize, changeFontSize } = useContext(SettingsContext);
 
-const SettingsPaper = styled(Paper)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: 3,
-  borderRadius: 2,
- 
-})
+  const handleFontSizeChange = (_event, newValue) => {
+    changeFontSize(newValue);
+  };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
-const Settings = () =>{
+  const handleClickSettings = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    //importing all features and functions from settingscontext
-    //Refer SettingsContext.jsx
-    const {darkMode, toggleDarkMode, fontSize, changeFontSize} = useContext(SettingsContext);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const handleFontSizeChange = (_event, newValue) => {
-        changeFontSize(newValue);
-    };
-
-    return (
-        <ColumnContainer
-          component="main"
-          maxWidth="xs"
-          sx={{
-            backgroundColor: darkMode ? 'grey.900' : 'grey.100',
-            color: darkMode ? 'grey.300' : 'grey.900',
-          }}
-        >
-          <Typography variant="h4" component="h1" gutterBottom>
-            {constant.settings.title}
+  return (
+    <>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClickSettings}
+        sx={sx}
+      >
+        Settings
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <WideMenuItem>
+          <Typography variant="body1" sx={{ paddingRight: '1rem' }}>
+            {constant.settings.text_size}
           </Typography>
-          <Typography variant="body1" gutterBottom>
-            {constant.settings.body}
+          <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={30} />
+        </WideMenuItem>
+        <WideMenuItem>
+          <Typography variant="body1" className="mr-2">
+            {constant.settings.dark_mode}
           </Typography>
-          <SettingsPaper elevation={3} sx={{
-            
-            backgroundColor: darkMode ? 'grey.800' : 'white',
-          }}>
-            <div className="flex flex-col items-center">
-              <div className="mb-4">
-                <Typography variant="body1">{constant.settings.text_size}</Typography>
-                <Slider value={fontSize} onChange={handleFontSizeChange} aria-labelledby="text-size-slider" min={10} max={25} />
-              </div>
-              <div className="flex items-center">
-                <Typography variant="body1" className="mr-2">{constant.settings.dark_mode}</Typography>
-                <Switch checked={darkMode} onChange={toggleDarkMode} name="darkMode" color="primary"/>
-              </div>
-            </div>
-          </SettingsPaper>
-        </ColumnContainer>
-      );
+          <Switch checked={darkMode} onChange={toggleDarkMode} name="darkMode" color="primary" />
+        </WideMenuItem>
+      </Menu>
+    </>
+  );
 };
 
 export default Settings;
+
+Settings.propTypes = {
+  sx: PropTypes.object}

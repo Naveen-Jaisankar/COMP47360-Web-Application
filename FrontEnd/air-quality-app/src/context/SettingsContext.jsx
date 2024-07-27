@@ -31,6 +31,28 @@ export const ThemeContextProvider = ({children}) =>{
         },
         typography: {
           fontSize: fontSize,
+          h1: {
+            fontSize: `${fontSize * 4}px`, 
+          },
+          h2: {
+            fontSize: `${fontSize * 3.2}px`,
+          },
+          h3: {
+            fontSize: `${fontSize * 2.5}px`, 
+          },
+          h4: {
+            fontSize: `${fontSize * 1.8}px`,
+          },
+          h5: {
+            fontSize: `${fontSize * 1.5}px`, 
+          },
+          body1: {
+            fontSize: `${fontSize * 1.2}px`,
+          },
+
+          body2: {
+            fontSize: `${fontSize * 0.8}px`,
+          }
         },
       }), [darkMode, fontSize]);
 
