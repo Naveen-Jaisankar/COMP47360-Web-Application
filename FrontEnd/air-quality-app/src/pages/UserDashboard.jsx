@@ -14,9 +14,10 @@ import PropTypes from "prop-types";
 import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
+import CustomCalendar from "../components/customcalendar";
 import { color, textAlign } from "@mui/system";
 
-const image1 = "../src/static/proxy-image.png";
+const image1 = "../src/public/static/proxy-image.png";
 
 // Reformats the JavaScript date object to match with database date format
 function formatJavascriptDate(dateObject) {
@@ -294,6 +295,11 @@ const DashBoard = ({ isSidebarOpen }) => {
           </Typography>
         </div>
       </section>
+{/* 
+      <section>
+        <UserHistory />
+      </section> */}
+      
       <section>
         <Typography variant="h5" className="mb-4">
           Suggested Actions
@@ -311,8 +317,10 @@ const DashBoard = ({ isSidebarOpen }) => {
         </div>
       </section>
       <section>
-        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase}
-       />
+      <div className="flex flex-col gap-3">
+        <RiskProfileCard avgAQI={averageAQI} userAQI={userAQI} specialCase={riskProfileCase} />
+          <CustomCalendar />
+      </div>
       </section>
     </div>
   );

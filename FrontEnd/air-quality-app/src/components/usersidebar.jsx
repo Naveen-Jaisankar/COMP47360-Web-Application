@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
   return (
     <div className="flex">
       {!isOpen && (
-        <IconButton onClick={toggleDrawer} className="absolute top-2 left-2">
+        <IconButton onClick={toggleDrawer} className="sticky top-2 left-2">
           <MenuIcon />
         </IconButton>
       )}
@@ -85,12 +85,6 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                   </Button>
                 </li>
                 <li>
-                  <Button className='block py-2 px-4 ' component ={Link} to="/user/history"
-                   sx={{ color: 'white' }} >
-                    History
-                  </Button>
-                </li>
-                <li>
                   <Button className='block py-2 px-4' component ={Link} to="#"
                    sx={{ color: 'white' }}>
                     Assessment
@@ -100,12 +94,6 @@ const Sidebar = ({ isOpen, toggleDrawer }) => {
                   <Button className='block py-2 px-4' component ={Link} to="/privacy"
                    sx={{ color: 'white'}}>
                     Privacy
-                  </Button>
-                </li>
-                <li>
-                  <Button className='block py-2 px-4 bg-black rounded' component ={Link} to="#"
-                   sx={{ color: 'white', bgcolor:'black', '&:hover': {bgcolor:'black'} }}>
-                    Edit Profile
                   </Button>
                 </li>
               </ul>
