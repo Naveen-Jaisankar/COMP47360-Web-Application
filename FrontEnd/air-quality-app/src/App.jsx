@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Map from './pages/Map'
 import Settings from './pages/Settings'
 import DailyForm from './pages/DailyForm';
+import George from './pages/StGeorgesQuiz';
 import Privacy from './pages/Privacy';
 import UserDashboard from './pages/UserDashboard';
 import { SettingsContext } from './context/SettingsContext';
@@ -44,6 +45,7 @@ function App() {
                     <Route path='/login' element={<BetterLogin />} />
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
+                    <Route path="/user/stgeorgesquiz" element={<ProtectedRoute element={<George />} />} />
                     <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} />
 
 

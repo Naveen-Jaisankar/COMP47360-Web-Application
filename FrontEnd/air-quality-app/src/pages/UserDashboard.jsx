@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Grid } from "@mui/material";
+import Infocard from "../components/infocard";
 import {
   AreaChart,
   Area,
@@ -15,9 +16,21 @@ import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../../src/axios";
 import RiskProfileCard from "../components/riskprofilecard";
 import CustomCalendar from "../components/customcalendar";
-import { color, textAlign } from "@mui/system";
+import { color, textAlign, useTheme } from "@mui/system";
+import { maxWidth } from '@mui/system';
 
 const image1 = "/static/proxy-image.png";
+
+const healthImages = {
+  thumbs_up: "../src/static/thumbs_up.png",
+  water_bottle: "../src/static/water_bottle.png",
+  park: "../src/static/park.png",
+  warning: "../src/static/warning.png",
+  face_mask: "../src/static/face_mask.png",
+  house: "../src/static/house.png",
+  newspaper: "../src/static/newspaper.jpg",
+  doctor: "../src/static/doctor.png"
+};
 
 // Reformats the JavaScript date object to match with database date format
 function formatJavascriptDate(dateObject) {
@@ -199,6 +212,13 @@ const getTodayAQI = async (userId, setAverageAQI, setUserAQI, setRiskProfileCase
   }
 }
 
+const getLatestDay = async (userId) => {
+  const rawResponse = await axiosInstance.get("dailyquizscores/getQuizScore/" + userId);
+  let latestDays = rawResponse.data.reverse();
+  let latestDay = latestDays[0];
+  console.log("Latest Day:", latestDay)
+  return latestDay
+}
 
 const CustomTooltip = ({ payload, label }) => {
   if (!payload || payload.length === 0) return null;
@@ -223,10 +243,12 @@ const CustomTooltip = ({ payload, label }) => {
 const DashBoard = ({ isSidebarOpen }) => {
   const [data, setData] = useState([]);
   const [averageAQI, setAverageAQI] = useState(0)
+  const [recommendations, setRecommendations] = useState([]);
   const [userAQI, setUserAQI] = useState(0)
   const { userId } = useContext(AuthContext);
   const [riskProfileCase, setRiskProfileCase] = useState("");
 
+  // For the graph
   useEffect(() => {
     const fetchData = async () => {
       const days = await getLastSevenDays(userId);
@@ -235,6 +257,7 @@ const DashBoard = ({ isSidebarOpen }) => {
     fetchData();
   }, [userId]);
 
+  // For the risk profile card
   useEffect(() => {
     getTodayAQI(userId, setAverageAQI, setUserAQI, setRiskProfileCase)
     console.log(userAQI)
@@ -242,6 +265,79 @@ const DashBoard = ({ isSidebarOpen }) => {
     console.log(riskProfileCase)
   }, [userId]);
 
+  // For the personalised health recommendations
+  useEffect(() => {
+    const fetchLatestDay = async () => {
+      try {
+        const latestDay = await getLatestDay(userId);
+        console.log("(Use Effect) Latest Day:", latestDay);
+        setRecommendations(getRecommendations(latestDay.quizScore));
+      } catch (error) {
+        console.error("Failed to fetch the latest day:", error);
+      }
+    };
+  
+    fetchLatestDay();
+  }, [userId]);  
+
+  const getRecommendations = (data) => {
+    const personalExposure = data;
+    console.log("PE Data:", data)
+    const recs = [];
+
+    if (personalExposure < 4) {
+      recs.push({
+        image: healthImages.thumbs_up,
+        heading: 'Keep Up the Good Work!',
+        text: 'Your personal exposure is low. Continue maintaining your healthy habits.',
+      });
+      recs.push({
+        image: healthImages.water_bottle,
+        heading: 'Stay Hydrated!',
+        text: 'Drinking plenty of water helps your body fight off pollutants.',
+      });
+      recs.push({
+        image: healthImages.park,
+        heading: 'Enjoy the Fresh Air!',
+        text: 'Make sure to relax and/or exercise in nature, preferably away from roads.'
+      })
+    } else if (personalExposure < 9) {
+      recs.push({
+        image: healthImages.warning,
+        heading: 'Moderate Exposure',
+        text: 'Your exposure is moderate. Try to avoid outdoor activities during peak pollution hours.',
+      });
+      recs.push({
+        image: healthImages.face_mask,
+        heading: 'Wear a Mask',
+        text: 'Consider wearing a mask if you need to go outside during peak pollution times.',
+      });
+      recs.push({
+        image: healthImages.house,
+        heading: 'Indoor Activities',
+        text: 'Plan indoor activities to reduce your exposure to air pollution.',
+      });
+    } else {
+      recs.push({
+        image: healthImages.warning,
+        heading: 'High Exposure Alert',
+        text: 'Your exposure is high. Stay indoors and use air purifiers if possible.',
+      });
+      recs.push({
+        image: healthImages.newspaper,
+        heading: 'Check Air Quality',
+        text: 'Regularly check air quality updates to plan your outdoor activities accordingly.',
+      });
+      recs.push({
+        image: healthImages.doctor,
+        heading: 'Consult a Doctor',
+        text: 'If you feel unwell, consult a doctor, especially if you have respiratory issues.',
+      });
+    }
+    return recs.slice(0, 3);
+  };
+
+  const theme = useTheme();  
   return (
     <div
       className={`transition-all duration-300 ${
@@ -289,28 +385,59 @@ const DashBoard = ({ isSidebarOpen }) => {
               </AreaChart>
             </ResponsiveContainer>
           </Box>
-          <Typography variant="h6">Summary:</Typography>
-          <Typography variant="body1">
-            • Spent x minutes in low to medium pollution, spent x minutes in high pollution.
-          </Typography>
+
         </div>
       </section>
-{/* 
       <section>
-        <UserHistory />
-      </section> */}
-      
-      <section>
-        <Typography variant="h5" className="mb-4">
-          Suggested Actions
-        </Typography>
+        <Typography variant="h5" className="mb-4" sx={{
+          paddingBottom: "0.8rem"
+        }}>Suggested Actions</Typography>
+        <Box sx={{
+          marginLeft: "2rem",
+          padding: "2rem",
+          backgroundColor: "#F7F7F2",
+          borderRadius: "2vh",
+          // border: "1px solid grey",
+        }}>
+        <Typography variant="h6" sx={{
+          fontWeight: "light",
+          color: '#151515'
+
+        }}>Your Summary</Typography>
+          <Typography variant="body1" sx={{
+            color: '#151515'
+          }}>
+            • Your personalised health recommendations are generated below based on the answers you have given us.
+          </Typography>
+          </Box>
+        
+        <Grid container spacing={2} sx={{
+          padding: "2rem"
+        }}>
+          {recommendations.map((rec, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Infocard
+                image={rec.image}
+                heading={rec.heading}
+                text={rec.text}
+                style={{
+                  maxWidth: "12rem",
+                  margin: "auto",
+                  paddingTop: "1rem",
+                  filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
+                  
+                }}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </section>
       <section className="mt-8">
         <div className="bg-black text-white p-4 rounded shadow-md">
           <Typography variant="body1">
             Looking for more personalised suggestions? Try our additional
             assessment{" "}
-            <a href="#" className="text-blue-400">
+            <a href="/user/stgeorgesquiz" className="text-blue-400">
               here
             </a>
           </Typography>
