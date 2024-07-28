@@ -28,6 +28,10 @@ RUN rm -rf ./*
 
 # Copy the built React app from the build stage to the Nginx HTML directory
 COPY --from=build /app/dist .  
+
+# Copy the custom nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Ensure the correct path to the build directory
 
 # Expose port 80
