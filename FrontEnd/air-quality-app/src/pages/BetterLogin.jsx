@@ -46,10 +46,10 @@ const BetterLogin = () => {
     <div style={{ position: 'fixed', width: '100%', height: '100vh', overflow: 'hidden' }}>
       {!darkMode ? 
         <video className="absolute top-0 left-0 w-full h-full object-cover z-0" autoPlay loop muted>
-        <source src="/static/manhattanvid.mp4" type="video/mp4" />
+        <source src="static/manhattanvid.mp4" type="video/mp4" />
         </video> :
         <video className="absolute top-0 left-0 w-full h-full object-cover z-0" autoPlay loop muted>
-          <source src="/static/manhattan_night.mp4" type="video/mp4" />
+          <source src="static/manhattan_night.mp4" type="video/mp4" />
         </video>
       }
 
