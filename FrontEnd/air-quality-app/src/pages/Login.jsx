@@ -91,12 +91,6 @@ const Login = () => {
         >
           { constant.loginConsts.login_btn }
         </button>    
-        
-        <div className="flex flex-col items-center justify-center mt-3">
-          <Link to="/forgotpassword" className="text-blue-500 mt-3 p-2">
-            {constant.loginConsts.forgot_pass}
-          </Link>
-        </div>
       </form>
     </div>
   );
