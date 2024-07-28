@@ -46,7 +46,7 @@ function App() {
                     <Route path="/user" element={<ProtectedRoute element={<UserPanel />} />} />
                     <Route path="/user/dailyform" element={<ProtectedRoute element={<DailyForm />} />} />
                     <Route path="/user/stgeorgesquiz" element={<ProtectedRoute element={<George />} />} />
-                    <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} />
+                    {/* <Route path="/user/dashboard" element={<ProtectedRoute element={<UserDashboard/>} />} /> */}
 
 
                     {/* No longer using user history */}
