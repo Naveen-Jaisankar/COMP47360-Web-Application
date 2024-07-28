@@ -148,7 +148,7 @@ const Navbar = () => {
           {token ? (
             <MenuItem onClick={() => { handleCloseMenu(); handleLogout(); }}>{constants.general.logout}</MenuItem>
           ) : (
-            <MenuItem onClick={() => { handleCloseMenu(); navigate('/register'); }}>{constants.general.login_register}</MenuItem>
+            <MenuItem onClick={() => { handleCloseMenu(); navigate('/login'); }}>{constants.general.login_register}</MenuItem>
           )}
         </Menu>
       </Toolbar>
